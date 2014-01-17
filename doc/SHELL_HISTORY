@@ -1,0 +1,7 @@
+$ rvm use ruby-2.0.0 --ruby-version --create
+RVM reloaded!
+Using /usr/local/rvm/gems/ruby-2.0.0-p353
+
+$ gem install rails
+Successfully installed rails-4.0.2
+1 gem installed
