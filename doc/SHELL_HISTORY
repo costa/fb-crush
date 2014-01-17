@@ -6,6 +6,7 @@ $ gem install rails
 Successfully installed rails-4.0.2
 1 gem installed
 
+
 $ rails new . -m https://raw.github.com/RailsApps/rails-composer/master/composer.rb
        exist
       create  README.rdoc
@@ -715,5 +716,14 @@ Using uglifier (2.4.0)
 Your bundle is complete!
 Gems in the group production were not installed.
 Use `bundle show [gemname]` to see where a bundled gem is installed.
+
+
+$ bin/rake db:setup
+-- enable_extension("plpgsql")
+   -> 0.0265s
+-- create_table("users", {:force=>true})
+   -> 0.0137s
+-- initialize_schema_migrations_table()
+   -> 0.0083s
 
 
