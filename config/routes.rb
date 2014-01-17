@@ -1,4 +1,4 @@
-Server::Application.routes.draw do
+FbCrush::Application.routes.draw do
   root :to => "home#index"
   resources :users, :only => [:index, :show, :edit, :update ]
   get '/auth/:provider/callback' => 'sessions#create'

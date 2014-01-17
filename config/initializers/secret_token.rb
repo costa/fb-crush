@@ -9,4 +9,4 @@
 
 # Make sure your secret_key_base is kept private
 # if you're sharing your code publicly.
-Server::Application.config.secret_key_base = 'e615a987226177c7d6406d9bed1e450fc723c2eabc0274a73814d321820f74921b26b1f861bd871e53a108b4df5ed7213cf269425ab885e5ddf5cb2021dca560'
+FbCrush::Application.config.secret_key_base = 'e615a987226177c7d6406d9bed1e450fc723c2eabc0274a73814d321820f74921b26b1f861bd871e53a108b4df5ed7213cf269425ab885e5ddf5cb2021dca560'

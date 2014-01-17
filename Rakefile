@@ -3,4 +3,4 @@
 
 require File.expand_path('../config/application', __FILE__)
 
-Server::Application.load_tasks
+FbCrush::Application.load_tasks
