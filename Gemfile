@@ -21,6 +21,8 @@ group :development do
   gem 'guard-bundler'
   gem 'guard-rails'
   gem 'guard-rspec'
+  gem 'spork-rails', github: 'sporkrb/spork-rails'
+  gem 'guard-spork', github: 'guard/guard-spork'
   gem 'html2haml'
   gem 'quiet_assets'
   gem 'rails_layout'

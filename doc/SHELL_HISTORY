@@ -13,7 +13,7 @@ $ rails new . -m https://raw.github.com/RailsApps/rails-composer/master/composer
       create  Rakefile
       create  config.ru
     conflict  .gitignore
-Overwrite /Users/astrails/i/proj/fb-crush/server/.gitignore? (enter "h" for help) [Ynaqdh]
+Overwrite ~/i/proj/fb-crush/server/.gitignore? (enter "h" for help) [Ynaqdh]
        force  .gitignore
       create  Gemfile
       create  app
@@ -97,7 +97,7 @@ Overwrite /Users/astrails/i/proj/fb-crush/server/.gitignore? (enter "h" for help
       remove    .gitignore
       create    .gitignore
          run    git init from "."
-Reinitialized existing Git repository in /Users/astrails/i/proj/fb-crush/server/.git/
+Reinitialized existing Git repository in ~/i/proj/fb-crush/server/.git/
          run    git add -A from "."
          run    git commit -qm "rails_apps_composer: initial commit" from "."
       recipe  Running railsapps recipe...
@@ -407,7 +407,7 @@ testing
       insert    config/application.rb
      testing  recipe initializing Guard
          run    bundle exec guard init from "."
-21:16:08 - INFO - Writing new Guardfile to /Users/astrails/i/proj/fb-crush/server/Guardfile
+21:16:08 - INFO - Writing new Guardfile to ~/i/proj/fb-crush/server/Guardfile
 21:16:08 - INFO - bundler guard added to Guardfile, feel free to edit it
 21:16:08 - INFO - rails guard added to Guardfile, feel free to edit it
 21:16:09 - INFO - rspec guard added to Guardfile, feel free to edit it
@@ -725,5 +725,11 @@ $ bin/rake db:setup
    -> 0.0137s
 -- initialize_schema_migrations_table()
    -> 0.0083s
+
+
+$ spork --bootstrap
+Using RSpec
+Bootstrapping ~/i/proj/fb-crush/server/spec/spec_helper.rb.
+Done. Edit ~/i/proj/fb-crush/server/spec/spec_helper.rb now with your favorite text editor and follow the instructions.
 
 
