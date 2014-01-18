@@ -22,5 +22,18 @@
 en:
   layouts:
     application:
-      title: "Facebook Crush"
+      title: "FB Crush"
       description: "Facebook Crush"
+    navigation:
+      brand: "FB CRUSH"
+      toggle_nav: "Toggle navigation"
+      login: "Login with Facebook"
+      logout: "Logout"
+  flash:
+    sessions:
+      create:
+        notice: "Signed in!"
+      destroy:
+        notice: "Signed out!"
+      failure:
+        alert: "Authentication error: %{error}"

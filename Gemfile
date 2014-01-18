@@ -13,8 +13,8 @@ gem 'haml-rails'
 gem 'omniauth'
 gem 'omniauth-facebook'
 gem 'pg'
-gem 'sendgrid'
 gem 'simple_form'
+gem 'draper'
 group :development do
   gem 'better_errors'
   gem 'binding_of_caller', :platforms=>[:mri_19, :mri_20, :rbx]
@@ -43,3 +43,5 @@ group :test do
   gem 'database_cleaner', '1.0.1'
   gem 'email_spec'
 end
+gem 'fb_graph'
+gem 'sendgrid'
