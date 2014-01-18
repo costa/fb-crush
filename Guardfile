@@ -30,3 +30,11 @@ guard 'rspec', {
   watch(%r{^app/controllers/(.+)_(controller)\.rb$})  { |m| ["spec/routing/#{m[1]}_routing_spec.rb", "spec/#{m[2]}s/#{m[1]}_#{m[2]}_spec.rb", "spec/acceptance/#{m[1]}_spec.rb"] }
   watch(%r{^app/views/(.+)/.*\.(erb|haml|rjs)$})      { |m| "spec/features/#{m[1]}_spec.rb" }
 end
+
+guard 'pow' do
+  watch(%r{^\.rvm})
+  watch(%r{^\.pow})
+  watch('Gemfile.lock')
+  watch(%r{^config/})
+  watch(%r{^lib/.*\.rb$})
+end

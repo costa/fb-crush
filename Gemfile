@@ -19,10 +19,10 @@ group :development do
   gem 'better_errors'
   gem 'binding_of_caller', :platforms=>[:mri_19, :mri_20, :rbx]
   gem 'guard-bundler'
-  gem 'guard-rails'
   gem 'guard-rspec'
   gem 'spork-rails', github: 'sporkrb/spork-rails'
   gem 'guard-spork', github: 'guard/guard-spork'
+  gem 'guard-pow'
   gem 'html2haml'
   gem 'quiet_assets'
   gem 'rails_layout'
