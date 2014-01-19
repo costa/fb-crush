@@ -42,4 +42,9 @@ FbCrush::Application.configure do
   # Send email in development mode.
   config.action_mailer.perform_deliveries = true
 
+  if ENV['RUBY_DEBUG_PORT']
+    Debugger.start_remote nil, ENV['RUBY_DEBUG_PORT'].to_i
+  else # optional
+    Debugger.start_remote
+  end
 end

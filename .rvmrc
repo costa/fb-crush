@@ -1,2 +1,2 @@
 rvm use `cat .ruby-version`
-source .rvmenv
+. .rvmenv
