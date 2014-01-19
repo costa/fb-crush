@@ -11,10 +11,21 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140117191611) do
+ActiveRecord::Schema.define(version: 20140119085440) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "friends", force: true do |t|
+    t.integer  "ego_id"
+    t.integer  "user_id"
+    t.string   "intention"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "friends", ["ego_id", "user_id"], name: "index_friends_on_ego_id_and_user_id", unique: true, using: :btree
+  add_index "friends", ["ego_id"], name: "index_friends_on_ego_id", using: :btree
 
   create_table "users", force: true do |t|
     t.string   "name"

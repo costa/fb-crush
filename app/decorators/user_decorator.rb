@@ -1,5 +1,6 @@
 class UserDecorator < Draper::Decorator
   delegate_all
+  decorates_finders
 
   def picture(size = nil)
     h.image_tag facebook_me.picture(size)

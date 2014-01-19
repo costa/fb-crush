@@ -15,16 +15,16 @@ class SessionsController < ApplicationController
     session[:user_id] = user.id
     session[:facebook_access_token] = auth[:credentials][:token]
 
-    redirect_to root_url, :notice => I18n.t('flash.sessions.create.notice')
+    redirect_to friends_path, :notice => t('flash.sessions.create.notice')
   end
 
   def destroy
     reset_session
-    redirect_to root_url, :notice => I18n.t('flash.sessions.destroy.notice')
+    redirect_to root_path, :notice => t('flash.sessions.destroy.notice')
   end
 
   def failure
-    redirect_to root_url, :alert => I18n.t('flash.sessions.failure.alert', error: params[:message].humanize)
+    redirect_to root_path, :alert => t('flash.sessions.failure.alert', error: params[:message].humanize)
   end
 
 end

@@ -3,7 +3,7 @@
 FactoryGirl.define do
   factory :user do
     provider 'facebook'
-    uid '12345'
-    name 'Bob'
+    uid { Forgery(:basic).password }
+    name { Forgery(:name).full_name }
   end
 end
