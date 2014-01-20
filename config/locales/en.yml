@@ -51,6 +51,9 @@ en:
         zero: "You should make some <em>facebook friends</em>, it appears you have none."
         one: "Your only <em>facebook friend:</em>"
         other: "Your %{count} <em>facebook friends:</em>"
+    friend:
+      friends_html: "Just friends"
+      lovers_html: "Crush!"
   home:
     index:
       title_html: "Sometimes <em>a facebook friend</em> is more than just <em>a facebook friend!</em>"
@@ -68,3 +71,8 @@ en:
           actions:
             update:
               not_found: "Sorry, this is not your friend anymore."
+  enumerize:
+    friend:
+      intention:
+        none: 'lack of feelings'
+        love: 'loooove'

@@ -13,4 +13,8 @@ class Friend < ActiveRecord::Base
   def self.find_by_facebook_uid(uid)
     where(users: {provider: 'facebook', uid: uid}).first
   end
+
+  def mutual_intention?
+    symmetrical_friend.intention.presence == intention.presence
+  end
 end

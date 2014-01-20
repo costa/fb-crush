@@ -1,1 +1,12 @@
-.well[friend]= friend.user.badge
+.clearfix{:class => friend.intention.present? && friend.mutual_intention? ? "alert #{friend.intention == 'love' ? 'alert-danger' : 'alert-info'}" : 'well'}[friend]
+  .pull-right
+    .inline-middle
+      = button_to({controller: :friends, action: :update, id: friend.id, friend: {intention: 'love'}}, :method => :put, :class => "btn btn-danger#{friend.intention == 'love' ? ' active' : ''}") do
+        %span.glyphicon.glyphicon-heart-empty
+        = t('.lovers_html')
+    .inline-middle
+      = button_to({controller: :friends, action: :update, id: friend.id, friend: {intention: ''}}, :method => :put, :class => "btn btn-primary#{friend.intention.blank?? ' active' : ''}") do
+        %span.glyphicon.glyphicon-thumbs-up
+        = t('.friends_html')
+  .pull-left
+    = friend.user.badge

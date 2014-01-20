@@ -16,7 +16,7 @@ class FriendsController < ApplicationController
     if error
       flash[:alert] = t('flash.friends.update.alert', error: error)
     else
-      flash[:notice] = t('flash.friends.update.notice', name: @friend.user.name, intention: @friend.intention)
+      flash[:notice] = t('flash.friends.update.notice', name: @friend.user.name, intention: t(@friend.intention.presence || 'none', scope: 'enumerize.friend.intention'))
     end
     redirect_to friends_path
   end
