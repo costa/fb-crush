@@ -19,7 +19,7 @@ module Friend::SymmetryConcern
   def symmetrical; @symmetrical; end
 
   def create_symmetrical
-    Friend.create! ego: user, user: ego, symmetrical: self
+    @symmetrical_friend = Friend.create! ego: user, user: ego, symmetrical: self
   end
 
   def destroy_symmetrical

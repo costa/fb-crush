@@ -25,7 +25,8 @@ en:
       title: "FB Crush"
       description: "Facebook Crush"
     navigation:
-      brand: "FB CRUSH"
+      brand: "FB-CRUSH!!"
+      facebook_fetched_at: "Synced %{when} ago"
       toggle_nav: "Toggle navigation"
       login: "Login with facebook"
       logout: "Logout"
@@ -46,12 +47,15 @@ en:
         notice: "Your %{intention} towards %{name} has been noted. Good luck!"
   friends:
     index:
-      title_html: "Your <em>facebook friends</em>"
+      title_html:
+        zero: "You should make some <em>facebook friends</em>, it appears you have none."
+        one: "Your only <em>facebook friend:</em>"
+        other: "Your %{count} <em>facebook friends:</em>"
   home:
     index:
       title_html: "Sometimes <em>a facebook friend</em> is more than just <em>a facebook friend!</em>"
       subtitle_html: "Or &mdash; even more often &mdash; wouldn't you wish for him or her to be? <big>;)</big>"
-      intro_html: "Introducing <big>fb-crush</big>, the simplest and the fastest possible way to express your feeelings. Join the fun, it's absolutely free and totally discrete."
+      intro_html: "Introducing <big>fb-crush</big>, the simplest and the fastest possible way to express your feeelings. Join the fun, it's absolutely free and totally discrete. It's time to set things straight (or otherwise)."
   actioncontroller:
     errors:
       controllers:

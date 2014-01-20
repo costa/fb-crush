@@ -1,5 +1,7 @@
 class User < ActiveRecord::Base
-  has_many :friends, :foreign_key => 'ego_id', :inverse_of => :ego
+  include FacebookConcern
+
+  has_many :friends, ->{includes :user}, :foreign_key => 'ego_id', :inverse_of => :ego, :dependent => :destroy
 
   validates_presence_of :name
   validates_uniqueness_of :uid, :scope => :provider
@@ -10,8 +12,8 @@ class User < ActiveRecord::Base
       user.provider = auth[:provider]
       user.uid = auth[:uid]
       if info = auth[:info]
-         user.name = info[:name]
-         user.email = info[:email]
+        user.name = info[:name]
+        user.email = info[:email]
       end
     end
   end

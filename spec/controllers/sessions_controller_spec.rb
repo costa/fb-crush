@@ -28,7 +28,7 @@ describe SessionsController do
     describe "creates new user" do
       it "redirects users with email back to root_path" do
         @user = FactoryGirl.create(:user, :email => 'Tester@testing.com')
-        mock_graph :get, 'me', 'users/me_private', :access_token => 'ABC...' do
+        mock_graph :get, 'me/friends', 'users/friends/me_private', :access_token => 'ABC...' do
           visit '/signin'
           page.should have_content("Signed in!")
           current_path.should == '/'

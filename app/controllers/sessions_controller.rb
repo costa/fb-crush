@@ -1,5 +1,7 @@
 class SessionsController < ApplicationController
 
+  after_filter :current_user_facebook_setup, :only => :create
+
   def new
     redirect_to '/auth/facebook'
   end

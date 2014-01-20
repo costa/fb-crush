@@ -30,10 +30,9 @@ img {
 // to make views framework-neutral
 main {
   @extend .container;
-  background-color: #eee;
   padding-bottom: 80px;
   width: 100%;
-  margin-top: 51px; // accommodate the navbar
+  margin-top: 81px; // accommodate the navbar
 }
 section {
   @extend .row;
@@ -43,4 +42,8 @@ section {
 .inline-middle {
   display: inline-block;
   vertical-align: middle;
+}
+
+big.name {
+  padding-left: 9px;
 }

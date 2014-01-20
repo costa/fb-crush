@@ -1,3 +1,4 @@
-%h2= t('.title_html')
-%ul.friends
+%h2= t('.title_html', count: @friends.size)
+%hr
+.friends
   = render @friends
