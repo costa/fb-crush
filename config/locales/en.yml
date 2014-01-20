@@ -55,7 +55,12 @@ en:
     index:
       title_html: "Sometimes <em>a facebook friend</em> is more than just <em>a facebook friend!</em>"
       subtitle_html: "Or &mdash; even more often &mdash; wouldn't you wish for him or her to be? <big>;)</big>"
-      intro_html: "Introducing <big>fb-crush</big>, the simplest and the fastest possible way to express your feeelings. Join the fun, it's absolutely free and totally discrete. It's time to set things straight (or otherwise)."
+      intro_html: "Introducing <big>fb-crush</big>, the simplest and the fastest possible way to express your feeelings.<br/>Join the fun, it's absolutely free and totally discrete. It's time to set things straight (or otherwise)."
+      key_point:
+        a: "Login with facebook; see your friends"
+        b: "Choose an intention towards anyone of them; nothing will happen just yet"
+        c: "Only if the friend of your choice has expressed the same intention for you with our system, both of you (and the two of you only) will see it"
+        d: "Do whatever your and your facebook friend's hearts please"
   actioncontroller:
     errors:
       controllers:

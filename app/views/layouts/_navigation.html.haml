@@ -1,20 +1,21 @@
-%nav.navbar.navbar-default{role: 'navigation'}
-  .navbar-header
-    %button.navbar-toggle{type: 'button', data: {toggle: 'collapse', target: '#header-navbar-collapse'}}
-      %span.sr-only= t('.toggle_nav')
-      %span.icon-bar
-      %span.icon-bar
-      %span.icon-bar
-    = link_to t('.brand'), root_path, :class => 'navbar-brand'
-  .collapse.navbar-collapse#header-navbar-collapse
-    %ul.nav.navbar-nav.navbar-right
-      - if user_signed_in?
-        %li.dropdown
-          %a.dropdown-toggle{href: '#', data: {toggle: 'dropdown'}}
-            .inline-middle= current_user.picture(:small)
-            .inline-middle= current_user.name
-            %b.caret
-          %ul.dropdown-menu
-            %li= link_to t('.logout'), signout_path
-      - else
-        %li= link_to t('.login'), signin_path
+%nav.navbar.navbar-inverse.navbar-fixed-top{role: 'navigation'}
+  .container
+    .navbar-header
+      %button.navbar-toggle{type: 'button', data: {toggle: 'collapse', target: '#header-navbar-collapse'}}
+        %span.sr-only= t('.toggle_nav')
+        %span.icon-bar
+        %span.icon-bar
+        %span.icon-bar
+      = link_to t('.brand'), root_path, :class => 'navbar-brand'
+    .collapse.navbar-collapse#header-navbar-collapse
+      %ul.nav.navbar-nav.navbar-right
+        - if user_signed_in?
+          %li.dropdown
+            %a.dropdown-toggle{href: '#', data: {toggle: 'dropdown'}}
+              = current_user.badge
+              %b.caret
+            %ul.dropdown-menu
+              %li.dropdown-header= t('.facebook_fetched_at', when: time_ago_in_words(current_user.facebook_fetched_at.in_time_zone))
+              %li= link_to t('.logout'), signout_path
+        - else
+          %li= link_to t('.login'), signin_path
