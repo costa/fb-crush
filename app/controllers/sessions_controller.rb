@@ -8,7 +8,7 @@ class SessionsController < ApplicationController
 
   def create
     auth = request.env['omniauth.auth']
-    user = User.where(:provider => auth['provider'], :uid => auth['uid'].to_s).first || User.create_with_omniauth(auth)
+    user = User.find_by_provider_and_uid(auth['provider'], auth['uid'].to_s) || User.create_with_omniauth(auth)
 
     # Reset the session after successful login, per
     # 2.8 Session Fixation – Countermeasures:

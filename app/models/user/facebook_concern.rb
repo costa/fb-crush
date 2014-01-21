@@ -3,7 +3,9 @@ module User::FacebookConcern
 
   included do
 
-    def self.create_with_facebook(fb_user)
+    def self.find_or_create_with_facebook(fb_user)
+      return user  if user = User.find_by_provider_and_uid('facebook', fb_user.identifier)
+
       create! do |user|
         user.provider = 'facebook'
         user.uid = fb_user.identifier
@@ -42,7 +44,7 @@ module User::FacebookConcern
     # create
     fb_actual.each do |fb_friend|
       friends.create! do |friend|
-        friend.user = User.create_with_facebook(fb_friend)
+        friend.user = User.find_or_create_with_facebook(fb_friend)
       end  unless friends.find_by_facebook_uid(fb_friend.identifier)
     end
 

@@ -7,6 +7,10 @@ class User < ActiveRecord::Base
   validates_uniqueness_of :uid, :scope => :provider
 
 
+  def self.find_by_provider_and_uid(provider, uid)
+    where(provider: provider, uid: uid).first
+  end
+
   def self.create_with_omniauth(auth)
     create! do |user|
       user.provider = auth[:provider]
