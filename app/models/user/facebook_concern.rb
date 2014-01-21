@@ -4,9 +4,8 @@ module User::FacebookConcern
   included do
 
     def self.find_or_create_with_facebook(fb_user)
-      return user  if user = User.find_by_provider_and_uid('facebook', fb_user.identifier)
-
-      create! do |user|
+      user = User.find_by_provider_and_uid('facebook', fb_user.identifier)
+      user || create! do |user|
         user.provider = 'facebook'
         user.uid = fb_user.identifier
         user.name = fb_user.name
