@@ -6,6 +6,8 @@ class Friend < ActiveRecord::Base
 
   scope :for_index, ->{order('updated_at DESC')}
 
+  strip_attributes
+
   validates_presence_of :ego
   validates_presence_of :user
   validates_uniqueness_of :user, :scope => :ego
@@ -15,6 +17,6 @@ class Friend < ActiveRecord::Base
   end
 
   def mutual_intention?
-    symmetrical_friend.intention.presence == intention.presence
+    intention.present? && symmetrical_friend.intention == intention
   end
 end

@@ -45,6 +45,7 @@ en:
       update:
         alert: "An error has happened: %{error}"
         notice: "Your %{intention} towards %{name} has been noted. Good luck!"
+        notice_mutual: "Your %{intention} towards %{name} is mutual. Yess!! ;)"
   friends:
     index:
       title_html:

@@ -1,4 +1,5 @@
 class FriendsController < ApplicationController
+
   before_filter :authenticate_user!
 
   def index
@@ -16,7 +17,12 @@ class FriendsController < ApplicationController
     if error
       flash[:alert] = t('flash.friends.update.alert', error: error)
     else
-      flash[:notice] = t('flash.friends.update.notice', name: @friend.user.name, intention: t(@friend.intention.presence || 'none', scope: 'enumerize.friend.intention'))
+      flash[:notice] =
+        t(
+          @friend.mutual_intention?? 'flash.friends.update.notice_mutual': 'flash.friends.update.notice',
+          name: @friend.user.name,
+          intention: t(@friend.intention.presence || 'none', scope: 'enumerize.friend.intention')
+        )
     end
     redirect_to friends_path
   end
@@ -31,4 +37,5 @@ class FriendsController < ApplicationController
   def friend_params
     params.require(:friend).permit(:intention)
   end
+
 end

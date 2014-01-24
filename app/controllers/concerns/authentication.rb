@@ -21,7 +21,7 @@ module Concerns::Authentication
   end
 
   def authenticate_user!
-    redirect_to root_path, :alert => t('application.authenticate_user.alert')  unless user_signed_in?
+    redirect_to root_path, :alert => t('flash.application.authenticate_user.alert')  unless user_signed_in?
   end
 
 end

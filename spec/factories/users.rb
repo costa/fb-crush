@@ -5,5 +5,6 @@ FactoryGirl.define do
     provider 'facebook'
     uid { Forgery(:basic).password }
     name { Forgery(:name).full_name }
+    facebook_fetched_at { Forgery(:date).date(past: true) }
   end
 end
