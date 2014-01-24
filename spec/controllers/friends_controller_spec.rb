@@ -31,7 +31,7 @@ describe FriendsController do
       @another_friend.update_attributes!(intention: 'love')
       get 'index'
       response.should be_success
-      assigns[:friends].should eq(@user.friends)
+      assigns[:friends].to_a.should eq(@user.friends.to_a)
     end
 
     describe "PUT update" do

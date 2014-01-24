@@ -1,9 +1,10 @@
 class FriendsController < ApplicationController
 
   before_filter :authenticate_user!
+  decorates_assigned :friend, :friends
 
   def index
-    @friends = scope.for_index.decorate
+    @friends = scope.for_index
   end
 
   def update
@@ -17,12 +18,8 @@ class FriendsController < ApplicationController
     if error
       flash[:alert] = t('flash.friends.update.alert', error: error)
     else
-      flash[:notice] =
-        t(
-          @friend.mutual_intention?? 'flash.friends.update.notice_mutual': 'flash.friends.update.notice',
-          name: @friend.user.name,
-          intention: t(@friend.intention.presence || 'none', scope: 'enumerize.friend.intention')
-        )
+      flash[:notice] = t(friend.mutual_intention?? 'flash.friends.update.notice_mutual': 'flash.friends.update.notice',
+                         name: friend.name, intention: friend.intention_t)
     end
     redirect_to friends_path
   end

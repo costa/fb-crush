@@ -6,6 +6,8 @@ class Friend < ActiveRecord::Base
 
   scope :for_index, ->{order('updated_at DESC')}
 
+  delegate :name, :to => :user
+
   strip_attributes
 
   validates_presence_of :ego
