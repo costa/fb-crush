@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140120083434) do
+ActiveRecord::Schema.define(version: 20140125202456) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -22,6 +22,8 @@ ActiveRecord::Schema.define(version: 20140120083434) do
     t.string   "intention"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.datetime "mutual_intention_since"
+    t.datetime "different_intention_since"
   end
 
   add_index "friends", ["ego_id", "user_id"], name: "index_friends_on_ego_id_and_user_id", unique: true, using: :btree

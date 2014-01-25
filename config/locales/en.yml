@@ -20,16 +20,17 @@
 # available at http://guides.rubyonrails.org/i18n.html.
 
 en:
-  layouts:
-    application:
-      title: "FB Crush"
-      description: "Facebook Crush"
-    navigation:
-      brand: "FB-CRUSH!!"
-      facebook_fetched_at: "Synced %{when} ago"
-      toggle_nav: "Toggle navigation"
-      login: "Login with facebook"
-      logout: "Logout"
+  actioncontroller:
+    errors:
+      controllers:
+        friends:
+          actions:
+            update:
+              not_found: "Sorry, this is not your friend anymore."
+  enumerize:
+    friend:
+      intention:
+        love: 'loooove'
   flash:
     application:
       authenticate_user:
@@ -45,6 +46,7 @@ en:
       update:
         alert: "An error has happened: %{error}"
         notice: "Your %{intention} towards %{name} has been noted. Good luck!"
+        notice_none: "You're no longer interested in %{name}, okay."
         notice_mutual: "Your %{intention} towards %{name} is mutual. Yess!! ;)"
   friends:
     index:
@@ -65,15 +67,13 @@ en:
         b: "Choose an intention towards anyone of them; nothing will happen just yet"
         c: "Only if the friend of your choice has expressed the same intention for you with our system, both of you (and the two of you only) will see it"
         d: "Do whatever your and your facebook friend's hearts please"
-  actioncontroller:
-    errors:
-      controllers:
-        friends:
-          actions:
-            update:
-              not_found: "Sorry, this is not your friend anymore."
-  enumerize:
-    friend:
-      intention:
-        none: 'lack of feelings'
-        love: 'loooove'
+  layouts:
+    application:
+      title: "FB Crush"
+      description: "Facebook Crush"
+    navigation:
+      brand: "FB-CRUSH!!"
+      facebook_fetched_at: "Synced %{when} ago"
+      toggle_nav: "Toggle navigation"
+      login: "Login with facebook"
+      logout: "Logout"

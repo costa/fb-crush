@@ -2,7 +2,7 @@ source 'https://rubygems.org'
 ruby '2.0.0'
 gem 'pg'
 gem 'sendgrid'
-gem 'rails', '~>4.0.2'
+gem 'rails', :github => 'rails/rails', :branch => '4-0-stable'  # XXX until the translation_helper patch makes it through
 gem 'constfig', '~>0.0.4'
 gem 'strip_attributes'
 gem 'omniauth', '~>1.2.1'

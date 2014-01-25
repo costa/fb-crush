@@ -31,7 +31,7 @@ describe FriendsController do
       @another_friend.update_attributes!(intention: 'love')
       get 'index'
       response.should be_success
-      assigns[:friends].to_a.should eq(@user.friends.to_a)
+      assigns[:friends].to_set.should eq(@user.friends.to_set)
     end
 
     describe "PUT update" do
@@ -65,7 +65,21 @@ describe FriendsController do
 
         let(:id) { @another_friend.id }
 
-        it "when mutual, redirects to index and notices user on success" do
+        it "redirects to index and notices user on success" do
+          response.should redirect_to(friends_path)
+          flash[:notice].should_not be_blank
+        end
+
+      end
+
+      describe "when blank" do
+
+        let(:friend_params) {
+          @friend.update_attributes!(intention: 'love')  # XXX an ugly befores order hack
+          { intention: '' }
+        }
+
+        it "redirects to index and notices user on success" do
           response.should redirect_to(friends_path)
           flash[:notice].should_not be_blank
         end

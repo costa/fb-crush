@@ -1,10 +1,21 @@
 class FriendDecorator < Draper::Decorator
+
   decorates_association :user
-  delegate :id, :name, :mutual_intention?
+  delegate :id, :name, :intention, :mutual_intention?
 
 
-  def intention_t
-    h.t(object.intention.presence || 'none', scope: 'enumerize.friend.intention')
+  def update_notice
+    h.t(
+      if mutual_intention?
+        'flash.friends.update.notice_mutual'
+      elsif intention.blank?
+        'flash.friends.update.notice_none'
+      else
+        'flash.friends.update.notice'
+      end,
+      name: name,
+      intention: intention.presence && h.t(intention, scope: 'enumerize.friend.intention')
+    )
   end
 
   def intention_class
