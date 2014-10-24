@@ -21,6 +21,7 @@ gem 'jbuilder', '~>1.2'
 group :development do
   gem 'better_errors'
   gem 'binding_of_caller'
+  gem 'terminal-notifier-guard'
   gem 'guard-bundler'
   gem 'guard-rspec'
   gem 'guard-pow'
