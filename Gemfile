@@ -1,9 +1,8 @@
 source 'https://rubygems.org'
 ruby '2.1.3'
+gem 'rails', '~>4.1.6'
 gem 'pg'
 gem 'sendgrid'
-gem 'rails', '~>4.1.6'
-gem 'constfig', '~>0.0.4'
 gem 'strip_attributes'
 gem 'omniauth', '~>1.2.1'
 gem 'omniauth-facebook', '~>1.6.0'
@@ -16,7 +15,6 @@ gem 'turbolinks', '~>2.2.0'
 gem 'simple_form', '~>3.0.1'
 gem 'draper', '~>1.3.0'
 gem 'uglifier'
-gem 'figaro'
 gem 'jbuilder', '~>1.2'
 group :development do
   gem 'better_errors'
@@ -39,6 +37,7 @@ group :development, :test do
   gem 'pry-stack_explorer'
   gem 'rspec-rails'
   gem 'thin'
+  gem 'dotenv-rails'
 end
 group :production do
   gem 'unicorn'

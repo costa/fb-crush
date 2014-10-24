@@ -32,8 +32,12 @@ module User::FacebookConcern
 
   private
 
+  def facebook_polling_interval
+    ENV['FACEBOOK_POLLING_INTERVAL_MINUTES'].to_i.minutes
+  end
+
   def poll_facebook
-    if !friends_fetched_at || friends_fetched_at < FACEBOOK_POLLING_INTERVAL_MINUTES.minutes.ago
+    if !friends_fetched_at || friends_fetched_at < facebook_polling_interval.ago
       yield
       touch :friends_fetched_at
     end
