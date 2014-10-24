@@ -1,6 +1,8 @@
 class User < ActiveRecord::Base
   include FacebookConcern
 
+  AUTH_INFO_ATTRS = %i[name email]
+
   has_many :friends, ->{includes :user}, :foreign_key => 'ego_id', :inverse_of => :ego, :dependent => :destroy
 
   validates_presence_of :name
@@ -11,16 +13,12 @@ class User < ActiveRecord::Base
     where(provider: provider, uid: uid).first
   end
 
-  def self.find_or_create_with_omniauth(auth)
-    find_by_provider_and_uid(auth[:provider], auth[:uid].to_s) ||
-    create! do |user|
-      user.provider = auth[:provider]
-      user.uid = auth[:uid]
-      if info = auth[:info]
-        user.name = info[:name]
-        user.email = info[:email]
-      end
-    end
+  def self.update_or_create_with_omniauth!(auth)
+    user = find_or_initialize_by(provider: auth[:provider], uid: auth[:uid].to_s)
+    attrs = { access_token: auth[:credentials][:token] }
+    attrs.merge! auth[:info].slice *AUTH_INFO_ATTRS  if auth[:info]
+    user.update_attributes! attrs
+    user
   end
 
 end

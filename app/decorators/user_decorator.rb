@@ -1,6 +1,7 @@
 class UserDecorator < Draper::Decorator
+
   decorates_finders
-  delegate :name, :facebook_setup, :uid, :facebook_fetched_at, :friends
+  delegate *%i[name friends_fetched_at friends fetch_friends]
 
   def badge
     h.capture_haml do
@@ -10,11 +11,7 @@ class UserDecorator < Draper::Decorator
   end
 
   def picture(size = nil)
-    h.image_tag "http://graph.facebook.com/#{uid}/picture" + (size ? "?type=#{size}" : '')
+    h.image_tag "http://graph.facebook.com/#{object.uid}/picture" + (size ? "?type=#{size}" : '')
   end
 
-  def facebook_me
-    object.facebook_setup h.session[:facebook_access_token]
-    object.facebook_me
-  end
 end

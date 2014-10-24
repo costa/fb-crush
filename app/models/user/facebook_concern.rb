@@ -15,25 +15,27 @@ module User::FacebookConcern
 
   end
 
-  def facebook_setup(access_token)
-    @access_token = access_token  # XXX through an exception if changing?
-    poll_facebook do
-      update_facebook_friends
-    end  unless @access_token.blank?
+  def fetch_friends
+    if provider == 'facebook' && access_token.present?
+      poll_facebook do
+        update_facebook_friends
+      end
+    end
   end
 
   def facebook_me
-    return @facebook_me  unless @access_token.present?
-    @facebook_me ||= FbGraph::User.me(@access_token)
+    if provider == 'facebook' && access_token.present?
+      @facebook_me ||= FbGraph::User.me(access_token)
+    end
   end
 
 
   private
 
   def poll_facebook
-    if !facebook_fetched_at || facebook_fetched_at < FACEBOOK_POLLING_INTERVAL_MINUTES.minutes.ago
+    if !friends_fetched_at || friends_fetched_at < FACEBOOK_POLLING_INTERVAL_MINUTES.minutes.ago
       yield
-      touch :facebook_fetched_at
+      touch :friends_fetched_at
     end
   end
 

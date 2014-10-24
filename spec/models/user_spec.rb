@@ -10,19 +10,11 @@ describe User do
     FactoryGirl.build(:friend).should be_valid
   end
 
-  describe '#facebook_setup' do
+  describe '#friends_fetch' do
 
-    it "should create new friends" do
-      expect {
-        subject.facebook_setup
-      }
-    end
+    it "should create new friends"
 
-    it "should destroy no-longer friends" do
-      expect {
-        subject.facebook_setup
-      }
-    end
+    it "should destroy no-longer friends"
 
   end
 

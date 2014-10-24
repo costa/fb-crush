@@ -3,15 +3,15 @@ module Concerns::Facebook
 
     included do
 
-      before_filter :current_user_facebook_setup
+      before_filter :current_user_friends_fetch
 
     end
 
 
     private
 
-    def current_user_facebook_setup
-      current_user.facebook_setup(session[:facebook_access_token])  if user_signed_in?
+    def current_user_friends_fetch
+      current_user.fetch_friends  if user_signed_in?
     end
 
 end
