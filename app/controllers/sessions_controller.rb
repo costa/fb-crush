@@ -8,14 +8,14 @@ class SessionsController < ApplicationController
 
   def create
     auth = request.env['omniauth.auth']
-    user = User.find_by_provider_and_uid(auth['provider'], auth['uid'].to_s) || User.create_with_omniauth(auth)
+    user = User.find_or_create_with_omniauth(auth)
 
     # Reset the session after successful login, per
     # 2.8 Session Fixation – Countermeasures:
     # http://guides.rubyonrails.org/security.html#session-fixation-countermeasures
     reset_session
     session[:user_id] = user.id
-    session[:facebook_access_token] = auth[:credentials][:token]
+    session[:facebook_access_token] = auth[:credentials][:token]  # XXX refactor away into update_or_create_with_omniauth or something
 
     redirect_to friends_path, :notice => t('flash.sessions.create.notice')
   end

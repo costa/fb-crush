@@ -733,3 +733,18 @@ Bootstrapping ~/i/proj/fb-crush/server/spec/spec_helper.rb.
 Done. Edit ~/i/proj/fb-crush/server/spec/spec_helper.rb now with your favorite text editor and follow the instructions.
 
 
+$ spring binstub --all
+* bin/rake: spring inserted
+* bin/rspec: spring inserted
+* bin/rails: spring inserted
+
+
+$ bin/rails generate rspec:install
+    conflict  .rspec
+Overwrite /Users/kp0t/work/proj/fb-crush/server/.rspec? (enter "h" for help) [Ynaqdh]
+       force  .rspec
+       exist  spec
+      create  spec/spec_helper.rb
+    conflict  spec/rails_helper.rb
+Overwrite /Users/kp0t/work/proj/fb-crush/server/spec/rails_helper.rb? (enter "h" for help) [Ynaqdh] n
+        skip  spec/rails_helper.rb

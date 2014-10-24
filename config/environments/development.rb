@@ -43,8 +43,6 @@ FbCrush::Application.configure do
   config.action_mailer.perform_deliveries = true
 
   if ENV['RUBY_DEBUG_PORT']
-    Debugger.start_remote nil, ENV['RUBY_DEBUG_PORT'].to_i
-  else # optional
-    Debugger.start_remote
+    Byebug.start_server 'localhost', ENV['RUBY_DEBUG_PORT'].to_i
   end
 end

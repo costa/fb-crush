@@ -5,17 +5,9 @@ guard 'bundler' do
   # watch(/^.+\.gemspec/)
 end
 
-guard 'spork', :test_unit => false, :rspec_env => { 'RAILS_ENV' => 'test' } do  # , :cucumber_env => { 'RAILS_ENV' => 'test' }
-  watch(%r{^config/})
-  watch(%r{^lib/.*\.rb$})
-  watch('Gemfile.lock')
-  watch('spec/spec_helper.rb') { :rspec }
-  watch(%r{^spec/factories})
-end
-
 guard 'rspec', {
-  cmd: 'rspec --drb -fd',
-  run_all: {cmd: 'rspec --drb -b -p -fd -t ~js'},
+  cmd: 'spring rspec -fd',
+  run_all: {cmd: 'spring rspec -b -p -fd -t ~js'},
   all_after_pass: false,
   all_on_start: false
 } do

@@ -1,8 +1,8 @@
 source 'https://rubygems.org'
-ruby '2.0.0'
+ruby '2.1.3'
 gem 'pg'
 gem 'sendgrid'
-gem 'rails', :github => 'rails/rails', :branch => '4-0-stable'  # XXX until the translation_helper patch makes it through
+gem 'rails', '~>4.1.6'
 gem 'constfig', '~>0.0.4'
 gem 'strip_attributes'
 gem 'omniauth', '~>1.2.1'
@@ -20,11 +20,9 @@ gem 'figaro'
 gem 'jbuilder', '~>1.2'
 group :development do
   gem 'better_errors'
-  gem 'binding_of_caller', :platforms=>[:mri_19, :mri_20, :rbx]
+  gem 'binding_of_caller'
   gem 'guard-bundler'
   gem 'guard-rspec'
-  gem 'spork-rails', github: 'sporkrb/spork-rails'
-  gem 'guard-spork', github: 'guard/guard-spork'
   gem 'guard-pow'
   gem 'html2haml'
   gem 'quiet_assets'
@@ -34,8 +32,9 @@ group :development do
   gem 'rb-inotify', :require=>false
 end
 group :development, :test do
+  gem 'spring-commands-rspec'
   gem 'pry-rails'
-  gem 'pry-debugger'
+  gem 'pry-byebug'
   gem 'pry-stack_explorer'
   gem 'rspec-rails'
   gem 'thin'

@@ -1,39 +1,43 @@
-require 'spec_helper'
+describe SessionsController, :omniauth do
 
-describe SessionsController do
-  render_views
-
-  describe "GET new" do
-    it "redirectes users to authentication" do
-      get 'new'
-      assert_redirected_to '/auth/facebook'
-    end
+  before do
+    request.env['omniauth.auth'] = auth_mock
   end
 
-  describe "with valid omniauth" do
-    before do
-      OmniAuth.config.test_mode = true
-      OmniAuth.config.mock_auth[:facebook] = HashWithIndifferentAccess.new(
-        'uid' => '12345',
-        'provider' => 'facebook',
-        'credentials' => {
-          'token' => 'ABC...'
-        },
-        'info' => {
-          'name' => 'Bob'
-        }
-      )
+  describe "#create" do
+
+    it "creates a user" do
+      expect {post :create, provider: :facebook}.to change{ User.count }.by(1)
     end
 
-    describe "creates new user" do
-      it "redirects users with email back to root_path" do
-        @user = FactoryGirl.create(:user, :email => 'Tester@testing.com')
-        mock_graph :get, 'me/friends', 'users/friends/me_private', :access_token => 'ABC...' do
-          visit '/signin'
-          page.should have_content("Signed in!")
-          current_path.should == '/'
-        end
-      end
+    it "creates a session" do
+      expect(session[:user_id]).to be_nil
+      post :create, provider: :facebook
+      expect(session[:user_id]).not_to be_nil
+    end
+
+    it "redirects to the home page" do
+      post :create, provider: :facebook
+      expect(response).to redirect_to friends_url
+    end
+
+  end
+
+  describe "#destroy" do
+
+    before do
+      post :create, provider: :facebook
+    end
+
+    it "resets the session" do
+      expect(session[:user_id]).not_to be_nil
+      delete :destroy
+      expect(session[:user_id]).to be_nil
+    end
+
+    it "redirects to the home page" do
+      delete :destroy
+      expect(response).to redirect_to friends_url
     end
 
   end
