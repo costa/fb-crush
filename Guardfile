@@ -31,3 +31,8 @@ guard 'pow' do
   watch(%r{^config/})
   watch(%r{^lib/.*\.rb$})
 end
+
+guard 'delayed' do
+  watch(%r{^lib/(.+)\.rb$})
+  watch(%r{^app/(.+)\.rb})
+end
