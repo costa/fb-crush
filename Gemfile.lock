@@ -85,6 +85,9 @@ GEM
       mail (~> 2.2)
     erubis (2.7.0)
     eventmachine (1.0.3)
+    exception_notification (4.0.1)
+      actionmailer (>= 3.0.4)
+      activesupport (>= 3.0.4)
     execjs (2.2.2)
     factory_girl (4.5.0)
       activesupport (>= 3.0.0)
@@ -333,6 +336,7 @@ DEPENDENCIES
   dotenv-rails
   draper (~> 1.3.0)
   email_spec
+  exception_notification
   factory_girl_rails
   fb_graph (~> 2.7.10)
   fb_graph-mock
