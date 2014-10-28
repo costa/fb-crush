@@ -1,5 +1,6 @@
 source 'https://rubygems.org'
 ruby '2.1.3'
+gem 'rack-canonical-host'
 gem 'rails', '~>4.1.6'
 gem 'pg'
 gem 'delayed_job_active_record'
