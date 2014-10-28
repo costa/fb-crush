@@ -20,6 +20,7 @@ gem 'uglifier'
 gem 'jbuilder', '~>1.2'
 group :development do
   gem 'better_errors'
+  gem 'letter_opener'
   gem 'binding_of_caller'
   gem 'terminal-notifier-guard'
   gem 'guard-bundler'
