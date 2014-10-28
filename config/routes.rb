@@ -1,7 +1,7 @@
 require 'user_authenticated_constraint'
 
 FbCrush::Application.routes.draw do
-  get '/', :to => 'friends#index', :as => :friends, :constraints => UserAuthenticatedConstraint.new
+  root :to => 'friends#index', :as => :friends, :constraints => UserAuthenticatedConstraint.new
   root :to => 'home#index'
   resources :friends, :only => [:update]
 
