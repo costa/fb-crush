@@ -18,7 +18,7 @@ module User::FacebookConcern
   def fetch_friends
     if provider == 'facebook' && access_token.present?
       poll_facebook do
-        update_facebook_friends
+        delay.update_facebook_friends
       end
     end
   end
