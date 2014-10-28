@@ -18,9 +18,9 @@ class FriendsController < ApplicationController
         I18n.t('actioncontroller.errors.controllers.friends.actions.update.not_found')
       end
     if error
-      flash[:alert] = t('flash.friends.update.alert', error: error)
+      flash.alert = t('flash.friends.update.alert', error: error)
     else
-      flash[:notice] = friend.update_notice
+      flash.notice = friend.update_notice
     end
     redirect_to friends_path
   end

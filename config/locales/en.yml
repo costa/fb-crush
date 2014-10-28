@@ -35,6 +35,9 @@ en:
     application:
       authenticate_user:
         alert: "You need to sign in for access to this page."
+    concerns:
+      facebook:
+        alert: "Your friends are being fetched. Please refresh soon."
     sessions:
       create:
         notice: "Signed in!"
