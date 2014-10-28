@@ -83,3 +83,4 @@ pickle-email-*.html
 # Local environment
 /.rvmenv
 /.powenv
+/.env
