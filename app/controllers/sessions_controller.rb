@@ -30,7 +30,7 @@ class SessionsController < ApplicationController
   private
 
   def redirect(options)
-    redirect_to request.env['omniauth.origin'] || game_path, options
+    redirect_to root_path, options
   end
 
 end

@@ -13,10 +13,10 @@ describe FriendsController do
 
   describe "GET index, for non-logged in user" do
 
-    it "redirects user to the game path to login" do
+    it "redirects user to the root path to login" do
       session[:user_id] = nil
       get 'index'
-      response.should redirect_to(game_path)
+      response.should redirect_to root_path
     end
 
   end

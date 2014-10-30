@@ -20,7 +20,7 @@ module Concerns::Authentication
     !!current_user
   end
 
-  def authenticate_user!
+  def authenticate_user!  # XXX tmp
     redirect_to root_path, :alert => t('flash.application.authenticate_user.alert')  unless user_signed_in?
   end
 
