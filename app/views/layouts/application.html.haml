@@ -13,3 +13,7 @@
     %main.container{:role => 'main'}
       = render 'layouts/messages'
       = yield
+
+    :coffeescript
+      I18n.defaultLocale = #{I18n.default_locale.to_json}
+      I18n.locale =  #{I18n.locale.to_json};

@@ -18,7 +18,7 @@ describe SessionsController, :omniauth do
 
     it "redirects to the home page" do
       post :create, provider: :facebook
-      expect(response).to redirect_to friends_url
+      expect(response).to redirect_to game_url
     end
 
   end
@@ -37,7 +37,7 @@ describe SessionsController, :omniauth do
 
     it "redirects to the home page" do
       delete :destroy
-      expect(response).to redirect_to friends_url
+      expect(response).to redirect_to game_url
     end
 
   end

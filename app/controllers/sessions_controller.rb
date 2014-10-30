@@ -14,16 +14,23 @@ class SessionsController < ApplicationController
     reset_session
     session[:user_id] = user.id
 
-    redirect_to friends_path, :notice => t('flash.sessions.create.notice')
+    redirect :notice => t('flash.sessions.create.notice')
   end
 
   def destroy
     reset_session
-    redirect_to root_path, :notice => t('flash.sessions.destroy.notice')
+    redirect :notice => t('flash.sessions.destroy.notice')
   end
 
   def failure
-    redirect_to root_path, :alert => t('flash.sessions.failure.alert', error: params[:message].humanize)
+    redirect :alert => t('flash.sessions.failure.alert', error: params[:message].humanize)
+  end
+
+
+  private
+
+  def redirect(options)
+    redirect_to request.env['omniauth.origin'] || game_path, options
   end
 
 end

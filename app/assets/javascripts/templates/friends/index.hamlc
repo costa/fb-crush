@@ -1,0 +1,3 @@
+%h2!= I18n.t('.title_html', count: @friends_count)
+%hr
+.pool

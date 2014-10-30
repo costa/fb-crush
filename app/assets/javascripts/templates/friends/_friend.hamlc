@@ -1,0 +1,12 @@
+.friend.clearfix{class: @friend_intention_class}
+  .pull-right
+    .inline-middle
+      != @friend_button_to 'love', ->
+        %span.glyphicon.glyphicon-heart-empty
+        = I18n.t('.lovers_html')
+    .inline-middle
+      != @friend_button_to '', ->
+        %span.glyphicon.glyphicon-thumbs-up
+        = I18n.t('.friends_html')
+  .pull-left
+    != @friend_user_badge

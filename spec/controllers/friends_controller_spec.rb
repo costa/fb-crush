@@ -13,10 +13,10 @@ describe FriendsController do
 
   describe "GET index, for non-logged in user" do
 
-    it "redirects user to the home path to login" do
+    it "redirects user to the game path to login" do
       session[:user_id] = nil
       get 'index'
-      response.should redirect_to(root_path)
+      response.should redirect_to(game_path)
     end
 
   end
@@ -37,7 +37,7 @@ describe FriendsController do
     describe "PUT update" do
 
       before do
-        put 'update', id: id, friend: friend_params
+        xhr :put, 'update', id: id, friend: friend_params
       end
 
       let(:id) { @friend.id }
@@ -47,27 +47,26 @@ describe FriendsController do
 
         let(:id) { 0 }
 
-        it "redirects to index and alerts user on error" do
-          response.should redirect_to(friends_path)
-          flash[:alert].should_not be_blank
+        it "alerts the user on error" do
+          flash[:alert].should_not be_blank  # XXX TMP
         end
 
       end
 
-      it "redirects to index and notices user on success" do
-        response.should redirect_to(friends_path)
-        assigns[:friend].should_not be_blank
-        assigns[:friend].should be_valid
-        flash[:notice].should_not be_blank
+      it "notifies the user on success" do
+        flash[:notice].should_not be_blank  # XXX tmp
+      end
+
+      it "really updates the record" do
+        Friend.find(id).intention.should eq 'love'
       end
 
       describe "when mutual" do
 
         let(:id) { @another_friend.id }
 
-        it "redirects to index and notices user on success" do
-          response.should redirect_to(friends_path)
-          flash[:notice].should_not be_blank
+        it "notifies the user on success" do
+          flash[:notice].should_not be_blank  # XXX TMP
         end
 
       end
@@ -79,9 +78,12 @@ describe FriendsController do
           { intention: '' }
         }
 
-        it "redirects to index and notices user on success" do
-          response.should redirect_to(friends_path)
-          flash[:notice].should_not be_blank
+        it "notifies the user on success" do
+          flash[:notice].should_not be_blank  # XXX TMP
+        end
+
+        it "really updates the record" do
+          Friend.find(id).intention.should eq nil
         end
 
       end

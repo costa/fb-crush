@@ -1,3 +1,16 @@
-# Place all the behaviors and hooks related to the matching controller here.
-# All this logic will automatically be available in application.js.
-# You can use CoffeeScript in this file: http://coffeescript.org/
+listView = null
+$ ->
+  listView = new window.FriendsApp.ListView collection: window.FriendsApp.friends
+  new Router
+  Backbone.history.start()
+
+
+class Router extends Backbone.Router
+  routes:
+    '': 'index'
+
+  index: ->
+    @_listView()
+
+  _listView: ->
+    @__listView ||= listView.render()

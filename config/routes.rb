@@ -1,9 +1,10 @@
 require 'user_authenticated_constraint'
 
 FbCrush::Application.routes.draw do
-  root :to => 'friends#index', :as => :friends, :constraints => UserAuthenticatedConstraint.new
+  root :to => 'friends#index', :as => :game, :constraints => UserAuthenticatedConstraint.new
   root :to => 'home#index'
-  resources :friends, :only => [:update]
+  get '/friends' => redirect('/'), :constraints => { format: :html }
+  resources :friends, :only => [:index, :update]
 
   get '/auth/:provider/callback' => 'sessions#create'
   get '/signin' => 'sessions#new', :as => :signin

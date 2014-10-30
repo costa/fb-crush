@@ -79,4 +79,5 @@ en:
       friends_fetched_at: "Synced %{when} ago"
       toggle_nav: "Toggle navigation"
       login: "Login with facebook"
+      logged_in: "Logged in"
       logout: "Logout"

@@ -1,0 +1,3 @@
+.picture.inline-middle
+  %img{src: @user_pic_url, alt: 'q:-)'}
+%big.name.inline-middle= @user_name

@@ -13,7 +13,7 @@ module Concerns::Authentication
 
   def current_user
     return @current_user  if defined? @current_user
-    @current_user = UserDecorator.find(session[:user_id]) rescue nil
+    @current_user = User.find(session[:user_id]) rescue nil
   end
 
   def user_signed_in?

@@ -1,7 +1,7 @@
 class FriendsController < ApplicationController
+  respond_to :json
 
   before_filter :authenticate_user!
-  decorates_assigned :friend, :friends
 
   layout false, :only => :update
 
@@ -10,19 +10,31 @@ class FriendsController < ApplicationController
   end
 
   def update
-    @friend = scope.find_by_id(params[:id])
+    friend = scope.find_by_id(params[:id])
     error =
-      if @friend
-        @friend.errors.full_messages.join('; ')  unless @friend.update_attributes(friend_params)
+      if friend
+        friend.errors.full_messages.join('; ')  unless friend.update friend_params
       else
         I18n.t('actioncontroller.errors.controllers.friends.actions.update.not_found')
       end
     if error
       flash.alert = t('flash.friends.update.alert', error: error)
     else
-      flash.notice = friend.update_notice
+      flash.notice = t(
+        if friend.mutual_intention?
+          'flash.friends.update.notice_mutual'
+        elsif friend.intention.blank?
+          'flash.friends.update.notice_none'
+        else
+          'flash.friends.update.notice'
+        end,
+        name: friend.name,
+        intention: friend.intention.presence && t(friend.intention, scope: 'enumerize.friend.intention')
+      )
+
     end
-    redirect_to friends_path
+
+    respond_with friend
   end
 
 

@@ -14,4 +14,8 @@
 //= require jquery_ujs
 //= require turbolinks
 //= require bootstrap
+//= require i18n-ext
+//= require hamlcoffee
+//= require backbone-rails
+//= require i18n/translations
 //= require_tree .

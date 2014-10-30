@@ -17,6 +17,21 @@ class Friend < ActiveRecord::Base
   before_update :set_mutual_timestamps
 
 
+  def as_json(options)
+    {
+      id: id,
+      intention: intention,
+      is_mutual_intention: mutual_intention?,
+      user_name: user.name,
+      user_pic_url:
+        case user.provider
+        when 'facebook'
+          "http://graph.facebook.com/#{user.uid}/picture?type=square"
+        end
+    }
+  end
+
+
   def self.find_by_facebook_uid(uid)
     where(users: {provider: 'facebook', uid: uid}).first
   end
