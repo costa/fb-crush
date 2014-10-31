@@ -1,5 +1,5 @@
 .user
-  .picture
+  .picture.center-block
     %img.img-circle{src: @user_pic_url, alt: 'q:-)'}
   %p.text-center
     %big.name= @user_name

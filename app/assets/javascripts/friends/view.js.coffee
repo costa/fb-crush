@@ -11,11 +11,12 @@ class ItemView extends Backbone.View
   initialize: (options)->
     super
 
-    @model.on 'sync error', -> location.reload()  # XXX TMP!
+    @listenTo @model, 'sync error', -> location.reload()  # XXX TMP!
 
     @dad = options.dad
     @render().$el.appendTo @dad.$('.pool')
-    @_render_state 'init'
+    @on 'scroll', @_renderState
+    @_renderState 'init'
 
   render: ->
     I18n.localScope = 'friends.friend'
@@ -34,39 +35,86 @@ class ItemView extends Backbone.View
 
     @
 
-  _render_state: (state)->
-    prev_state = @__render_state
-    @__render_state =
+  _renderState: (state)->
+    prev_state = @_render_state
+    @_render_state =
       if state?
         state
       else
         switch prev_state
           when 'init'
+            'waiting'
+          when 'waiting'
+            if @isVisible()
+              'showing'
+            else
+              'waiting'
+          when 'showing'
             'friendly'
+          when 'friendly'
+            if @isVisible()
+              if @model.get 'intention'
+                if @model.isMutualIntention()
+                  'mutual'
+                else
+                  'crushed'
+              else
+                'friendly'
+            else
+              'hiding'
+          when 'crushed', 'mutual'
+            'friendly'
+          when 'hiding'
+            'waiting'
           else
             prev_state
 
     ani_delay = @dad.collection.size()*20
     rand_delay = (x)-> x * ani_delay * Math.random()
+    dim_percent = (x)->
+      width: "#{x}%"
+      height: "#{x}%"
 
-    switch @__render_state
+    $el = @$('.picture img')
+    switch @_render_state
       when 'init'
-        @$('.picture img').
-          css(zoom: 0.1).
+        $el.
+          css(dim_percent 10)
+      when 'showing'
+        $el.
           delay(rand_delay 1).
-          animate({ zoom: 1 }, 'slow').
-          animate { zoom: 0.8 }, 'fast', null, =>
-            @_render_state()
-      when 'friendly'
-        @$('.picture img').
-          delay(rand_delay 10).
-          animate({ zoom: 0.9 }, 'slow').
-          animate({ zoom: 0.75 }, 'fast').
-          animate { zoom: 0.8 }, 'fast', null, =>
-            @_render_state()
+          animate(dim_percent 100, 'slow').
+          animate(dim_percent 80, 'fast')
+      when 'crushed'
+        $el.
+          animate(dim_percent 75, 'slow').
+          animate(dim_percent 90, 'slow').
+          animate(dim_percent 75, 'slow').
+          animate(dim_percent 80, 'slow')
+      when 'mutual'
+        $el.
+          animate(dim_percent 75, 'fast').
+          animate(dim_percent 90, 'fast').
+          animate(dim_percent 75, 'fast').
+          animate(dim_percent 80, 'fast')
+      when 'hiding'
+        $el.
+          delay(rand_delay 1).
+          animate(dim_percent 100, 'fast').
+          animate(dim_percent 10, 'slow')
+
+    unless @_render_state == prev_state
+      $el.queue (next)=>
+        @_renderState()
+        next()
 
   intent: (e)->
     @model.intent $(e.target).data('intention')
+
+  isVisible: ->
+    el_top = @$el.offset().top
+    doc_top = $(document).scrollTop()
+    el_top > doc_top && el_top + @$el.height() < doc_top + $(window).height()
 
   _intention_class: (intention)->
     if intention == 'love' then 'danger' else 'default'
@@ -79,12 +127,27 @@ class FriendsApp.ListView extends Backbone.View
   render: ->
     I18n.localScope = 'friends.index'
 
+    @remove()
     @$el.html JST['friends/index']
       friends_count: @collection.size()
     @kids = @collection.map (friend)=> new ItemView model: friend, dad: @
+    @kids = _(@kids).chain()  # Underscore. Don't ask.
+    @_bindGlobal()
     @
 
   remove: ->
-    @kids?.each (view)-> view.remove()
+    @_unbindGlobal()
+    @kids?.each (v)-> v.remove()
+    @kids = null
     @$el.html()
     @stopListening()
+
+  _bindGlobal: ->
+    @__scrollKids = _(=>
+      @kids.each (v)-> v.trigger('scroll')
+      ).throttle(333)
+    $(window).on 'scroll', @__scrollKids
+
+  _unbindGlobal: ->
+    $(window).off 'scroll', @__scrollKids  if @__scrollKids?
+    @__scrollKids = null
