@@ -26,7 +26,7 @@ class Friend < ActiveRecord::Base
       user_pic_url:
         case user.provider
         when 'facebook'
-          "http://graph.facebook.com/#{user.uid}/picture?type=square"
+          "http://graph.facebook.com/#{user.uid}/picture?width=100&height=100"
         end
     }
   end

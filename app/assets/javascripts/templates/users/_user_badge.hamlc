@@ -1,3 +1,5 @@
-.picture.inline-middle
-  %img{src: @user_pic_url, alt: 'q:-)'}
-%big.name.inline-middle= @user_name
+.user
+  .picture
+    %img.img-circle{src: @user_pic_url, alt: 'q:-)'}
+  %p.text-center
+    %big.name= @user_name

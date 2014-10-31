@@ -1,3 +1,16 @@
-// Place all the styles related to the friends controller here.
-// They will automatically be included in application.css.
-// You can use Sass (SCSS) here: http://sass-lang.com/
+.user {
+  .picture {
+    min-width: 100px;
+    min-height: 100px;
+
+    img {
+      width: 100px;
+      height: 100px;
+    }
+  }
+}
+
+.panel.panel-default.friend {
+  border: none;
+  box-shadow: none;
+}
