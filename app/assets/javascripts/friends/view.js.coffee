@@ -22,7 +22,7 @@ class ItemView extends Backbone.View
     @$el.html JST['friends/friend']
       friend_intention_class:
         if @model.isMutualIntention()
-          "alert alert-#{intention_class model.get 'intention'}"
+          "alert alert-#{intention_class @model.get 'intention'}"
         else
           'well'
       friend_button_to: (intention, body_gen)->
