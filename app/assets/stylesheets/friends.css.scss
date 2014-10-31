@@ -10,7 +10,10 @@
   }
 }
 
-.panel.panel-default.friend {
-  border: none;
+.panel.friend {
   box-shadow: none;
+}
+
+.panel.panel-default.friend {
+  border-color: transparent;
 }
