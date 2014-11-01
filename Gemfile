@@ -24,7 +24,7 @@ group :development do
   gem 'better_errors'
   gem 'letter_opener'
   gem 'binding_of_caller'
-  gem 'terminal-notifier-guard'
+  gem 'terminal-notifier-guard', '~>1.5.3'  # XXX https://github.com/Springest/terminal-notifier-guard/issues/19
   gem 'guard-bundler'
   gem 'guard-rspec'
   gem 'guard-pow'
