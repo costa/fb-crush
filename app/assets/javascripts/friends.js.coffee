@@ -25,8 +25,9 @@ class Navigation extends Backbone.View
   el: '#window-title'
 
   initialize: ->
-    _(=> @render()).defer()
     super
+    deferredRender = _(=> @render()).defer()
+    @listenTo @collection, 'all', _(deferredRender).throttle(333)
 
   render: ->
     @$el.
