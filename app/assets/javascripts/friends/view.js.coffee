@@ -1,4 +1,3 @@
-#= require templates/friends/index
 #= require templates/friends/_friend
 #= require templates/users/_user_badge
 
@@ -14,22 +13,21 @@ class ItemView extends Backbone.View
     @listenTo @model, 'sync error', -> location.reload()  # XXX TMP!
 
     @dad = options.dad
-    @render().$el.appendTo @dad.$('.pool')
+    @render().$el.appendTo @dad.$el
     @on 'scroll', @_renderState
     @_renderState 'init'
 
   render: ->
-    I18n.localScope = 'friends.friend'
-
-    @$el.html JST['friends/friend']
-      friend_button_to: (intention, body_gen)=>
-        "<button type=\"button\" class=\"intention btn btn-#{@_intention_class intention}\" data-intention=\"#{intention}\">" +
-          body_gen() +
-          "</button>"
-      friend_user_badge:
-        JST['users/user_badge']
-          user_name: @model.get 'user_name'
-          user_pic_url: @model.get 'user_pic_url'
+    I18n.localScope 'friends.friend', =>
+      @$el.html JST['friends/friend']
+        friend_button_to: (intention, body_gen)=>
+          "<button type=\"button\" class=\"intention btn btn-#{@_intention_class intention}\" data-intention=\"#{intention}\">" +
+            body_gen() +
+            "</button>"
+        friend_user_badge:
+          JST['users/user_badge']
+            user_name: @model.get 'user_name'
+            user_pic_url: @model.get 'user_pic_url'
 
     @$("[data-intention=#{@model.Get 'intention'}]").prop 'disabled', true
 
@@ -125,14 +123,11 @@ class FriendsApp.ListView extends Backbone.View
   el: '#friends'
 
   render: ->
-    I18n.localScope = 'friends.index'
-
     @remove()
-    @$el.html JST['friends/index']
-      friends_count: @collection.size()
     @kids = @collection.map (friend)=> new ItemView model: friend, dad: @
     @kids = _(@kids).chain()  # Underscore. Don't ask.
     @_bindGlobal()
+
     @
 
   remove: ->

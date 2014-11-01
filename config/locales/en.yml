@@ -52,11 +52,11 @@ en:
         notice_none: "You're no longer interested in %{name}, okay."
         notice_mutual: "Your %{intention} towards %{name} is mutual. Yess!! ;)"
   friends:
-    index:
+    navigation:
       title_html:
-        zero: "You should make some <em>facebook friends</em>, it appears you have none."
-        one: "Your only <em>facebook friend:</em>"
-        other: "Your %{count} <em>facebook friends:</em>"
+        zero: "FB-crush: You should make some <em>Facebook Friends</em>"
+        one: "FB-crush: Your only <em>Facebook Friend</em>"
+        other: "FB-crush: Your %{count} <em>Facebook Friends</em>"
     friend:
       friends_html: "Just friends"
       lovers_html: "Crush!"
