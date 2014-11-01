@@ -54,22 +54,22 @@ en:
   friends:
     navigation:
       title_html:
-        zero: "FB-crush: You should make some <em>Facebook Friends</em>"
-        one: "FB-crush: Your only <em>Facebook Friend</em>"
-        other: "FB-crush: Your %{count} <em>Facebook Friends</em>"
+        zero: "Mmm...<br/>You should make some <em>Facebook Friends</em>"
+        one: "Your only <em>Facebook Friend</em>"
+        other: "Your %{count} <em>Facebook Friends</em>"
     friend:
       friends_html: "Just friends"
       lovers_html: "Crush!"
   home:
     index:
       title_html: "Sometimes a <em>Facebook Friend</em> is more than just a <em>Facebook Friend!</em>"
-      subtitle_html: "Or &mdash; even more often &mdash; you wish they were, don't you? <big>;)</big>"
-      intro_html: "Introducing <big>FB-crush</big>, the simplest and the fastest possible way to explore your options.<br/>Join the fun, it's absolutely free and totally discrete forever. It's time to set things straight (or, you know, otherwise)."
+      subtitle_html: "Or &mdash; even more often &mdash; you wish they were, don't you?"
+      intro_html: "Introducing <big>FB-crush</big>, the simplest and the fastest possible way to explore and manage your romantic options.<br/>Join the fun, share the fun: it's absolutely free and totally discrete forever.<br/>It's time to set things straight!"
       key_point:
-        a: "Login with facebook; see your friends"
-        b: "Choose an intention towards anyone of them; nothing will happen just yet"
-        c: "Only if the friend of your choice has expressed the same intention for you with our system, both of you (and the two of you only) will see it"
-        d: "Do whatever your and your facebook friend's hearts please"
+        a: "Login with facebook; see all your friends!"
+        b: "Choose an intention towards anyone of them; nothing will happen just yet!"
+        c: "When and only when the friend of your choice expresses the <em>same</em> intention towards you, both of you (and the two of you only) will be notified!"
+        d: "Do whatever your and your crush of a Facebook Friend's hearts please..."
   layouts:
     application:
       title: "FB Crush"
