@@ -74,6 +74,8 @@ class ItemView extends Backbone.View
       height: "#{x}%"
 
     $el = @$('.picture img')
+    $el.clearQueue()
+
     switch @_render_state
       when 'init'
         $el.
@@ -81,7 +83,7 @@ class ItemView extends Backbone.View
       when 'showing'
         $el.
           delay(rand_delay 1).
-          animate(dim_percent 100, 'slow').
+          animate(dim_percent 100).
           animate(dim_percent 80, 'fast')
       when 'crushed'
         $el.
@@ -99,7 +101,7 @@ class ItemView extends Backbone.View
         $el.
           delay(rand_delay 1).
           animate(dim_percent 100, 'fast').
-          animate(dim_percent 10, 'slow')
+          animate(dim_percent 10)
 
     unless @_render_state == prev_state
       $el.queue (next)=>
