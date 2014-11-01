@@ -75,7 +75,7 @@ en:
       title: "FB Crush"
       description: "Facebook Crush"
     navigation:
-      brand: "FB-CRUSH!!"
+      brand: "FB-crush!!!"
       friends_fetched_at: "Synced %{when} ago"
       toggle_nav: "Toggle navigation"
       login: "Login with facebook"

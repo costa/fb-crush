@@ -9,6 +9,10 @@ $ ->
 class Router extends Backbone.Router
   routes:
     '': 'index'
+    'search/:query': 'search'
+
+  search: (query)->
+    @_listView().select query
 
   index: ->
     @_listView()
@@ -25,5 +29,5 @@ class Navigation extends Backbone.View
     super
 
   render: ->
-    @$el.html I18n.t 'title_html', count: @collection.size(), scope: 'friends.navigation'
+    @$el.html I18n.t('title_html', count: @collection.size(), scope: 'friends.navigation')
     @
