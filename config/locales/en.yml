@@ -62,9 +62,9 @@ en:
       lovers_html: "Crush!"
   home:
     index:
-      title_html: "Sometimes <em>a facebook friend</em> is more than just <em>a facebook friend!</em>"
-      subtitle_html: "Or &mdash; even more often &mdash; wouldn't you wish for him or her to be? <big>;)</big>"
-      intro_html: "Introducing <big>fb-crush</big>, the simplest and the fastest possible way to express your feeelings.<br/>Join the fun, it's absolutely free and totally discrete. It's time to set things straight (or otherwise)."
+      title_html: "Sometimes a <em>Facebook Friend</em> is more than just a <em>Facebook Friend!</em>"
+      subtitle_html: "Or &mdash; even more often &mdash; you wish they were, don't you? <big>;)</big>"
+      intro_html: "Introducing <big>FB-crush</big>, the simplest and the fastest possible way to explore your options.<br/>Join the fun, it's absolutely free and totally discrete forever. It's time to set things straight (or, you know, otherwise)."
       key_point:
         a: "Login with facebook; see your friends"
         b: "Choose an intention towards anyone of them; nothing will happen just yet"
