@@ -29,5 +29,11 @@ class Navigation extends Backbone.View
     super
 
   render: ->
-    @$el.html I18n.t('title_html', count: @collection.size(), scope: 'friends.navigation')
+    @$el.
+      animate(opacity: 0.1, 'slow').
+      queue((next)=>
+        @$el.html I18n.t('title_html', count: @collection.size(), scope: 'friends.navigation')
+        next()
+        ).
+      animate(opacity: 1, 'slow')
     @
