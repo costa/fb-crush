@@ -74,8 +74,6 @@ class ItemView extends Backbone.View
       height: "#{x}%"
 
     $el = @$('.picture img')
-    $el.clearQueue()
-
     switch @_render_state
       when 'init'
         $el.

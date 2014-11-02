@@ -4,6 +4,7 @@
   %h1 ;)
   %br
   %p.lead= t('.intro_html')
-  %ul
+  %ol
     - t('.key_point').each_key do |k|
       %li= t(".key_point.#{k}")
+  = link_to t('layouts.navigation.login'), signin_path, class: "btn btn-primary btn-lg"
