@@ -66,10 +66,10 @@ en:
       subtitle_html: "Or &mdash; even more often &mdash; you wish they were, don't you?"
       intro_html: "Introducing <big>FB-crush</big>, the simplest and the fastest possible way to explore and manage your romantic options.<br/>Join the fun, share the fun: it's absolutely free and totally discrete forever.<br/>It's time to set things straight!"
       key_point:
-        a: "Login with facebook; see all your friends!"
-        b: "Choose an intention towards anyone of them; nothing will happen just yet!"
-        c: "When and only when the friend of your choice expresses the <em>same</em> intention towards you, both of you (and the two of you only) will be notified!"
-        d: "Do whatever your and your crush of a Facebook Friend's hearts please..."
+        a_html: "Login with facebook; see all your friends!"
+        b_html: "Choose an intention towards anyone of them; nothing will happen just yet!"
+        c_html: "Now you wait and see; when and only when the friend of your choice expresses the <em>same</em> intention towards you, both of you (and the two of you only) will be notified!"
+        d_html: "It's a score; go on and do whatever your and your crush of a Facebook Friend's hearts please..."
   layouts:
     application:
       title: "FB Crush"

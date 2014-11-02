@@ -19,7 +19,7 @@ gem 'uglifier'
 gem 'jbuilder', '~>1.2'
 gem 'backbone-rails'
 gem 'haml_coffee_assets'
-gem 'i18n-js', '~>3.0.0.rc7'
+gem 'i18n-js', github: 'fnando/i18n-js'  # XXX making sure the master has the same issue
 group :development do
   gem 'better_errors'
   gem 'letter_opener'

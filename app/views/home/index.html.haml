@@ -5,7 +5,5 @@
   %br
   %p.lead= t('.intro_html')
   %ul
-    %li= t('.key_point.a')
-    %li= t('.key_point.b')
-    %li= t('.key_point.c')
-    %li= t('.key_point.d')
+    - t('.key_point').each_key do |k|
+      %li= t(".key_point.#{k}")
