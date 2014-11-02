@@ -1,5 +1,6 @@
 #friends
 
 :coffeescript
-  window.FriendsApp.friends =
+  FriendsApp.friends =
     new window.FriendsApp.Friends #{@friends.try :to_json}, url: #{friends_url.to_json}
+  $ -> FriendsApp.run()

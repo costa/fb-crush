@@ -1,6 +1,8 @@
 listView = null
-$ ->
-  listView = new window.FriendsApp.ListView collection: FriendsApp.friends
+
+window.FriendsApp ||= {}
+FriendsApp.run = ->
+  listView = new FriendsApp.ListView collection: FriendsApp.friends
   new Navigation collection: FriendsApp.friends
   new Router
   Backbone.history.start()
