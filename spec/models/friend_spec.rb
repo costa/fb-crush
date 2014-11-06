@@ -8,9 +8,6 @@ describe Friend do
     expect(subject).to be_valid
   end
 
-
-  end
-
   describe "existing" do
 
     before do
