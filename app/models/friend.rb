@@ -17,7 +17,7 @@ class Friend < ActiveRecord::Base
   before_update :set_mutual_timestamps, :if => :intention_changed?
 
 
-  def as_json(options)
+  def as_json(options=nil)
     {
       id: id,
       intention: intention,
@@ -47,11 +47,12 @@ class Friend < ActiveRecord::Base
     if intention.present? && symmetrical_friend.intention == intention
       self.mutual_intention_since = Time.now
       self.different_intention_since = nil
-    else
+    elsif symmetrical_friend.intention = intention_was
       self.different_intention_since = Time.now
       self.mutual_intention_since = nil
     end
-    symmetrical_friend.update_columns attributes.slice *%w[mutual_intention_since different_intention_since]
+    symmetrical_friend.update_attributes! attributes.slice *%w[mutual_intention_since different_intention_since]  if
+      mutual_intention_since_changed?
   end
 
 end

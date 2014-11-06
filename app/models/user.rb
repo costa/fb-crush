@@ -5,6 +5,8 @@ class User < ActiveRecord::Base
 
   has_many :friends, ->{includes :user}, :foreign_key => 'ego_id', :inverse_of => :ego, :dependent => :destroy
 
+  strip_attributes
+
   validates_presence_of :name
   validates_uniqueness_of :uid, :scope => :provider
 

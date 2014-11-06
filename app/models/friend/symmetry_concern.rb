@@ -11,7 +11,7 @@ module Friend::SymmetryConcern
   end
 
   def symmetrical_friend
-    @symmetrical_friend ||= Friend.where(ego: user, user: ego).first
+    @symmetrical_friend ||= user.friends.find_or_initialize_by user: ego
   end
 
   private
@@ -19,7 +19,8 @@ module Friend::SymmetryConcern
   def symmetrical; @symmetrical; end
 
   def create_symmetrical
-    @symmetrical_friend = Friend.create! ego: user, user: ego, symmetrical: self
+    symmetrical_friend.symmetrical = self
+    symmetrical_friend.save!
   end
 
   def destroy_symmetrical

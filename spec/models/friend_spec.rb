@@ -15,7 +15,7 @@ describe Friend do
     end
 
     it "should create a single symmetrical object" do
-      expect(Friend.where(ego: subject.user, user: subject.ego).count).to eq(1)
+      expect(Friend.where(ego: subject.user, user: subject.ego).count).to eq 1
     end
 
     it "should destroy itself and its symmetrical object" do
