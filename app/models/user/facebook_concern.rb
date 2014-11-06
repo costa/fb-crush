@@ -44,27 +44,21 @@ module User::FacebookConcern
   end
 
   def update_facebook_friends
-    begin
+    fb_actual = facebook_me.friends
 
-      fb_actual = facebook_me.friends
+    # create
+    fb_actual.each do |fb_friend|
+      friends.create! do |friend|
+        friend.user = User.find_or_create_with_facebook(fb_friend)
+      end  unless friends.find_by_facebook_uid(fb_friend.identifier)
+    end
 
-      # create
-      fb_actual.each do |fb_friend|
-        friends.create! do |friend|
-          friend.user = User.find_or_create_with_facebook(fb_friend)
-        end  unless friends.find_by_facebook_uid(fb_friend.identifier)
-      end
-
-      # destroy
-      friends.reload.each do |friend|
-        friend.destroy  unless
-          fb_actual.any? do |fb_friend|
-            fb_friend.identifier == friend.user.uid
-          end
-      end
-
-    rescue => e
-      ExceptionNotifier.notify_exception(e)
+    # destroy
+    friends.reload.each do |friend|
+      friend.destroy  unless
+        fb_actual.any? do |fb_friend|
+          fb_friend.identifier == friend.user.uid
+        end
     end
   end
 

@@ -1,6 +1,6 @@
 describe SessionsController, :omniauth do
 
-  let(:user) { build :user }
+  let(:user) { build :user, :new }
 
   before do
     request.env['omniauth.auth'] = auth_mock(user)
@@ -33,7 +33,7 @@ describe SessionsController, :omniauth do
 
     describe "existing user" do
 
-      let(:user) { create :user, :returning }
+      let(:user) { create :user }
 
       it "creates and resets the session" do
         expect {
