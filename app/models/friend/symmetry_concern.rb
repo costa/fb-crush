@@ -26,4 +26,5 @@ module Friend::SymmetryConcern
     symmetrical_friend.symmetrical = self
     symmetrical_friend.destroy
   end
+
 end
