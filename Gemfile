@@ -24,7 +24,8 @@ group :development do
   gem 'better_errors'
   gem 'letter_opener'
   gem 'binding_of_caller'
-  gem 'terminal-notifier-guard', '~>1.5.3'  # XXX https://github.com/Springest/terminal-notifier-guard/issues/19
+  gem 'terminal-notifier'
+  gem 'terminal-notifier-guard'
   gem 'guard-bundler'
   gem 'guard-rspec'
   gem 'guard-pow'
@@ -32,9 +33,6 @@ group :development do
   gem 'html2haml'
   gem 'quiet_assets'
   gem 'rails_layout'
-  gem 'rb-fchange', :require=>false
-  gem 'rb-fsevent', :require=>false
-  gem 'rb-inotify', :require=>false
 end
 group :development, :test do
   gem 'spring-commands-rspec'
