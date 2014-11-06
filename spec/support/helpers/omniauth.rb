@@ -1,12 +1,13 @@
 module Omniauth
 
   module Mock
-    def auth_mock
-      OmniAuth.config.mock_auth[:facebook] = {
-        provider: 'facebook',
-        uid: '123545',
+
+    def auth_mock(user = FactoryGirl.build(:user))
+      OmniAuth.config.mock_auth[user.provider.to_sym] = {
+        provider: user.provider,
+        uid: user.uid,
         info: {
-          name: 'mockuser'
+          name: user.name
         },
         credentials: {
           token: 'mock_token',
@@ -14,6 +15,7 @@ module Omniauth
         }
       }
     end
+
   end
 
 end
