@@ -58,9 +58,11 @@ en:
         one: "Your only <em>Facebook Friend</em>"
         other: "Your %{count} <em>Facebook Friends</em>"
     friend:
-      user_picture_alt: "q:-)"
       friends_html: "Just friends"
       lovers_html: "Crush!"
+  users:
+    user_badge:
+      user_pic_alt: "q:-)"
   home:
     index:
       title_html: "Sometimes a <em>Facebook Friend</em> is more than just a <em>Facebook Friend!</em>"

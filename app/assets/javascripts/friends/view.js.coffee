@@ -14,22 +14,19 @@ class ItemView extends Backbone.View
 
     @dad = options.dad
     @render().$el.appendTo @dad.$el
-    @on 'scroll', @_renderState
+    @on 'scroll', => @_renderState()  # NOTE 'scroll' is throttled
     @_renderState 'init'
 
   render: ->
-    I18n.localScope 'friends.friend', =>
-      @$el.html JST['friends/friend']
-        friend_button_to: (intention, body_gen)=>
-          "<button type=\"button\" class=\"intention btn btn-#{@_intention_class intention}\" data-intention=\"#{intention}\">" +
-            body_gen() +
-            "</button>"
-        friend_user_badge:
-          JST['users/user_badge']
-            user_name: @model.get 'user_name'
-            user_pic_url: @model.get 'user_pic_url'
-
-    @$("[data-intention=#{@model.Get 'intention'}]").prop 'disabled', true
+    @$el.html JST['friends/friend']
+      friend_button_to: (intention, body_gen)=>
+        "<button type=\"button\" class=\"intention btn btn-#{@_intention_class intention}\" data-intention=\"#{intention}\">" +
+          body_gen() +
+          "</button>"
+      friend_user_badge:
+        JST['users/user_badge']
+          user_name: @model.get 'user_name'
+          user_pic_url: @model.get 'user_pic_url'
 
     @
 
@@ -73,6 +70,9 @@ class ItemView extends Backbone.View
       width: "#{x}%"
       height: "#{x}%"
 
+    @$("[data-intention]").prop 'disabled', false
+    @$("[data-intention=#{@model.Get 'intention'}]").prop 'disabled', true
+
     $el = @$('.picture img')
     switch @_render_state
       when 'init'
@@ -81,25 +81,25 @@ class ItemView extends Backbone.View
       when 'showing'
         $el.
           delay(rand_delay 1).
-          animate(dim_percent 100).
-          animate(dim_percent 80, 'fast')
+          animate(dim_percent(100)).
+          animate(dim_percent(80), 'fast')
       when 'crushed'
         $el.
-          animate(dim_percent 75, 'slow').
-          animate(dim_percent 90, 'slow').
-          animate(dim_percent 75, 'slow').
-          animate(dim_percent 80, 'slow')
+          animate(dim_percent(75), 'slow').
+          animate(dim_percent(90), 'slow').
+          animate(dim_percent(75), 'slow').
+          animate(dim_percent(80), 'slow')
       when 'mutual'
         $el.
-          animate(dim_percent 75, 'fast').
-          animate(dim_percent 90, 'fast').
-          animate(dim_percent 75, 'fast').
-          animate(dim_percent 80, 'fast')
+          animate(dim_percent(75), 'fast').
+          animate(dim_percent(90), 'fast').
+          animate(dim_percent(75), 'fast').
+          animate(dim_percent(80), 'fast')
       when 'hiding'
         $el.
           delay(rand_delay 1).
-          animate(dim_percent 100, 'fast').
-          animate(dim_percent 10)
+          animate(dim_percent(100), 'fast').
+          animate(dim_percent(10))
 
     unless @_render_state == prev_state
       $el.queue (next)=>
@@ -140,7 +140,7 @@ class FriendsApp.ListView extends Backbone.View
   _bindGlobal: ->
     @__scrollKids = _(=>
       @kids.each (v)-> v.trigger('scroll')
-      ).throttle(333)
+      ).throttle @kids.size()  # XXX better throttling euristics
     $(window).on 'scroll', @__scrollKids
 
   _unbindGlobal: ->

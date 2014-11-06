@@ -13,5 +13,18 @@ I18n.t = I18n.translate = (scope, options)->
 I18n.localScope = (scope, block)->
   upper_scope = @_local_scope
   @_local_scope = scope
-  block()
-  @_local_scope = upper_scope
+  try
+    ret = block()
+  catch e
+    error = e
+  finally
+    @_local_scope = upper_scope
+
+  throw error  if error?
+  ret
+
+$ ->  # XXX too hacky!
+  _(window.JST).each (value, key)->
+    to_scope = key.replace '/', '.'
+    window.JST[key] = (context)->
+      I18n.localScope to_scope, -> value(context)
