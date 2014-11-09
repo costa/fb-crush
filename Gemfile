@@ -1,5 +1,7 @@
 source 'https://rubygems.org'
-ruby '2.1.3'
+
+ruby '2.1.4'
+
 gem 'rack-canonical-host'
 gem 'rails', '~>4.1.6'
 gem 'pg'
