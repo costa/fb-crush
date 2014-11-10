@@ -11,10 +11,6 @@ FriendsApp.run = ->
 class Router extends Backbone.Router
   routes:
     '': 'index'
-    'search/:query': 'search'
-
-  search: (query)->
-    @_listView().select query
 
   index: ->
     @_listView()
@@ -28,7 +24,9 @@ class Navigation extends Backbone.View
 
   initialize: ->
     super
-    @listenTo @collection, 'all', _(=> @render()).throttle(333)
+    @_throttledRender = _(@render).throttle(333)
+    @listenTo @collection, 'all', @_throttledRender  # NOTE the event callback params are ignored
+    @_throttledRender()
 
   render: ->
     @$el.
