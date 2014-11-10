@@ -2,12 +2,11 @@ class Friend extends Backbone.Model
 
   isMutualIntention: ->
     !!@get('is_mutual_intention')
+  intention: ->
+    @get('intention') || 'none'
+
   intent: (intention)->
-    @set 'intention', intention
-    @save()
-  toJSON: (options)->
-    friend:
-      intention: @get 'intention'
+    @save {intention: intention}, patch: true, wait: true
 
 
 window.FriendsApp ||= {}

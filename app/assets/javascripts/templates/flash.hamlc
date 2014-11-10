@@ -1,0 +1,3 @@
+%div{:class => "alert #{@alert_class} alert-dismissable fade in"}
+  %button.close{:type => 'button', 'aria-hidden' => 'true', 'data-dismiss' => 'alert'} &times;
+  != @message_html

@@ -14,7 +14,8 @@ class Friend < ActiveRecord::Base
   validates_presence_of :user
   validates_uniqueness_of :user, :scope => :ego
 
-  before_update :set_mutual_timestamps, :if => :intention_changed?
+  before_update :timestamp_intention_mutuality, :if => :intention_changed?
+  after_update :timestamp_intention_mutuality_symmetrical, :if => :mutual_intention_since_changed?
 
 
   def as_json(options=nil)
@@ -43,7 +44,7 @@ class Friend < ActiveRecord::Base
 
   private
 
-  def set_mutual_timestamps
+  def timestamp_intention_mutuality
     if intention.present? && symmetrical_friend.intention == intention
       self.mutual_intention_since = Time.now
       self.different_intention_since = nil
@@ -51,8 +52,9 @@ class Friend < ActiveRecord::Base
       self.different_intention_since = Time.now
       self.mutual_intention_since = nil
     end
-    symmetrical_friend.update_attributes! attributes.slice *%w[mutual_intention_since different_intention_since]  if
-      mutual_intention_since_changed?
+  end
+  def timestamp_intention_mutuality_symmetrical
+    symmetrical_friend.update! attributes.slice *%w[mutual_intention_since different_intention_since]
   end
 
 end

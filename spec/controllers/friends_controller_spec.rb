@@ -4,11 +4,11 @@ describe FriendsController do
   render_views
 
   before do
-    @friend = FactoryGirl.create(:friend)
+    @friend = create :friend
     @user = @friend.ego
     @friend_user = @friend.user
-    @another_friend = FactoryGirl.create(:friend, ego: @user)
-    @another_friend.symmetrical_friend.update_attributes!(intention: 'love')
+    @another_friend = create :friend, ego: @user
+    @another_friend.symmetrical_friend.update! intention: 'love'
   end
 
   describe "GET index, for non-logged in user" do
@@ -16,7 +16,7 @@ describe FriendsController do
     it "redirects user to the root path to login" do
       session[:user_id] = nil
       get 'index'
-      response.should redirect_to root_path
+      expect(response).to redirect_to root_path
     end
 
   end
@@ -27,63 +27,63 @@ describe FriendsController do
       session[:user_id] = @user.id
     end
 
-    it "renders a list of friends including mutual intention" do
-      @another_friend.update_attributes!(intention: 'love')
-      get 'index'
-      response.should be_success
-      assigns[:friends].to_set.should eq(@user.friends.to_set)
+    describe "GET index" do
+
+      it "renders a list of friends including mutual intention" do
+        @another_friend.update! intention: 'love'
+        get 'index'
+        expect(response).to be_success
+        assigns[:friends].to_set.should eq(@user.friends.to_set)  # XXX tmp
+      end
+
     end
 
-    describe "PUT update" do
+    describe "PATCH update" do
 
-      before do
-        xhr :put, 'update', id: id, friend: friend_params
+      let(:update_response) do
+        xhr :patch, 'update', friend_params
+        response
       end
 
       let(:id) { @friend.id }
-      let(:friend_params) { { intention: 'love' } }
+      let(:friend_params) { { id: id, intention: 'love' } }
 
       describe "with invalid params" do
 
         let(:id) { 0 }
 
-        it "alerts the user on error" do
-          flash[:alert].should_not be_blank  # XXX TMP
+        it "responds with error" do
+          expect{ update_response }.to raise_error
         end
 
       end
 
-      it "notifies the user on success" do
-        flash[:notice].should_not be_blank  # XXX tmp
+      it "responds with success" do
+        expect(update_response).to be_success
       end
 
       it "really updates the record" do
-        Friend.find(id).intention.should eq 'love'
-      end
-
-      describe "when mutual" do
-
-        let(:id) { @another_friend.id }
-
-        it "notifies the user on success" do
-          flash[:notice].should_not be_blank  # XXX TMP
-        end
-
+        expect { update_response }.to change {
+          Friend.find(id).intention
+        }.from(nil).to('love')
       end
 
       describe "when blank" do
 
-        let(:friend_params) {
-          @friend.update_attributes!(intention: 'love')  # XXX an ugly befores order hack
-          { intention: '' }
-        }
+        let(:friend_params) { { id: id, intention: '' } }
 
-        it "notifies the user on success" do
-          flash[:notice].should_not be_blank  # XXX TMP
+        before do
+          @friend.update! intention: 'love'
+        end
+
+        it "responds with success" do
+          expect(response).to be_success
         end
 
         it "really updates the record" do
-          Friend.find(id).intention.should eq nil
+          expect { update_response }.to change {
+            Friend.find(id).intention
+          }.from('love').to(nil)
         end
 
       end

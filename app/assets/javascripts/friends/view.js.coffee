@@ -2,19 +2,34 @@
 #= require templates/users/_user_badge
 
 class ItemView extends Backbone.View
+
+  className:
+    'friend panel pull-left'
+
   events:
     'click .intention': 'intent'
-  className: ->
-    "friend pull-left panel panel-#{@_intention_class @model.isMutualIntention() && @model.get 'intention' || ''}"
+
 
   initialize: (options)->
     super
 
-    @listenTo @model, 'sync error', -> location.reload()  # XXX TMP!
-
     @dad = options.dad
     @render().$el.appendTo @dad.$el
-    @on 'scroll', => @_renderState()  # NOTE 'scroll' is throttled
+
+    @listenTo @dad, 'scroll', -> @_renderState()  # NOTE 'scroll' is throttled
+    @listenTo @model, 'change', -> @_renderState()
+    @listenTo @model, 'request', -> @_renderState 'sync'
+    @listenTo @model, 'sync error', -> @_renderState 'waiting'
+
+    @listenTo @model, 'error', (_, jqXHR)->  # XXX binding here because the error handling UX must be local (and nicer)
+      errors = JSON.stringify jqXHR.responseJSON?.errors || 'Xc:)'  # XXX tmp - other errors
+      flash_error I18n.t 'alert', errors: errors, scope: 'friends.flash.update'
+    @listenTo @model, 'change:intention', ->
+      flash_notice I18n.t @model.intention(), name: @model.get('user_name'), scope: 'friends.flash.update.notice'
+    @listenTo @model, 'change:is_mutual_intention', ->  # XXX doesn't really work without real-time data channel updates
+      if @model.isMutualIntention()
+        flash_notice I18n.t @model.intention(), name: @model.get('user_name'), scope: 'friends.flash.update.notice.mutual'
+
     @_renderState 'init'
 
   render: ->
@@ -27,7 +42,6 @@ class ItemView extends Backbone.View
         JST['users/user_badge']
           user_name: @model.get 'user_name'
           user_pic_url: @model.get 'user_pic_url'
-
     @
 
   _renderState: (state)->
@@ -70,8 +84,15 @@ class ItemView extends Backbone.View
       width: "#{x}%"
       height: "#{x}%"
 
-    @$("[data-intention]").prop 'disabled', false
-    @$("[data-intention=#{@model.Get 'intention'}]").prop 'disabled', true
+    if @_render_state == 'sync'
+      @$("[data-intention]").prop 'disabled', true
+    else
+      @$("[data-intention]").prop 'disabled', false
+      @$("[data-intention=#{@model.Get 'intention'}]").prop 'disabled', true
+
+    @$el.removeClass 'panel-danger panel-default'
+    if @_render_state == 'mutual'
+      @$el.addClass "panel-#{@_intention_class @model.get 'intention'}"
 
     $el = @$('.picture img')
     switch @_render_state
@@ -120,14 +141,15 @@ class ItemView extends Backbone.View
 
 window.FriendsApp ||= {}
 class FriendsApp.ListView extends Backbone.View
+
   el: '#friends'
+
 
   render: ->
     @remove()
     @kids = @collection.map (friend)=> new ItemView model: friend, dad: @
     @kids = _(@kids).chain()  # Underscore. Don't ask.
     @_bindGlobal()
-
     @
 
   remove: ->
@@ -138,11 +160,9 @@ class FriendsApp.ListView extends Backbone.View
     @stopListening()
 
   _bindGlobal: ->
-    @__scrollKids = _(=>
-      @kids.each (v)-> v.trigger('scroll')
-      ).throttle @kids.size()  # XXX better throttling euristics
-    $(window).on 'scroll', @__scrollKids
+    @__throttledWindowScroll = _(=> @trigger 'scroll').throttle @collection.size()  # XXX better throttling euristics
+    $(window).on 'scroll', @__throttledWindowScroll
 
   _unbindGlobal: ->
-    $(window).off 'scroll', @__scrollKids  if @__scrollKids?
-    @__scrollKids = null
+    $(window).off 'scroll', @__throttledWindowScroll  if @__throttledWindowScroll?
+    delete @__throttledWindowScroll

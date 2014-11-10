@@ -20,17 +20,6 @@
 # available at http://guides.rubyonrails.org/i18n.html.
 
 en:
-  actioncontroller:
-    errors:
-      controllers:
-        friends:
-          actions:
-            update:
-              not_found: "Sorry, this is not your friend anymore."
-  enumerize:
-    friend:
-      intention:
-        love: 'loooove'
   flash:
     application:
       authenticate_user:
@@ -45,13 +34,15 @@ en:
         notice: "Signed out!"
       failure:
         alert: "Authentication error: %{error}"
-    friends:
-      update:
-        alert: "An error has happened: %{error}"
-        notice: "Your %{intention} towards %{name} has been noted. Good luck!"
-        notice_none: "You're no longer interested in %{name}, okay."
-        notice_mutual: "Your %{intention} towards %{name} is mutual. Yess!! ;)"
   friends:
+    flash:
+      update:
+        alert: "The server isn't happy %{errors}... Reload and — if this doesn't help — report please!"
+        notice:
+          love: "Your love crush towards %{name} has been noted. Good luck!"
+          none: "You're no longer interested in %{name}, okay."
+          mutual:
+            love: "Yess! Your love crush towards %{name} is mutual. You lucky basterd! ;)"
     navigation:
       title_html:
         zero: "Mmm...<br/>You should make some <em>Facebook Friends</em>"
