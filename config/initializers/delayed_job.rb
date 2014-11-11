@@ -8,3 +8,6 @@ Delayed::Worker.class_eval do
     alias_method_chain :handle_failed_job, :notification
 
 end
+
+# XXX What I would really like to see is :priority => :realtime_notifications with handle_asynchronously. Alas.
+EXTERNAL_BATCH_PRIORITY = 64

@@ -17,9 +17,7 @@ module User::FacebookConcern
 
   def fetch_friends
     if provider == 'facebook' && access_token.present?
-      poll_facebook do
-        delay.update_facebook_friends
-      end
+      fetch_facebook_friends_async  if should_fetch_facebook_friends?
     end
   end
 
@@ -32,18 +30,15 @@ module User::FacebookConcern
 
   private
 
+  def should_fetch_facebook_friends?
+    !friends_fetched_at || friends_fetched_at < facebook_polling_interval.ago
+  end
+
   def facebook_polling_interval
     ENV['FACEBOOK_POLLING_INTERVAL_MINUTES'].to_i.minutes
   end
 
-  def poll_facebook
-    if !friends_fetched_at || friends_fetched_at < facebook_polling_interval.ago
-      yield
-      touch :friends_fetched_at
-    end
-  end
-
-  def update_facebook_friends
+  def fetch_facebook_friends
     fb_actual = facebook_me.friends
 
     # create
@@ -60,6 +55,13 @@ module User::FacebookConcern
           fb_friend.identifier == friend.user.uid
         end
     end
+
+    touch :friends_fetched_at
   end
+
+  def fetch_facebook_friends_async
+    fetch_facebook_friends  if should_fetch_facebook_friends?
+  end
+  handle_asynchronously :fetch_facebook_friends_async, :priority => EXTERNAL_BATCH_PRIORITY
 
 end
