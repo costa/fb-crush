@@ -10,4 +10,5 @@ Delayed::Worker.class_eval do
 end
 
 # XXX What I would really like to see is :priority => :realtime_notifications with handle_asynchronously. Alas.
+REALTIME_NOTIFICATIONS_PRIORITY = 16
 EXTERNAL_BATCH_PRIORITY = 64

@@ -4,3 +4,14 @@
   FriendsApp.friends =
     new window.FriendsApp.Friends #{@friends.try :to_json}, url: #{friends_url.to_json}
   $ -> FriendsApp.run()
+
+- if user_signed_in?
+  :coffeescript
+    pusher_init = ->
+      return _(pusher_init).delay 22  unless Pusher?
+
+      pusher = new Pusher #{Pusher.key.to_json}
+      channel = pusher.subscribe #{current_user.pusher_channel.to_json}
+      FriendsApp.FriendsBackpusher = new Backpusher channel, FriendsApp.friends
+
+    pusher_init()

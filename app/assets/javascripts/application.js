@@ -17,5 +17,6 @@
 //= require i18n-ext
 //= require hamlcoffee
 //= require backbone-rails
+//= require backpusher
 //= require i18n/translations
 //= require_tree .

@@ -1,5 +1,6 @@
 class Friend < ActiveRecord::Base
   include SymmetryConcern
+  include NotificationConcern
 
   belongs_to :ego, :class_name => 'User', :inverse_of => :friends
   belongs_to :user
@@ -15,7 +16,7 @@ class Friend < ActiveRecord::Base
   validates_uniqueness_of :user, :scope => :ego
 
   before_update :timestamp_intention_mutuality, :if => :intention_changed?
-  after_update :timestamp_intention_mutuality_symmetrical, :if => :mutual_intention_since_changed?
+  after_update :timestamp_intention_mutuality_symmetrical, :if => :mutual_intention_changed?
 
 
   def as_json(options=nil)
@@ -28,7 +29,8 @@ class Friend < ActiveRecord::Base
         case user.provider
         when 'facebook'
           "http://graph.facebook.com/#{user.uid}/picture?width=100&height=100"
-        end
+        end,
+      is_destroyed: destroyed?
     }
   end
 
@@ -41,7 +43,6 @@ class Friend < ActiveRecord::Base
   def mutual_intention?
     !!mutual_intention_since
   end
-
   private
 
   def timestamp_intention_mutuality
@@ -52,6 +53,9 @@ class Friend < ActiveRecord::Base
       self.different_intention_since = Time.now
       self.mutual_intention_since = nil
     end
+  end
+  def mutual_intention_changed?
+    intention_changed? && mutual_intention_since_changed?
   end
   def timestamp_intention_mutuality_symmetrical
     symmetrical_friend.update! attributes.slice *%w[mutual_intention_since different_intention_since]

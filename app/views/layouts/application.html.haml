@@ -6,6 +6,8 @@
     %meta{:name => 'description', :content => content_for?(:description) ? yield(:description) : t('.description')}
     = stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track' => true
     = javascript_include_tag 'application', 'data-turbolinks-track' => true
+    -# NOTE Since Pusher is not really useful with no internet connection... let's CDN it
+    %script{:src => "http://js.pusher.com/2.0/pusher.min.js", :defer => true}
     = csrf_meta_tags
   %body
     %header

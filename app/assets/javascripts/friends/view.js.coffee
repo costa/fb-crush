@@ -18,6 +18,7 @@ class ItemView extends Backbone.View
 
     @listenTo @dad, 'scroll', -> @_renderState()  # NOTE 'scroll' is throttled
     @listenTo @model, 'change', -> @_renderState()
+
     @listenTo @model, 'request', -> @_renderState 'sync'
     @listenTo @model, 'sync error', -> @_renderState 'waiting'
 
@@ -30,6 +31,7 @@ class ItemView extends Backbone.View
       if @model.isMutualIntention()
         flash_notice I18n.t @model.intention(), name: @model.get('user_name'), scope: 'friends.flash.update.notice.mutual'
 
+    @listenTo @model, 'remove destroy', -> @_renderState 'fini'
     @_renderState 'init'
 
   render: ->
@@ -43,6 +45,10 @@ class ItemView extends Backbone.View
           user_name: @model.get 'user_name'
           user_pic_url: @model.get 'user_pic_url'
     @
+
+  remove: ->
+    super
+    @trigger 'removed'
 
   _renderState: (state)->
     prev_state = @_render_state
@@ -75,6 +81,8 @@ class ItemView extends Backbone.View
             'friendly'
           when 'hiding'
             'waiting'
+          when 'fini'
+            @remove()
           else
             prev_state
 
@@ -121,6 +129,11 @@ class ItemView extends Backbone.View
           delay(rand_delay 1).
           animate(dim_percent(100), 'fast').
           animate(dim_percent(10))
+      when 'fini'
+        $el.
+          delay(rand_delay 1).
+          animate(dim_percent(100)).
+          animate(dim_percent(10), 'fast')
 
     unless @_render_state == prev_state
       $el.queue (next)=>
@@ -144,19 +157,25 @@ class FriendsApp.ListView extends Backbone.View
 
   el: '#friends'
 
+  initialize: ->
+    @kids = {}
 
   render: ->
     @remove()
-    @kids = @collection.map (friend)=> new ItemView model: friend, dad: @
-    @kids = _(@kids).chain()  # Underscore. Don't ask.
+    add_it = (friend)=>
+      @kids[friend.id] = new ItemView model: friend, dad: @
+    @collection.each add_it
+    @listenTo @collection, 'add', add_it
+    @listenTo @collection, 'remove', (friend)=>  # NOTE the kid view is supposed to receive the same remove event from backbone
+      @listenToOnce @kids[friend.id], 'removed', => # and then emit the (post mortem) 'removed' event when done
+        delete @kids[friend.id]
     @_bindGlobal()
     @
 
   remove: ->
     @_unbindGlobal()
-    @kids?.each (v)-> v.remove()
-    @kids = null
-    @$el.html()
+    _(@kids).each (v)-> v.remove()
+    @kids = {}
     @stopListening()
 
   _bindGlobal: ->

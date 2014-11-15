@@ -27,4 +27,8 @@ class User < ActiveRecord::Base
     user
   end
 
+  def pusher_channel
+    "user-#{last_session_key}"  if last_session_key
+  end
+
 end
