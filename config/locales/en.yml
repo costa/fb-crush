@@ -24,9 +24,6 @@ en:
     application:
       authenticate_user:
         alert: "You need to sign in for access to this page."
-    concerns:
-      facebook:
-        alert: "Your friends are being fetched. Please refresh soon."
     sessions:
       create:
         notice: "Signed in!"
@@ -70,7 +67,6 @@ en:
       description: "Facebook Crush"
     navigation:
       brand: "FB-crush!!!"
-      friends_fetched_at: "Synced %{when} ago"
       toggle_nav: "Toggle navigation"
       login: "Login with Facebook"
       logged_in: "Logged in"

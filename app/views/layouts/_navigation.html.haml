@@ -15,7 +15,6 @@
               = t('.logged_in')
               %b.caret
             %ul.dropdown-menu
-              %li.dropdown-header= t('.friends_fetched_at', when: time_ago_in_words(current_user.friends_fetched_at.in_time_zone))
               %li= link_to t('.logout'), signout_path
         - else
           %li= link_to t('.login'), signin_path
