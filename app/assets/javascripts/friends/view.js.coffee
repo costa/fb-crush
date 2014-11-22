@@ -4,23 +4,35 @@
 class ItemView extends Backbone.View
 
   className:
-    'friend panel pull-left'
+    'friend visibility-none panel pull-left'
 
   events:
     'click .intention': 'intent'
 
 
   initialize: (options)->
+    @dad = options.dad
     super
 
-    @dad = options.dad
-    @render().$el.appendTo @dad.$el
+  render: ->
+    # layout
+    @$el.html JST['friends/friend']
+      friend_button_to: (intention, body_gen)=>
+        "<button type=\"button\" class=\"intention btn btn-#{@_intention_class intention}\" data-intention=\"#{intention}\">" +
+          body_gen() +
+          "</button>"
+      friend_user_badge:
+        JST['users/user_badge']
+          user_name: @model.get 'user_name'
+          user_pic_url: @model.get 'user_pic_url'
 
-    @listenTo @dad, 'scroll', -> @_renderState()  # NOTE 'scroll' is throttled
+    # react
+    @listenTo @dad, 'scroll', @_onScroll
+
     @listenTo @model, 'change', -> @_renderState()
 
     @listenTo @model, 'request', -> @_renderState 'sync'
-    @listenTo @model, 'sync error', -> @_renderState 'waiting'
+    @listenTo @model, 'sync error', -> @_renderState 'friendly'
 
     @listenTo @model, 'error', (_, jqXHR)->  # XXX binding here because the error handling UX must be local (and nicer)
       errors = JSON.stringify jqXHR.responseJSON?.errors || 'Xc:)'  # XXX tmp - other errors
@@ -31,24 +43,19 @@ class ItemView extends Backbone.View
       if @model.isMutualIntention()
         flash_notice I18n.t @model.intention(), name: @model.get('user_name'), scope: 'friends.flash.update.notice.mutual'
 
-    @listenTo @model, 'remove destroy', -> @_renderState 'fini'
-    @_renderState 'init'
+    @on 'remove', -> @_renderState 'fini'
+    @listenTo @model, 'destroy', -> @_renderState 'fini'
+    @_renderState 'friendly'
 
-  render: ->
-    @$el.html JST['friends/friend']
-      friend_button_to: (intention, body_gen)=>
-        "<button type=\"button\" class=\"intention btn btn-#{@_intention_class intention}\" data-intention=\"#{intention}\">" +
-          body_gen() +
-          "</button>"
-      friend_user_badge:
-        JST['users/user_badge']
-          user_name: @model.get 'user_name'
-          user_pic_url: @model.get 'user_pic_url'
     @
 
-  remove: ->
-    super
-    @trigger 'removed'
+
+  _onScroll: (top, bottom, resizing)->
+    visibility_was = @_visibility
+    @_visibility = @_visibilityIn top, bottom, resizing
+    if visibility_was != @_visibility
+      @$el.removeClass 'visibility-' + visibility_was
+      @$el.addClass 'visibility-' + @_visibility
 
   _renderState: (state)->
     prev_state = @_render_state
@@ -57,32 +64,18 @@ class ItemView extends Backbone.View
         state
       else
         switch prev_state
-          when 'init'
-            'waiting'
-          when 'waiting'
-            if @isVisible()
-              'showing'
-            else
-              'waiting'
-          when 'showing'
-            'friendly'
           when 'friendly'
-            if @isVisible()
-              if @model.get 'intention'
-                if @model.isMutualIntention()
-                  'mutual'
-                else
-                  'crushed'
+            if @model.get 'intention'
+              if @model.isMutualIntention()
+                'mutual'
               else
-                'friendly'
+                'crushed'
             else
-              'hiding'
+              'friendly'
           when 'crushed', 'mutual'
             'friendly'
-          when 'hiding'
-            'waiting'
           when 'fini'
-            @remove()
+            @trigger 'remove:ready'
           else
             prev_state
 
@@ -104,14 +97,6 @@ class ItemView extends Backbone.View
 
     $el = @$('.picture img')
     switch @_render_state
-      when 'init'
-        $el.
-          css(dim_percent 10)
-      when 'showing'
-        $el.
-          delay(rand_delay 1).
-          animate(dim_percent(100)).
-          animate(dim_percent(80), 'fast')
       when 'crushed'
         $el.
           animate(dim_percent(75), 'slow').
@@ -124,11 +109,6 @@ class ItemView extends Backbone.View
           animate(dim_percent(90), 'fast').
           animate(dim_percent(75), 'fast').
           animate(dim_percent(80), 'fast')
-      when 'hiding'
-        $el.
-          delay(rand_delay 1).
-          animate(dim_percent(100), 'fast').
-          animate(dim_percent(10))
       when 'fini'
         $el.
           delay(rand_delay 1).
@@ -143,10 +123,18 @@ class ItemView extends Backbone.View
   intent: (e)->
     @model.intent $(e.target).data('intention')
 
-  isVisible: ->
-    el_top = @$el.offset().top
-    doc_top = $(document).scrollTop()
-    el_top > doc_top && el_top + @$el.height() < doc_top + $(window).height()
+  _visibilityIn: (top, bottom, resizing)->
+    if resizing || !@_el_top? || !@_el_bottom?
+      @_el_top = @$el.offset().top
+      @_el_bottom = @_el_top + @$el.height()
+
+    if @_el_top > top && @_el_bottom < bottom
+      if Math.abs((@_el_top - top) - (bottom - @_el_bottom)) < @_el_bottom - @_el_top
+        'full'
+      else
+        'some'
+    else
+      'none'
 
   _intention_class: (intention)->
     if intention == 'love' then 'danger' else 'default'
@@ -154,34 +142,50 @@ class ItemView extends Backbone.View
 
 window.FriendsApp ||= {}
 class FriendsApp.ListView extends Backbone.View
-
   el: '#friends'
 
   initialize: ->
-    @kids = {}
+    @_throttled_bound_onScroll = _(=> @_triggerScroll()).throttle 150, leading: false
+    @_throttled_bound_onResize = _(=> @_triggerScroll true).throttle 150, leading: false
+    super
 
   render: ->
-    @remove()
-    add_it = (friend)=>
-      @kids[friend.id] = new ItemView model: friend, dad: @
-    @collection.each add_it
-    @listenTo @collection, 'add', add_it
-    @listenTo @collection, 'remove', (friend)=>  # NOTE the kid view is supposed to receive the same remove event from backbone
-      @listenToOnce @kids[friend.id], 'removed', => # and then emit the (post mortem) 'removed' event when done
+    addItemFor = (friend)=>
+      view = new ItemView(model: friend, dad: @).render()  # XXX some potential for optimisation here
+      view.$el.appendTo @$el
+      @kids[friend.id] = view
+      @_throttled_bound_onResize()
+
+    # NOTE preloaded collection handling (might be obsolete in the future)
+    @kids = {}
+    @collection.each addItemFor
+    @listenTo @collection, 'add', addItemFor
+
+    @listenTo @collection, 'remove', (friend)->
+      @listenToOnce @kids[friend.id], 'remove:ready', ->
+        @kids[friend.id].remove()
+        @_throttled_bound_onResize()
         delete @kids[friend.id]
+      @kids[friend.id].trigger 'remove'
+
     @_bindGlobal()
     @
 
   remove: ->
     @_unbindGlobal()
-    _(@kids).each (v)-> v.remove()
-    @kids = {}
     @stopListening()
 
+    _(@kids).each (v)-> v.remove()
+    @
+
   _bindGlobal: ->
-    @__throttledWindowScroll = _(=> @trigger 'scroll').throttle @collection.size()  # XXX better throttling euristics
-    $(window).on 'scroll', @__throttledWindowScroll
+    $(document).on 'scroll', @_throttled_bound_onScroll
+    $(window).on 'resize', @_throttled_bound_onResize
 
   _unbindGlobal: ->
-    $(window).off 'scroll', @__throttledWindowScroll  if @__throttledWindowScroll?
-    delete @__throttledWindowScroll
+    $(document).off 'scroll', @_throttled_bound_onScroll
+    $(window).off 'resize', @_throttled_bound_onResize
+
+  _triggerScroll: (resizing)->
+    top = $(document).scrollTop()
+    @trigger 'scroll', top, top + $(window).height(), resizing

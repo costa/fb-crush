@@ -2,33 +2,23 @@ listView = null
 
 window.FriendsApp ||= {}
 FriendsApp.run = ->
-  listView = new FriendsApp.ListView collection: FriendsApp.friends
-  new Navigation collection: FriendsApp.friends
-  new Router
-  Backbone.history.start()
-
-
-class Router extends Backbone.Router
-  routes:
-    '': 'index'
-
-  index: ->
-    @_listView()
-
-  _listView: ->
-    @__listView ||= listView.render()
+  listView = new FriendsApp.ListView(collection: FriendsApp.friends).render()
+  navigation = new Navigation(collection: FriendsApp.friends).render()
 
 
 class Navigation extends Backbone.View
   el: '#window-title'
 
   initialize: ->
+    @_throttled_onAll = _(@_onAll).throttle 150, leading: false
     super
-    @_throttledRender = _(@render).throttle(333)
-    @listenTo @collection, 'all', @_throttledRender  # NOTE the event callback params are ignored
-    @_throttledRender()
 
   render: ->
+    @listenTo @collection, 'all', @_throttled_onAll  # NOTE the event callback params are ignored
+    @_throttled_onAll()
+    @
+
+  _onAll: ->
     @$el.
       animate(opacity: 0.1, 'slow').
       queue((next)=>
@@ -36,4 +26,3 @@ class Navigation extends Backbone.View
         next()
         ).
       animate(opacity: 1, 'slow')
-    @

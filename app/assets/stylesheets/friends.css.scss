@@ -1,19 +1,46 @@
-.user {
-  .picture {
-    width: 100px;
-    height: 100px;
-
-    img {
-      width: 100%;
-      height: 100%;
-    }
-  }
-}
-
 .panel.friend {
   box-shadow: none;
 }
 
 .panel.panel-default.friend {
   border-color: transparent;
+}
+
+.friend {
+  .user {
+    .picture {
+      width: 100px;
+      height: 100px;
+
+      img {
+        width: 100%;
+        height: 100%;
+
+        transition: all 0.3s ease;
+      }
+    }
+  }
+}
+
+@mixin user-picture($size) {
+  .user {
+    .picture {
+      img {
+        width: $size;
+        height: $size;
+      }
+    }
+  }
+}
+
+.friend {
+  &.visibility-none {
+    @include user-picture(20%);
+  }
+  &.visibility-some {
+    @include user-picture(40%);
+  }
+  &.visibility-full {
+    @include user-picture(80%);
+  }
 }
