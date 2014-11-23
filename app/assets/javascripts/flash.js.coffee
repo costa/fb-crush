@@ -7,7 +7,7 @@ window.flash_alert = (message_html)->
 
 
 flash = (flash_type, message_html)->
-  $('main:first').prepend JST['flash']
+  $('#flash').prepend JST['flash']
     alert_class:
       switch flash_type
         when 'success'

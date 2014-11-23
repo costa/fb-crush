@@ -13,8 +13,8 @@
     %header
       = render 'layouts/navigation'
     %main.container{:role => 'main'}
-      = render 'layouts/messages'
       = yield
+    #flash= render 'layouts/messages'
 
     :coffeescript
       I18n.defaultLocale = #{I18n.default_locale.to_json}
