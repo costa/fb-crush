@@ -7,7 +7,7 @@ class ItemView extends Backbone.View
     'friend visibility-none panel pull-left'
 
   events:
-    'click .intention': 'intent'
+    'click .intention': '_onIntent'
 
 
   initialize: (options)->
@@ -15,10 +15,11 @@ class ItemView extends Backbone.View
     super
 
   render: ->
+
     # layout
     @$el.html JST['friends/friend']
       friend_button_to: (intention, body_gen)=>
-        "<button type=\"button\" class=\"intention btn btn-#{@_intention_class intention}\" data-intention=\"#{intention}\">" +
+        "<button type=\"button\" class=\"intention btn btn-sm btn-#{@_intention_class intention}\" data-intention=\"#{intention}\">" +
           body_gen() +
           "</button>"
       friend_user_badge:
@@ -27,14 +28,22 @@ class ItemView extends Backbone.View
           user_pic_url: @model.get 'user_pic_url'
 
     # react
-    @listenTo @dad, 'scroll', @_onScroll
 
-    @listenTo @model, 'change', -> @_renderState()
+    @listenTo @dad, 'scroll', @_updateVisibility
+    # NOTE the parent have to trigger scroll after render
 
-    @listenTo @model, 'request', -> @_renderState 'sync'
-    @listenTo @model, 'sync error', -> @_renderState 'friendly'
+    @listenTo @model, 'change:intention change:is_mutual_intention', @_updateIntentness
+    @_updateIntentness()
 
-    @listenTo @model, 'error', (_, jqXHR)->  # XXX binding here because the error handling UX must be local (and nicer)
+    @on 'remove', @_removeAsync
+
+    @listenTo @model, 'request', @_disableControls
+    @listenTo @model, 'sync error change:intention', @_enableControls
+    @_enableControls()
+
+    # server (flash) notifications
+    # XXX binding here because the error handling UX must be local (and nicer)
+    @listenTo @model, 'error', (_, jqXHR)->
       errors = JSON.stringify jqXHR.responseJSON?.errors || 'Xc:)'  # XXX tmp - other errors
       flash_error I18n.t 'alert', errors: errors, scope: 'friends.flash.update'
     @listenTo @model, 'change:intention', ->
@@ -43,84 +52,39 @@ class ItemView extends Backbone.View
       if @model.isMutualIntention()
         flash_notice I18n.t @model.intention(), name: @model.get('user_name'), scope: 'friends.flash.update.notice.mutual'
 
-    @on 'remove', -> @_renderState 'fini'
-    @listenTo @model, 'destroy', -> @_renderState 'fini'
-    @_renderState 'friendly'
-
     @
 
 
-  _onScroll: (top, bottom, resizing)->
-    visibility_was = @_visibility
-    @_visibility = @_visibilityIn top, bottom, resizing
-    if visibility_was != @_visibility
+  _updateVisibility: (top, bottom, resizing)->
+    visibility_was = @__visibility
+    @__visibility = @_visibilityIn top, bottom, resizing
+    if visibility_was != @__visibility
       @$el.removeClass 'visibility-' + visibility_was
-      @$el.addClass 'visibility-' + @_visibility
+      @$el.addClass 'visibility-' + @__visibility
 
-  _renderState: (state)->
-    prev_state = @_render_state
-    @_render_state =
-      if state?
-        state
-      else
-        switch prev_state
-          when 'friendly'
-            if @model.get 'intention'
-              if @model.isMutualIntention()
-                'mutual'
-              else
-                'crushed'
-            else
-              'friendly'
-          when 'crushed', 'mutual'
-            'friendly'
-          when 'fini'
-            @trigger 'remove:ready'
-          else
-            prev_state
+  _disableControls: ->
+    @$("[data-intention]").prop 'disabled', true
+  _enableControls: ->
+    @$("[data-intention]").prop 'disabled', false
+    @$("[data-intention=#{@model.Get 'intention'}]").prop 'disabled', true
 
-    ani_delay = @dad.collection.size()*20
-    rand_delay = (x)-> x * ani_delay * Math.random()
-    dim_percent = (x)->
-      width: "#{x}%"
-      height: "#{x}%"
+  _removeAsync: ->
+    return  if @__remove_async?
+    @$el.addClass 'removing'
+    @__remove_async = _(
+      =>
+        @trigger 'remove:ready'
+        delete @__remove_async
+      ).delay 300
 
-    if @_render_state == 'sync'
-      @$("[data-intention]").prop 'disabled', true
-    else
-      @$("[data-intention]").prop 'disabled', false
-      @$("[data-intention=#{@model.Get 'intention'}]").prop 'disabled', true
+  _updateIntentness: ->
+    intentness_was = @__intentness
+    @__intentness = @_intentness()
+    if intentness_was != @__intentness
+      @$el.removeClass 'intentness-' + intentness_was
+      @$el.addClass 'intentness-' + @__intentness
 
-    @$el.removeClass 'panel-danger panel-default'
-    if @_render_state == 'mutual'
-      @$el.addClass "panel-#{@_intention_class @model.get 'intention'}"
-
-    $el = @$('.picture img')
-    switch @_render_state
-      when 'crushed'
-        $el.
-          animate(dim_percent(75), 'slow').
-          animate(dim_percent(90), 'slow').
-          animate(dim_percent(75), 'slow').
-          animate(dim_percent(80), 'slow')
-      when 'mutual'
-        $el.
-          animate(dim_percent(75), 'fast').
-          animate(dim_percent(90), 'fast').
-          animate(dim_percent(75), 'fast').
-          animate(dim_percent(80), 'fast')
-      when 'fini'
-        $el.
-          delay(rand_delay 1).
-          animate(dim_percent(100)).
-          animate(dim_percent(10), 'fast')
-
-    unless @_render_state == prev_state
-      $el.queue (next)=>
-        @_renderState()
-        next()
-
-  intent: (e)->
+  _onIntent: (e)->
     @model.intent $(e.target).data('intention')
 
   _visibilityIn: (top, bottom, resizing)->
@@ -136,12 +100,22 @@ class ItemView extends Backbone.View
     else
       'none'
 
+  _intentness: ->
+    if @model.get 'intention'
+      if @model.isMutualIntention()
+        'full'
+      else
+        'half'
+    else
+      'none'
+
   _intention_class: (intention)->
     if intention == 'love' then 'danger' else 'default'
 
 
 window.FriendsApp ||= {}
 class FriendsApp.ListView extends Backbone.View
+
   el: '#friends'
 
   initialize: ->
@@ -150,6 +124,7 @@ class FriendsApp.ListView extends Backbone.View
     super
 
   render: ->
+
     addItemFor = (friend)=>
       view = new ItemView(model: friend, dad: @).render()  # XXX some potential for optimisation here
       view.$el.appendTo @$el
@@ -169,6 +144,7 @@ class FriendsApp.ListView extends Backbone.View
       @kids[friend.id].trigger 'remove'
 
     @_bindGlobal()
+
     @
 
   remove: ->

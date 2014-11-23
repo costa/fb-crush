@@ -1,16 +1,15 @@
-listView = null
-
 window.FriendsApp ||= {}
 FriendsApp.run = ->
-  listView = new FriendsApp.ListView(collection: FriendsApp.friends).render()
-  navigation = new Navigation(collection: FriendsApp.friends).render()
+  new FriendsApp.ListView(collection: FriendsApp.friends).render()
+  new Navigation(collection: FriendsApp.friends).render()
 
 
 class Navigation extends Backbone.View
+
   el: '#window-title'
 
   initialize: ->
-    @_throttled_onAll = _(@_onAll).throttle 150, leading: false
+    @_throttled_onAll = _(@_updateStats).throttle 150, leading: false
     super
 
   render: ->
@@ -18,7 +17,8 @@ class Navigation extends Backbone.View
     @_throttled_onAll()
     @
 
-  _onAll: ->
+
+  _updateStats: ->
     @$el.
       animate(opacity: 0.1, 'slow').
       queue((next)=>
