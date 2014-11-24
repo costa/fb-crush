@@ -35,13 +35,13 @@
 
 @include keyframes(pulsate) {
   0% { border-radius: 50% }
-  5% { border-radius: 30% }
-  10% { border-radius: 20% }
-  15% { border-radius: 30% }
+  5% { border-radius: 40% }
+  10% { border-radius: 30% }
+  15% { border-radius: 40% }
   20% { border-radius: 50% }
-  25% { border-radius: 40% }
-  30% { border-radius: 30% }
-  35% { border-radius: 40% }
+  25% { border-radius: 45% }
+  30% { border-radius: 40% }
+  35% { border-radius: 45% }
   40% { border-radius: 50% }
   100% { border-radius: 50% }
 }
@@ -50,6 +50,29 @@
   0% { border-radius: 50% }
   50% { border-radius: 20% }
   100% { border-radius: 50% }
+}
+
+@mixin keyframes-flip-horizontal($width, $name) {
+  @include keyframes(flip-horizontal-#{$name}) {
+    0% {
+      width: $width;
+    }
+    25% {
+      opacity: 1;
+      width: 0;
+      border: 6px #333 solid;
+    }
+    50% {
+      width: $width;
+    }
+    75% {
+      width: 0;
+      border: 6px #333 solid;
+    }
+    100% {
+      width: $width;
+    }
+  }
 }
 
 
@@ -96,6 +119,11 @@
   }
 }
 
+@include keyframes-flip-horizontal(100%, hover);
+@include keyframes-flip-horizontal(80%, full);
+@include keyframes-flip-horizontal(40%, some);
+@include keyframes-flip-horizontal(20%, none);
+
 
 .friend {
   transition: all 0.3s ease;
@@ -138,7 +166,17 @@
     @include user-picture-fx('pulsate .6s infinite');
   }
 
-  &:hover {
+  &.hover.visibility-none {
+    @include user-picture-fx('flip-horizontal-none .3s infinite linear')
+  }
+  &.hover.visibility-some {
+    @include user-picture-fx('flip-horizontal-some .6s infinite linear')
+  }
+  &.hover.visibility-full {
+    @include user-picture-fx('flip-horizontal-full .9s infinite linear')
+  }
+  &.visibility-full:hover {
     @include user-picture-dim(100%);
+    @include user-picture-fx('flip-horizontal-hover 1.2s infinite linear')
   }
 }
