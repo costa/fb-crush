@@ -54,22 +54,21 @@
 
 @mixin keyframes-flip-horizontal($width, $name) {
   @include keyframes(flip-horizontal-#{$name}) {
-    0% {
-      width: $width;
-    }
+    0% { width: $width }
     25% {
-      opacity: 1;
       width: 0;
-      border: 6px #333 solid;
+      border: 6px #333 solid; // XXX?
     }
     50% {
+      opacity: 0;
       width: $width;
     }
     75% {
       width: 0;
-      border: 6px #333 solid;
+      border: 6px #333 solid; // XXX?
     }
     100% {
+      opacity: 1;
       width: $width;
     }
   }
@@ -112,7 +111,17 @@
 @mixin user-picture-fx($animation) {
   .user {
     .picture {
-      img {
+      img:first-child {
+        @include animation($animation);
+      }
+    }
+  }
+}
+
+@mixin user-picture-alt-fx($animation) {
+  .user {
+    .picture {
+      img:last-child {
         @include animation($animation);
       }
     }
@@ -124,17 +133,32 @@
 @include keyframes-flip-horizontal(40%, some);
 @include keyframes-flip-horizontal(20%, none);
 
+@mixin transform($transforms) {
+  -moz-transform: $transforms;
+  -o-transform: $transforms;
+  -ms-transform: $transforms;
+  -webkit-transform: $transforms;
+  transform: $transforms;
+}
 
 .friend {
   transition: all 0.3s ease;
 
   .user {
     .picture {
+      position: relative;
       width: 100px;
       height: 100px;
 
       img {
+        position: absolute;
+        top: 50%;
+        left: 50%;
         transition: all 0.3s ease;
+        @include transform(translate(-50%, -50%));
+      }
+      img:last-child {
+        @include transform(translate(-50%, -50%) scaleX(-1));
       }
     }
   }
@@ -167,16 +191,20 @@
   }
 
   &.hover.visibility-none {
-    @include user-picture-fx('flip-horizontal-none .3s infinite linear')
+    @include user-picture-fx('flip-horizontal-none .2s infinite linear');
+    @include user-picture-alt-fx('flip-horizontal-none .2s infinite .1s linear');
   }
   &.hover.visibility-some {
-    @include user-picture-fx('flip-horizontal-some .6s infinite linear')
+    @include user-picture-fx('flip-horizontal-some .4s infinite linear');
+    @include user-picture-alt-fx('flip-horizontal-some .4s infinite .2s linear');
   }
   &.hover.visibility-full {
-    @include user-picture-fx('flip-horizontal-full .9s infinite linear')
+    @include user-picture-fx('flip-horizontal-full .8s infinite linear');
+    @include user-picture-alt-fx('flip-horizontal-full .8s infinite .4s linear');
   }
   &.visibility-full:hover {
     @include user-picture-dim(100%);
-    @include user-picture-fx('flip-horizontal-hover 1.2s infinite linear')
+    @include user-picture-fx('flip-horizontal-hover 1s infinite linear');
+    @include user-picture-alt-fx('flip-horizontal-hover 1s infinite .5s linear');
   }
 }

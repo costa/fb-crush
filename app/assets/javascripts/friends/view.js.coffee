@@ -93,7 +93,7 @@ class ItemView extends Backbone.View
       =>
         @$el.removeClass 'hover'
         delete @__on_hover_timer
-      ).delay 3000
+      ).delay 4000
 
   _visibilityIn: (top, bottom, resizing)->
     if resizing || !@_el_top? || !@_el_bottom?
