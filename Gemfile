@@ -27,12 +27,11 @@ group :development do
   gem 'better_errors'
   gem 'letter_opener'
   gem 'binding_of_caller'
-  gem 'terminal-notifier'
-  gem 'terminal-notifier-guard'
   gem 'guard-bundler'
   gem 'guard-rspec'
   gem 'guard-pow'
-  gem 'guard-delayed'
+  # gem 'guard-delayed'  # XXX https://github.com/suranyami/guard-delayed/issues/11
+  gem 'terminal-notifier-guard'  # XXX doesn't work ;()
   gem 'html2haml'
   gem 'quiet_assets'
   gem 'rails_layout'
@@ -45,6 +44,7 @@ group :development, :test do
   gem 'rspec-rails'
   gem 'thin'
   gem 'dotenv-rails'
+  gem 'pusher-fake'
 end
 group :production do
   gem 'unicorn'

@@ -158,7 +158,7 @@
   .user {
     .picture {
       position: relative;
-      width: 100px;
+      width: 100px;  // XXX see app/models/friend.rb for the img source URL
       height: 100px;
 
       img {

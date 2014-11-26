@@ -1,10 +1,10 @@
 class FriendsController < ApplicationController
-  respond_to :json
+
+  respond_to :json, :except => :app
 
   before_filter :authenticate_user!
 
-  def index
-    @friends = scope.for_index
+  def app
   end
 
   def update

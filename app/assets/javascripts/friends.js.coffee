@@ -1,5 +1,8 @@
 window.FriendsApp ||= {}
-FriendsApp.run = ->
+FriendsApp.run = (friends_url, pusher_or_key, channel)->
+  FriendsApp.friends = new FriendsApp.Friends [], url: friends_url  # NOTE in the namespace for debugging
+  pusher_async pusher_or_key, (pusher)=>
+    @_friendsBackpusher = new Backpusher pusher.subscribe(channel), @friends
   new FriendsApp.ListView(collection: FriendsApp.friends).render()
   new Navigation(collection: FriendsApp.friends).render()
 

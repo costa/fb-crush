@@ -1,6 +1,6 @@
 class Friend < ActiveRecord::Base
   include SymmetryConcern
-  include NotificationConcern
+  include Notification
 
   belongs_to :ego, :class_name => 'User', :inverse_of => :friends
   belongs_to :user
@@ -8,6 +8,7 @@ class Friend < ActiveRecord::Base
   scope :for_index, ->{order('updated_at DESC')}
 
   delegate :name, :to => :user
+  delegate :pusher_channel, :to => :ego
 
   strip_attributes
 
@@ -28,9 +29,8 @@ class Friend < ActiveRecord::Base
       user_pic_url:
         case user.provider
         when 'facebook'
-          "http://graph.facebook.com/#{user.uid}/picture?width=100&height=100"
-        end,
-      is_destroyed: destroyed?
+          "http://graph.facebook.com/#{user.uid}/picture?width=100&height=100"  # XXX 100px is in the CSS
+        end
     }
   end
 

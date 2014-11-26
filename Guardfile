@@ -27,10 +27,12 @@ guard 'pow' do
   watch(%r{^\.pow})
   watch('Gemfile.lock')
   watch(%r{^config/})
-  watch(%r{^lib/.*\.rb$})
+  watch(%r{^lib/.+\.rb$})
 end
 
-guard 'delayed' do
-  watch(%r{^lib/(.+)\.rb$})
-  watch(%r{^app/(.+)\.rb})
-end
+# XXX https://github.com/suranyami/guard-delayed/issues/11
+# guard 'delayed' do
+#   watch(%r{^config/})
+#   watch(%r{^lib/.+\.rb$})
+#   watch(%r{^app/.+\.rb$})
+# end

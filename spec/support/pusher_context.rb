@@ -20,7 +20,9 @@ shared_context "pusher server client" do
   end
 
   def stub_pusher(body=nil)
-    uri_template = Addressable::Template.new 'api.pusherapp.com/apps/{app_id}/events{?auth_key,auth_signature,auth_timestamp}{&other*}'
+    host = Pusher.host
+    host += ":#{Pusher.port}"  unless !Pusher.port || Pusher.port == 80
+    uri_template = Addressable::Template.new "http://#{host}/apps/{app_id}/events{?auth_key,auth_signature,auth_timestamp}{&other*}"
     stub = stub_request(:post, uri_template)
     stub = stub.
       with(

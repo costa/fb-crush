@@ -1,7 +1,7 @@
 require 'user_authenticated_constraint'
 
 FbCrush::Application.routes.draw do
-  root :to => 'friends#index', :as => :rroot, :constraints => UserAuthenticatedConstraint.new
+  root :to => 'friends#app', :as => :rroot, :constraints => UserAuthenticatedConstraint.new
   root :to => 'home#index'
   get '/friends' => redirect('/'), :constraints => { format: :html }
   resources :friends, :only => [:index, :update]
@@ -10,4 +10,6 @@ FbCrush::Application.routes.draw do
   get '/signin' => 'sessions#new', :as => :signin
   get '/signout' => 'sessions#destroy', :as => :signout
   get '/auth/failure' => 'sessions#failure'
+
+  post '/pusher/webhook' => 'pusher#webhook'
 end

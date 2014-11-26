@@ -60,8 +60,8 @@ describe Friend do
       remove_request_stub stub5
       remove_request_stub stub6
 
-      stub7 = stub_pusher pusher_body('destroyed', [subject.ego.pusher_channel], subject.as_json.merge(is_destroyed: true))
-      stub8 = stub_pusher pusher_body('destroyed', [subject.user.pusher_channel], symmetrical.as_json.merge(is_destroyed: true))
+      stub7 = stub_pusher pusher_body('destroyed', [subject.ego.pusher_channel], subject.as_json)
+      stub8 = stub_pusher pusher_body('destroyed', [subject.user.pusher_channel], symmetrical.as_json)
       subject.destroy
       expect(stub7).to have_been_requested.once
       expect(stub8).to have_been_requested.once

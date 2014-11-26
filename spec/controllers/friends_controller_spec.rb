@@ -11,11 +11,11 @@ describe FriendsController do
     @another_friend.symmetrical_friend.update! intention: 'love'
   end
 
-  describe "GET index, for non-logged in user" do
+  describe "GET app for non-logged in user" do
 
     it "redirects user to the root path to login" do
       session[:user_id] = nil
-      get 'index'
+      get 'app'
       expect(response).to redirect_to root_path
     end
 
@@ -27,13 +27,11 @@ describe FriendsController do
       session[:user_id] = @user.id
     end
 
-    describe "GET index" do
+    describe "GET app" do
 
-      it "renders a list of friends including mutual intention" do
-        @another_friend.update! intention: 'love'
-        get 'index'
+      it "renders the app" do
+        get 'app'
         expect(response).to be_success
-        assigns[:friends].to_set.should eq(@user.friends.to_set)  # XXX tmp
       end
 
     end
