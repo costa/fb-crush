@@ -15,20 +15,20 @@ module User::FacebookConcern
 
   end
 
-  def fetch_friends
-    if provider == 'facebook' && access_token.present?
-      fetch_facebook_friends_async  if should_fetch_facebook_friends?
-    end
+  def fetch_friends_async
+    fetch_facebook_friends_async  if facebook_accessible? && should_fetch_facebook_friends?
   end
 
   def facebook_me
-    if provider == 'facebook' && access_token.present?
-      @facebook_me ||= FbGraph::User.me(access_token)
-    end
+    @facebook_me ||= FbGraph::User.me(access_token)  if facebook_accessible?
   end
 
 
   private
+
+  def facebook_accessible?
+    provider == 'facebook' && access_token.present?
+  end
 
   def should_fetch_facebook_friends?
     !friends_fetched_at || friends_fetched_at < facebook_polling_interval.ago
