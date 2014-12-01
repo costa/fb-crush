@@ -7,6 +7,10 @@ class FriendsController < ApplicationController
   def app
   end
 
+  def index
+    respond_with scope
+  end
+
   def update
     respond_with scope.update params[:id], friend_params
   end

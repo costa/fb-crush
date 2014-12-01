@@ -33,12 +33,8 @@ class User < ActiveRecord::Base
       user
     end
 
-    def init_channel_async(channel)
-      find_by_channel(channel).friends.init_channel channel
-    end
-    handle_asynchronously :init_channel_async, :priority => REALTIME_NOTIFICATIONS_PRIORITY
-
   end
+
 
   def pusher_channel
     last_session_key

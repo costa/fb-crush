@@ -36,6 +36,16 @@ describe FriendsController do
 
     end
 
+    describe "GET index" do
+
+      it "returns the friends list json" do
+        xhr :get, 'index'
+        expect(response).to be_success
+        expect(response.body).to eq [@another_friend, @friend].to_json  # XXX check out the order
+      end
+
+    end
+
     describe "PATCH update" do
 
       let(:update_response) do

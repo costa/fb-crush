@@ -23,6 +23,12 @@ gem 'jbuilder', '~>1.2'
 gem 'backbone-rails'
 gem 'haml_coffee_assets'
 gem 'i18n-js', '~>3.0.0.rc7'
+gem 'fb_graph', '~>2.7.10'
+group :production do
+  gem 'unicorn'
+  gem 'rails_12factor'
+  gem 'exception_notification'
+end
 group :development do
   gem 'better_errors'
   gem 'letter_opener'
@@ -44,12 +50,7 @@ group :development, :test do
   gem 'rspec-rails'
   gem 'thin'
   gem 'dotenv-rails'
-  gem 'pusher-fake'
-end
-group :production do
-  gem 'unicorn'
-  gem 'rails_12factor'
-  gem 'exception_notification'
+  # XXX near future: gem 'pusher-fake'
 end
 group :test do
   gem 'capybara'
@@ -58,5 +59,5 @@ group :test do
   gem 'factory_girl_rails'
   gem 'forgery'
   gem 'fb_graph-mock'
+  gem 'pusher-fake'  # XXX near future
 end
-gem 'fb_graph', '~>2.7.10'
