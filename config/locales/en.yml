@@ -65,6 +65,7 @@ en:
     application:
       title: "FB-crush"
       description: "Facebook Crush"
+      version: "made in heaven %{version}"
     navigation:
       brand: "FB-crush!!!"
       toggle_nav: "Toggle navigation"

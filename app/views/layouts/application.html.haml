@@ -16,6 +16,8 @@
       = render 'layouts/navigation'
     %main.container{:role => 'main'}
       = yield
+    %footer
+      %span.copyright= t('.version', version: APP_VERSION)
     #flash= render 'layouts/messages'
 
     :coffeescript
