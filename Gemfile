@@ -37,7 +37,8 @@ group :development do
   gem 'guard-rspec'
   gem 'guard-pow'
   # gem 'guard-delayed'  # XXX https://github.com/suranyami/guard-delayed/issues/11
-  gem 'terminal-notifier-guard'  # XXX doesn't work ;()
+  gem 'terminal-notifier'
+  gem 'terminal-notifier-guard'
   gem 'html2haml'
   gem 'quiet_assets'
   gem 'rails_layout'
