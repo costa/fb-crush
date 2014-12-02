@@ -20,3 +20,4 @@
 //= require backpusher
 //= require i18n/translations
 //= require_tree .
+//= require uservoice
