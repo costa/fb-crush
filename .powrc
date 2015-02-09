@@ -1,2 +1,2 @@
-source /usr/local/rvm/scripts/rvm
-source .rvmrc
+. /usr/local/rvm/scripts/rvm
+. .rvmrc

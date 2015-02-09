@@ -1,2 +1,2 @@
 rvm use `cat .ruby-version`
-[ -r .rvmenv ] && . .rvmenv
+[ -r .rvmenv ] && . .rvmenv || return 0  # POW is unhappy otherwise
