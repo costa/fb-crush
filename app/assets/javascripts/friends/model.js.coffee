@@ -12,7 +12,6 @@ class Friend extends Backbone.Model
 
 window.FriendsApp ||= {}
 class FriendsApp.Friends extends Backbone.Collection
-
   model: Friend
 
   initialize: (models, options)->

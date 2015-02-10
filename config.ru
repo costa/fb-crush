@@ -2,6 +2,6 @@
 
 require ::File.expand_path('../config/environment',  __FILE__)
 
-use Rack::CanonicalHost, ENV['DOMAIN_NAME']  if ENV['DOMAIN_NAME'].present?
+use Rack::CanonicalHost, ENV['DOMAIN_NAME']
 
 run Rails.application

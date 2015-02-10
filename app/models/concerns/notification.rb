@@ -14,12 +14,6 @@ module Notification
       end
       handle_asynchronously :notify_async, :priority => REALTIME_NOTIFICATIONS_PRIORITY
 
-      def init_channel(channel)
-        for_index.find_each do |obj|
-          notify_async_without_delay channel, 'created', obj.to_json
-        end
-      end
-
     end
 
   end

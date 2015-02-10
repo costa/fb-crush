@@ -3,7 +3,7 @@ if defined? PusherFake
   PusherFake.configure do |config|
     config.logger  = Rails.logger
     config.verbose = true
-    config.socket_options = {host: ENV['DOMAIN_NAME'], port: config.send(:available_port)}
+    config.socket_options = {host: ENV['DOMAIN_NAME'], port: config.send(:available_port)}  # NOTE won't work with DJ pushing
     # XXX near future: config.webhooks = ["http://#{ENV['DOMAIN_NAME']}/pusher/webhook"]
   end
 
