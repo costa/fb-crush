@@ -2,6 +2,6 @@
 
 require ::File.expand_path('../config/environment',  __FILE__)
 
-use Rack::CanonicalHost, ENV['DOMAIN_NAME']
+use Rack::CanonicalHost, Rails.application.secrets.domain_name
 
 run Rails.application
