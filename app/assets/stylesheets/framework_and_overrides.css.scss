@@ -1,6 +1,21 @@
 // import the CSS framework
 @import "bootstrap";
 
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+.h1,
+.h2,
+.h3,
+.h4,
+.h5,
+.h6 {
+  font-family: inherit;
+}
+
 // make all images responsive by default
 img {
   @extend .img-responsive;
