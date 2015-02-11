@@ -1,4 +1,4 @@
-class Friend extends Backbone.Model
+class FriendsApp::Friend extends Backbone.Model
 
   isMutualIntention: ->
     !!@get('is_mutual_intention')
@@ -10,9 +10,8 @@ class Friend extends Backbone.Model
     @save {intention: intention || null}, patch: true, wait: true
 
 
-window.FriendsApp ||= {}
-class FriendsApp.Friends extends Backbone.Collection
-  model: Friend
+class FriendsApp::Friends extends Backbone.Collection
+  model: FriendsApp::Friend
 
   initialize: (models, options)->
     @url = options.url
