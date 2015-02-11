@@ -55,7 +55,7 @@ en:
     index:
       title_html: "Sometimes a <em>Facebook Friend</em> is more than just a <em>Facebook Friend!</em>"
       subtitle_html: "Or &mdash; even more often &mdash; you wish they were, don't you?"
-      intro_html: "Introducing <big>FB-crush</big>, the simplest and the fastest possible way to explore and manage your romantic options.<br/>Join the fun, share the fun: it's absolutely free and totally discrete forever.<br/>It's time to set things straight!"
+      intro_html: "Introducing <big>fb-CRUSH</big>, the simplest and the fastest possible way to explore and manage your romantic options.<br/>Join the fun, share the fun: it's absolutely free and totally discrete forever.<br/>It's time to set things straight!"
       key_point:
         a_html: "Login with Facebook; see all your friends!"
         b_html: "Choose an intention towards anyone of them; nothing will happen just yet!"
@@ -63,11 +63,11 @@ en:
         d_html: "It's a score; go on and do whatever your and your crush of a Facebook Friend's hearts please..."
   layouts:
     application:
-      title: "FB-crush"
+      title: "fb-CRUSH"
       description: "Facebook Crush"
       version: "made in heaven %{version}"
     navigation:
-      brand: "FB-crush!!!"
+      brand: "fb-CRUSH"
       toggle_nav: "Toggle navigation"
       login: "Login with Facebook"
       logged_in: "Logged in"
