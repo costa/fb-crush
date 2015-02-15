@@ -1,4 +1,11 @@
 body {
+  position: relative;
+  background-color: #000;
   font-size: 15px;
   font-family: sans-serif;
+}
+footer {
+  position: absolute;
+  left: 0;
+  bottom: 0;
 }

@@ -1,3 +1,80 @@
-// Place all the styles related to the home controller here.
-// They will automatically be included in application.css.
-// You can use Sass (SCSS) here: http://sass-lang.com/
+.initially-hidden {
+  display: none;
+}
+main {
+  .scene {
+    position: relative;
+    background: #333 fixed url(/assets/crush-bg-bg-250x249.png);
+  }
+  .layers {
+    position: fixed;
+    width: 100%;
+    height: 100%;
+  }
+  .layer {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 99999px;
+    background-size: 100%;
+    background-repeat: no-repeat;
+    // transition: top 0.2s linear;
+  }
+}
+
+#background-layer {
+  background-color: #afb27a;
+}
+#events-layer {
+  background-repeat: no-repeat repeat;
+}
+#snap-layer {
+  background-position: 0 90px;
+}
+#function-layer {
+  z-index: 1;
+  color: #FFF;
+  .tagline {
+    text-align: center;
+    font-size: 175%;
+    text-shadow: 0 0 2px #FFF, 0 0 2px #FFF;
+  }
+  .description {
+    font-size: 150%;
+    text-shadow: 0 0 1px #FFF, 0 0 1px #FFF;
+    .head {
+      font-size: 125%;
+    }
+    .special {
+      color: #F2524D;
+      text-shadow: 0 0 1px #D2322D, 0 0 1px #B2120D;
+    }
+  }
+  .text-block-holder {
+    position: relative;
+    .text-block {
+      position: absolute;
+      left: 0;
+      top: 0;
+      width: 100%;
+      opacity: 1;
+      &.bg {
+        opacity: 0.5;
+        background-color: #000;
+      }
+      .text-center {
+        width: 100%;
+        height: 11%;
+        margin-bottom: 1%;
+        .heart {
+          display: inline-block;
+          width: 17%;
+          height: 100%;
+          background: url(/assets/icons-584x433.png) 86.5% 76%;
+          background-size: 450%;
+        }
+      }
+    }
+  }
+}

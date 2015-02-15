@@ -53,22 +53,28 @@ en:
       user_pic_alt: "q:-)"
   home:
     index:
-      title_html: "Sometimes a <em>Facebook Friend</em> is more than just a <em>Facebook Friend!</em>"
-      subtitle_html: "Or &mdash; even more often &mdash; you wish they were, don't you?"
-      intro_html: "Introducing <big>fb-CRUSH</big>, the simplest and the fastest possible way to explore and manage your romantic options.<br/>Join the fun, share the fun: it's absolutely free and totally discrete forever.<br/>It's time to set things straight!"
-      key_point:
-        a_html: "Login with Facebook; see all your friends!"
-        b_html: "Choose an intention towards anyone of them; nothing will happen just yet!"
-        c_html: "Now you wait and see; when and only when the friend of your choice expresses the <em>same</em> intention towards you, both of you (and the two of you only) will be notified!"
-        d_html: "It's a score; go on and do whatever your and your crush of a Facebook Friend's hearts please..."
+      tagline_html: "Escape awkwardness, know for certain!<br/> This is fb-CRUSH &lt;!3"
+      intro:
+        title_html: "Expressing your feelings doesn't have to be awkward, instead:"
+        point:
+          a_html: "Login with facebook; see all your friends"
+          b_html: "Choose one that makes your heart throb; no notification will be sent, it's your secret"
+          c_html: "Make sure they use fb-CRUSH and be patient; they may be choosing you any day"
+          d_html: "When the intention is mutual — and only then — both of you will see it &lt;!3"
+      special:
+        title_html: "Valentine's week special: -no-limits- mode:"
+        point:
+          a_html: "First, let's make it a week, one day is just not enough for your special ones."
+          b_html: "Then, usually, only 6 friends may be chosen at the same time, for precisely 6 days each, but now..."
+          c_html: "Love and share your love without limits this week!"
   layouts:
     application:
-      title: "fb-CRUSH"
-      description: "Facebook Crush"
+      title: "fb-CRUSH -nolimits- Valentine's special"
+      description: "Escape awkwardness, know for certain! This is fb-CRUSH <!3"
       version: "made in heaven %{version}"
     navigation:
-      brand: "fb-CRUSH"
+      brand_html: "fb-CRUSH <small><strike>limits</strike></small> <span class='text-danger'>Valentine's special</span>"
       toggle_nav: "Toggle navigation"
-      login: "Login with Facebook"
+      login: "Login with facebook"
       logged_in: "Logged in"
       logout: "Logout"

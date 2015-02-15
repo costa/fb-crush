@@ -1,10 +1,28 @@
-.jumbotron
-  %h2= t('.title_html')
-  %h3= t('.subtitle_html')
-  %h1 ;)
-  %br
-  %p.lead= t('.intro_html')
-  %ol
-    - t('.key_point').each_key do |k|
-      %li= t(".key_point.#{k}")
-  = link_to t('layouts.navigation.login'), signin_path, class: "btn btn-primary btn-lg btn-danger"
+#intro.scene
+  .layers
+    #bg-layer.layer
+    #events-layer.layer.initially-hidden
+    #story-layer.layer.initially-hidden
+    #snap-layer.layer
+    #function-layer.layer
+      .text-block-holder
+        .text-block.tagline.bg
+        .text-block.tagline= t('.tagline_html')
+      .login-spacer
+      .text-center
+        = link_to t('layouts.navigation.login'), signin_path, class: "btn btn-primary btn-lg btn-danger"
+      .text-block-holder
+        .text-block.description.bg
+        .text-block.description
+          .intro
+            .head= t('.intro.title_html')
+            %ul
+              - t('.intro.point').each_key do |k|
+                %li= t(".intro.point.#{k}")
+          .text-center
+            .heart
+          .special
+            .head= t('.special.title_html')
+            %ul
+              - t('.special.point').each_key do |k|
+                %li= t(".special.point.#{k}")

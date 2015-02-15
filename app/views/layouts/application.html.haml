@@ -4,6 +4,7 @@
     %meta{:name => 'viewport', :content => 'width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no'}
     %title= content_for?(:title) ? yield(:title) : t('.title')
     %meta{:name => 'description', :content => content_for?(:description) ? yield(:description) : t('.description')}
+    %link{rel: 'image_src', href: image_url('crush-image_src.jpg')}
     = stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track' => true
     = javascript_include_tag 'application', 'data-turbolinks-track' => true
     - if defined? PusherFake
@@ -14,7 +15,7 @@
   %body
     %header
       = render 'layouts/navigation'
-    %main.container
+    %main.container-fluid
       = yield
     %footer
       %span.copyright= t('.version', version: APP_VERSION)
