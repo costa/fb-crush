@@ -95,7 +95,7 @@ class FunctionLayer extends ScrollableLayer
         height: @_zoomPx @spacer_height
       )
 
-$ ->
+window.crushLand = ->
   layers = [
     new BackgroundLayer('#bg-layer', url('crush-bg-750x5090.jpg'))
     new EventsLayer('#events-layer', url('crush-events-750x2645.png'))
