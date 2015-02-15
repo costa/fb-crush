@@ -1,31 +1,25 @@
 TARGET_SCENE_WIDTH = 750
 TARGET_SCENE_HEIGHT = 6500
 
-url = (filename)-> "url(/assets/#{filename})"
 zoomPx = (l, zoom)-> "#{Math.round zoom * l}px"
 
 
 class Layer
+  topOffset: 0
   constructor: (el)->
-    @$el = $(el)
+    @$el = $("##{el}").addClass(el)
   resize: (zoom)->
     @zoom = zoom
+    @realTop = @$el.position().top / @zoom
+    @$el.css(
+      'background-position': "0 #{@_zoomPx @topOffset}"
+    )
   render: ->
   _zoomPx: (l)->
     zoomPx l, @zoom
 
 class ScrollableLayer extends Layer
   scrollRatio: 1
-  topOffset: 0
-  constructor: (el, bg_img)->
-    super
-    @$el.css 'background-image': bg_img  if bg_img
-  resize: ->
-    super
-    @realTop = @$el.position().top / @zoom
-    @$el.css(
-      'background-position': "0 #{@_zoomPx @topOffset}"
-    )
   scroll: (top)->
     @targetTop = top / @zoom
   render: ->
@@ -33,7 +27,7 @@ class ScrollableLayer extends Layer
     diff = @scrollRatio * @targetTop - @realTop
     if Math.abs(diff) > 1
       @realTop += diff/2
-      @$el.css top: - @zoom * @realTop
+      @$el.css top: @_zoomPx -@realTop
 
 class ScrollableAppearableLayer extends ScrollableLayer
   appearTop: -999
@@ -97,11 +91,11 @@ class FunctionLayer extends ScrollableLayer
 
 window.crushLand = ->
   layers = [
-    new BackgroundLayer('#bg-layer', url('crush-bg-750x5090.jpg'))
-    new EventsLayer('#events-layer', url('crush-events-750x2645.png'))
-    new StoryLayer('#story-layer', url('crush-story-750x4484.png'))
-    new SnapLayer('#snap-layer', url('crush-snap-750x3501.png'))
-    new FunctionLayer('#function-layer')
+    new BackgroundLayer 'bg-layer'
+    new EventsLayer 'events-layer'
+    new StoryLayer 'story-layer'
+    new SnapLayer 'snap-layer'
+    new FunctionLayer 'function-layer'
   ]
 
   updateLayout = ->

@@ -4,7 +4,7 @@
 main {
   .scene {
     position: relative;
-    background: #333 fixed url(/assets/crush-bg-bg-250x249.png);
+    background: #333 fixed image-url('crush-bg-bg-250x249.png');
   }
   .layers {
     position: fixed;
@@ -20,59 +20,62 @@ main {
     background-size: 100%;
     background-repeat: no-repeat;
     // transition: top 0.2s linear;
-  }
-}
-
-#background-layer {
-  background-color: #afb27a;
-}
-#events-layer {
-  background-repeat: no-repeat repeat;
-}
-#snap-layer {
-  background-position: 0 90px;
-}
-#function-layer {
-  z-index: 1;
-  color: #FFF;
-  .tagline {
-    text-align: center;
-    font-size: 175%;
-    text-shadow: 0 0 2px #FFF, 0 0 2px #FFF;
-  }
-  .description {
-    font-size: 150%;
-    text-shadow: 0 0 1px #FFF, 0 0 1px #FFF;
-    .head {
-      font-size: 125%;
+    &.bg-layer {
+      background-color: #afb27a;
+      background-image: image-url('crush-bg-750x5090.jpg');
     }
-    .special {
-      color: #F2524D;
-      text-shadow: 0 0 1px #D2322D, 0 0 1px #B2120D;
+    &.events-layer {
+      background-image: image-url('crush-events-750x2645.png');
+      background-repeat: no-repeat repeat;
     }
-  }
-  .text-block-holder {
-    position: relative;
-    .text-block {
-      position: absolute;
-      left: 0;
-      top: 0;
-      width: 100%;
-      opacity: 1;
-      &.bg {
-        opacity: 0.5;
-        background-color: #000;
+    &.story-layer {
+      background-image: image-url('crush-story-750x4484.png');
+    }
+    &.snap-layer {
+      background-image: image-url('crush-snap-750x3501.png');
+    }
+    &.function-layer {
+      color: #FFF;
+      .tagline {
+        text-align: center;
+        font-size: 175%;
+        text-shadow: 0 0 2px #FFF, 0 0 2px #FFF;
       }
-      .text-center {
-        width: 100%;
-        height: 11%;
-        margin-bottom: 1%;
-        .heart {
-          display: inline-block;
-          width: 17%;
-          height: 100%;
-          background: url(/assets/icons-584x433.png) 86.5% 76%;
-          background-size: 450%;
+      .description {
+        font-size: 150%;
+        text-shadow: 0 0 1px #FFF, 0 0 1px #FFF;
+        .head {
+          font-size: 125%;
+        }
+        .special {
+          color: #F2524D;
+          text-shadow: 0 0 1px #D2322D, 0 0 1px #B2120D;
+        }
+      }
+      .text-block-holder {
+        position: relative;
+        .text-block {
+          position: absolute;
+          left: 0;
+          top: 0;
+          width: 100%;
+          opacity: 1;
+          &.bg {
+            opacity: 0.5;
+            background-color: #000;
+          }
+          .text-center {
+            width: 100%;
+            height: 11%;
+            margin-bottom: 1%;
+            .heart {
+              display: inline-block;
+              width: 17%;
+              height: 100%;
+              background: url(/assets/icons-584x433.png) 86.5% 76%;
+              background-size: 450%;
+            }
+          }
         }
       }
     }
