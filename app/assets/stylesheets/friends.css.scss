@@ -39,10 +39,20 @@
       border-left-width: 0;
       border-right-width: 0;
     }
-    50% {
+    25% {
       width: $width/2;
-      border-left-width: 3px;
-      border-right-width: 3px;
+      border-left-width: 6px;
+      border-right-width: 0;
+    }
+    50% {
+      width: $width;
+      border-left-width: 0;
+      border-right-width: 0;
+    }
+    75% {
+      width: $width/2;
+      border-left-width: 0;
+      border-right-width: 6px;
     }
     100% {
       width: $width;
@@ -161,17 +171,17 @@
     }
 
     &.hover.visibility-none {
-      @include user-picture-fx('swing-horizontal-none 1.2s infinite linear');
+      @include user-picture-fx('swing-horizontal-none 2s infinite linear');
     }
     &.hover.visibility-some {
-      @include user-picture-fx('swing-horizontal-some 1.2s infinite linear');
+      @include user-picture-fx('swing-horizontal-some 2s infinite linear');
     }
     &.hover.visibility-full {
-      @include user-picture-fx('swing-horizontal-full 1.2s infinite linear');
+      @include user-picture-fx('swing-horizontal-full 2s infinite linear');
     }
     &.visibility-full:hover {
       @include user-picture-dim(100%);
-      @include user-picture-fx('swing-horizontal-hover 1.2s infinite linear');
+      @include user-picture-fx('swing-horizontal-hover 2s infinite linear');
     }
   }
 }
