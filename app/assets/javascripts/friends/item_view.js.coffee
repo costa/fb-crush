@@ -3,7 +3,7 @@
 class FriendsApp::ItemView extends Backbone.View
 
   className:
-    'friend visibility-none panel pull-left'
+    'friend visibility-none'
 
   events:
     'click .intention': '_onIntent'

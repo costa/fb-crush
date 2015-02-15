@@ -32,67 +32,26 @@
   }
 }
 
-@include keyframes(pulsate) {
-  0% { border-radius: 50% }
-  5% { border-radius: 40% }
-  10% { border-radius: 30% }
-  15% { border-radius: 40% }
-  20% { border-radius: 50% }
-  25% { border-radius: 45% }
-  30% { border-radius: 40% }
-  35% { border-radius: 45% }
-  40% { border-radius: 50% }
-  100% { border-radius: 50% }
-}
-
-@include keyframes(breathe) {
-  0% { border-radius: 50% }
-  50% { border-radius: 20% }
-  100% { border-radius: 50% }
-}
-
-@mixin keyframes-flip-horizontal($width, $name) {
-  @include keyframes(flip-horizontal-#{$name}) {
+@mixin keyframes-swing-horizontal($width, $name) {
+  @include keyframes(swing-horizontal-#{$name}) {
     0% {
-      opacity: 1;
       width: $width;
       border-left-width: 0;
       border-right-width: 0;
-      border-color: #CCC;
     }
-    25% {
-      opacity: 0;
-      width: 0;
+    50% {
+      width: $width/2;
       border-left-width: 3px;
       border-right-width: 3px;
-      border-color: #000;
-    }
-    75% {
-      opacity: 0;
-      width: 0;
-      border-left-width: 3px;
-      border-right-width: 3px;
-      border-color: #000;
     }
     100% {
-      opacity: 1;
       width: $width;
       border-left-width: 0;
       border-right-width: 0;
-      border-color: #CCC;
     }
   }
 }
 
-
-// XXX Q&D
-.panel.friend {
-  box-shadow: none;
-}
-
-.panel.panel-default.friend {
-  border-color: transparent;
-}
 
 
 @mixin user-name-background($color) {
@@ -113,6 +72,7 @@
     .picture {
       img {
         @include dim($size);
+        border-color: #CCC;
       }
     }
   }
@@ -121,27 +81,17 @@
 @mixin user-picture-fx($animation) {
   .user {
     .picture {
-      img:first-child {
+      img {
         @include animation($animation);
       }
     }
   }
 }
 
-@mixin user-picture-alt-fx($animation) {
-  .user {
-    .picture {
-      img:last-child {
-        @include animation($animation);
-      }
-    }
-  }
-}
-
-@include keyframes-flip-horizontal(100%, hover);
-@include keyframes-flip-horizontal(80%, full);
-@include keyframes-flip-horizontal(40%, some);
-@include keyframes-flip-horizontal(20%, none);
+@include keyframes-swing-horizontal(100%, hover);
+@include keyframes-swing-horizontal(90%, full);
+@include keyframes-swing-horizontal(80%, some);
+@include keyframes-swing-horizontal(70%, none);
 
 @mixin transform($transforms) {
   -moz-transform: $transforms;
@@ -151,71 +101,77 @@
   transform: $transforms;
 }
 
-.friend {
-  transition: all 0.2s ease;
+.friends {
+  padding-bottom: 90px;
+  background-color: #FFF;
+  .friend {
+    display: inline-block;
+    width: 180px;
+    margin-top: 18px;
+    transition: all 0.2s ease;
 
-  .user {
-    .picture {
-      position: relative;
-      width: 100px;  // XXX see app/models/friend.rb for the img source URL
-      height: 100px;
+    .user {
+      .picture {
+        position: relative;
+        width: 100px;  // XXX see app/models/friend.rb for the img source URL
+        height: 100px;
 
-      img {
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        border-style: solid;
-        transition: all 0.2s ease;
-        @include transform(translate(-50%, -50%));
+        img {
+          position: absolute;
+          top: 50%;
+          left: 50%;
+          border-style: solid;
+          transition: all 0.2s ease;
+          @include transform(translate(-50%, -50%));
+        }
       }
-      img:last-child {
-        @include transform(translate(-50%, -50%) scaleX(-1));
+      .name {
+        max-width: 100%;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
       }
     }
-  }
 
-  &.visibility-none {
-    @include user-picture-dim(20%);
-  }
-  &.visibility-some {
-    @include user-picture-dim(40%);
-  }
-  &.visibility-full {
-    @include user-picture-dim(80%);
-  }
+    &.visibility-none {
+      @include user-picture-dim(70%);
+    }
+    &.visibility-some {
+      @include user-picture-dim(80%);
+    }
+    &.visibility-full {
+      @include user-picture-dim(90%);
+    }
 
-  &.removing {
-    @include user-picture-dim(10%);
-    opacity: 0.1;
-  }
+    &.removing {
+      @include user-picture-dim(10%);
+      opacity: 0.1;
+    }
 
-  &.intentness-none {
-    @include user-name-background(transparent);
-  }
-  &.intentness-half {
-    @include user-name-background(#EDE);
-    @include user-picture-fx('breathe 3s infinite');
-  }
-  &.intentness-full {
-    @include user-name-background(#FDD);
-    @include user-picture-fx('pulsate .6s infinite');
-  }
+    &.intentness-none {
+      @include user-name-background(transparent);
+    }
+    &.intentness-half {
+      @include user-name-background(#EDE);
+      @include user-picture-fx('breathe 3s infinite');
+    }
+    &.intentness-full {
+      @include user-name-background(#FDD);
+      @include user-picture-fx('pulsate .6s infinite');
+    }
 
-  &.hover.visibility-none {
-    @include user-picture-fx('flip-horizontal-none .2s infinite linear');
-    @include user-picture-alt-fx('flip-horizontal-none .2s infinite .1s linear');
-  }
-  &.hover.visibility-some {
-    @include user-picture-fx('flip-horizontal-some .4s infinite linear');
-    @include user-picture-alt-fx('flip-horizontal-some .4s infinite .2s linear');
-  }
-  &.hover.visibility-full {
-    @include user-picture-fx('flip-horizontal-full .8s infinite linear');
-    @include user-picture-alt-fx('flip-horizontal-full .8s infinite .4s linear');
-  }
-  &.visibility-full:hover {
-    @include user-picture-dim(100%);
-    @include user-picture-fx('flip-horizontal-hover 1s infinite linear');
-    @include user-picture-alt-fx('flip-horizontal-hover 1s infinite .5s linear');
+    &.hover.visibility-none {
+      @include user-picture-fx('swing-horizontal-none 1.2s infinite linear');
+    }
+    &.hover.visibility-some {
+      @include user-picture-fx('swing-horizontal-some 1.2s infinite linear');
+    }
+    &.hover.visibility-full {
+      @include user-picture-fx('swing-horizontal-full 1.2s infinite linear');
+    }
+    &.visibility-full:hover {
+      @include user-picture-dim(100%);
+      @include user-picture-fx('swing-horizontal-hover 1.2s infinite linear');
+    }
   }
 }

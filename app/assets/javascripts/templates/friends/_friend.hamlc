@@ -1,9 +1,8 @@
-.panel-body
-  != @friend_user_badge
-  .text-center
-    != @friend_button_to 'love', ->
-      %span.glyphicon.glyphicon-heart-empty
-      = I18n.t('.lovers_html')
-    != @friend_button_to '', ->
-      %span.glyphicon.glyphicon-thumbs-up
-      = I18n.t('.friends_html')
+!= @friend_user_badge
+.text-center
+  != @friend_button_to 'love', ->
+    %span.glyphicon.glyphicon-heart-empty
+    = I18n.t('.lovers_html')
+  != @friend_button_to '', ->
+    %span.glyphicon.glyphicon-thumbs-up
+    = I18n.t('.friends_html')
