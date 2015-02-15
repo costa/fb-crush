@@ -1,4 +1,6 @@
 #friends.friends
 
 :coffeescript
-  $ -> new FriendsApp().run #{friends_url.to_json}, #{defined?(PusherFake)? PusherFake.javascript(disableStats: true) : Pusher.key.to_json}, #{current_user.pusher_channel.to_json}
+  $ ->
+    window.friends_app = new FriendsApp()
+    friends_app.run #{friends_url.to_json}, #{defined?(PusherFake)? PusherFake.javascript(disableStats: true) : Pusher.key.to_json}, #{current_user.pusher_channel.to_json}
