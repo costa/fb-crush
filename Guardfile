@@ -23,6 +23,7 @@ guard 'rspec', {
 end
 
 guard 'pow' do
+  watch(%r{^\.env})
   watch(%r{^\.rvm})
   watch(%r{^\.pow})
   watch('Gemfile.lock')
