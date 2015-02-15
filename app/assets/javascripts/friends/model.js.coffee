@@ -11,7 +11,11 @@ class FriendsApp::Friend extends Backbone.Model
 
 
 class FriendsApp::Friends extends Backbone.Collection
+
   model: FriendsApp::Friend
+  comparator: (friend)->
+    console.log new Date(friend.get('updated_at')).getTime()
+    - new Date(friend.get('updated_at')).getTime()
 
   initialize: (models, options)->
     @url = options.url

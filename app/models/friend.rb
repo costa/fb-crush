@@ -30,7 +30,8 @@ class Friend < ActiveRecord::Base
         case user.provider
         when 'facebook'
           "http://graph.facebook.com/#{user.uid}/picture?width=100&height=100"  # XXX 100px is in the CSS
-        end
+        end,
+      updated_at: updated_at
     }
   end
 

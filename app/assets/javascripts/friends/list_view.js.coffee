@@ -3,9 +3,9 @@ class FriendsApp::ListView extends Backbone.View
   el: '#friends'
 
   initialize: ->
+    super
     @_throttled_bound_onScroll = _(=> @_triggerScroll()).throttle 150, leading: false
     @_throttled_bound_onResize = _(=> @_triggerScroll true).throttle 150, leading: false
-    super
 
   render: ->
 
@@ -26,6 +26,11 @@ class FriendsApp::ListView extends Backbone.View
         @_throttled_bound_onResize()
         delete @kids[friend.id]
       @kids[friend.id].trigger 'remove'
+
+    @listenTo @collection, 'sort', _(=>
+      @collection.each (friend)=>
+        @kids[friend.id].$el.appendTo @$el
+    ).throttle(@collection.size() * 3)
 
     @_bindGlobal()
 
