@@ -3,6 +3,7 @@ source 'https://rubygems.org'
 ruby '2.1.5'
 
 gem 'rack-canonical-host'
+gem 'rack-timeout'
 gem 'rails', '~>4.1.6'
 gem 'pg'
 gem 'delayed_job_active_record'
@@ -25,7 +26,7 @@ gem 'haml_coffee_assets'
 gem 'i18n-js', '~>3.0.0.rc7'
 gem 'fb_graph', '~>2.7.10'
 group :production do
-  gem 'unicorn'
+  gem 'puma'
   gem 'rails_12factor'
   gem 'exception_notification'
 end
