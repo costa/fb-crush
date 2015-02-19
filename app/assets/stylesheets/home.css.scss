@@ -1,80 +1,147 @@
+@import 'animation';
+
 .initially-hidden {
   display: none;
+}
+.text-middle {
+  vertical-align: middle;
+}
+@include keyframes(pulsate) {
+  0% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.3;
+  }
+  100% {
+    opacity: 1;
+  }
 }
 main {
   .scene {
     position: relative;
     background: #333 fixed image-url('crush-bg-bg-250x249.png');
-  }
-  .layers {
-    position: fixed;
-    width: 100%;
-    height: 100%;
-  }
-  .layer {
-    position: absolute;
-    left: 0;
-    top: 0;
-    width: 100%;
-    height: 99999px;
-    background-size: 100%;
-    background-repeat: no-repeat;
-    // transition: top 0.2s linear;
-    &.bg-layer {
-      background-color: #afb27a;
-      background-image: image-url('crush-bg-750x5090.jpg');
-    }
-    &.events-layer {
-      background-image: image-url('crush-events-750x2645.png');
-      background-repeat: no-repeat repeat;
-    }
-    &.story-layer {
-      background-image: image-url('crush-story-750x4484.png');
-    }
-    &.snap-layer {
-      background-image: image-url('crush-snap-750x3501.png');
-    }
-    &.function-layer {
-      color: #FFF;
-      .tagline {
-        text-align: center;
-        font-size: 175%;
-        text-shadow: 0 0 2px #FFF, 0 0 2px #FFF;
-      }
-      .description {
-        font-size: 150%;
-        text-shadow: 0 0 1px #FFF, 0 0 1px #FFF;
-        .head {
-          font-size: 125%;
+    .layers {
+      .layer {
+        &.snap-layer {
+          background-image: image-url('crush-snap-750x3501.png');
         }
-        .special {
-          color: #F2524D;
-          text-shadow: 0 0 1px #D2322D, 0 0 1px #B2120D;
+        &.func-layer {
+          color: #FFF;
+          .login-blk {
+            position: relative;
+            text-align: center;
+            margin-top: 9999px;
+            transition: font-size .15s;
+            .chevron {
+              position: absolute;
+              right: 18px;
+              top: -45px;
+              color: #F2524D;
+              font-weight: bold;
+              text-shadow: 0 0 3px #FFF, 0 0 3px #FFF;
+              cursor: pointer;
+              &:hover {
+                text-shadow: 0 0 6px #FFF, 0 0 6px #FFF, 0 0 6px #FFF;
+                text-decoration: none;
+              }
+              .down {
+                position: relative;
+                display: block;
+                @include animation(pulsate 2s infinite ease-out);
+              }
+              .up {
+                position: relative;
+                display: none;
+              }
+              .glyphicon:last-child {
+                position: absolute;
+                display: block;
+                right: 0;
+                top: .69em;
+              }
+            }
+            &.after-story {
+              .chevron {
+                .down {
+                  display: none;
+                }
+                .up {
+                  display: block;
+                }
+              }
+            }
+          }
+          .tagline {
+            text-align: center;
+            font-size: 175%;
+            text-shadow: 0 0 2px #FFF, 0 0 2px #FFF;
+          }
+          .description {
+            font-size: 150%;
+            text-shadow: 0 0 1px #FFF, 0 0 1px #FFF;
+            .head {
+              font-size: 125%;
+            }
+            .special {
+              color: #F2524D;
+              text-shadow: 0 0 2px #D2322D, 0 0 2px #B2120D;
+            }
+          }
+          .text-block-holder {
+            position: relative;
+            .text-block {
+              position: absolute;
+              left: 0;
+              top: 0;
+              width: 100%;
+              opacity: 1;
+              &.bg {
+                opacity: 0.5;
+                background-color: #000;
+              }
+              .heart-holder {
+                width: 100%;
+                height: 12%;  // XXX depends on height set on resize :(
+                margin-bottom: 1%;
+                text-align: center;
+                .heart {
+                  display: inline-block;
+                  width: 17%;
+                  height: 100%;
+                  background: image-url('icons-584x433.png') 86.5% 76%;
+                  background-size: 450%;
+                }
+              }
+            }
+          }
         }
       }
-      .text-block-holder {
-        position: relative;
-        .text-block {
+    }
+    &.animated {
+      .layers {
+        position: fixed;
+        width: 100%;
+        height: 100%;
+        background-color: #afb27a;
+        .layer {
           position: absolute;
           left: 0;
           top: 0;
           width: 100%;
-          opacity: 1;
-          &.bg {
+          height: 99999px;
+          background-size: 100%;
+          background-repeat: no-repeat;
+          &.bg-layer {
+            background-image: image-url('crush-bg-750x5090.jpg');
             opacity: 0.5;
-            background-color: #000;
           }
-          .text-center {
-            width: 100%;
-            height: 11%;
-            margin-bottom: 1%;
-            .heart {
-              display: inline-block;
-              width: 17%;
-              height: 100%;
-              background: image-url('icons-584x433.png') 86.5% 76%;
-              background-size: 450%;
-            }
+          &.events-layer {
+            background-image: image-url('crush-events-750x2645.png');
+            background-repeat: no-repeat repeat;
+          }
+          &.story-layer {
+            background-image: image-url('crush-story-750x4484.png');
           }
         }
       }

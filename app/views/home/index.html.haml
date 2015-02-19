@@ -4,12 +4,20 @@
     #events-layer.layer.initially-hidden
     #story-layer.layer.initially-hidden
     #snap-layer.layer
-    #function-layer.layer
+    #func-layer.layer
       .text-block-holder
         .text-block.tagline.bg
         .text-block.tagline= t('.tagline_html')
-      .login-spacer
-      .text-center
+      .login-blk
+        .chevron.btn.btn-lg.btn-link
+          .down
+            = t('.view_story')
+            %i.glyphicon.glyphicon-chevron-down
+            %i.glyphicon.glyphicon-chevron-down
+          .up
+            %i.glyphicon.glyphicon-chevron-up
+            %i.glyphicon.glyphicon-chevron-up
+
         = link_to t('layouts.navigation.login'), signin_path, class: "btn btn-primary btn-lg btn-danger"
       .text-block-holder
         .text-block.description.bg
@@ -19,7 +27,7 @@
             %ul
               - t('.intro.point').each_key do |k|
                 %li= t(".intro.point.#{k}")
-          .text-center
+          .heart-holder
             .heart
           .special
             .head= t('.special.title_html')

@@ -32,20 +32,21 @@ en:
       user_pic_alt: "q:-)"
   home:
     index:
+      view_story: "...view the full story"
       tagline_html: "Escape awkwardness, know for certain!<br/> This is fb-CRUSH &lt;!3"
       intro:
-        title_html: "Expressing your feelings doesn't have to be awkward, instead:"
+        title_html: "Find mutual attractions, avoid awkward moves, be discrete:"
         point:
           a_html: "Login with facebook; see all your friends"
-          b_html: "Choose one that makes your heart throb; no notification will be sent, it's your secret"
+          b_html: "Choose ones that make your heart throb; <strong>No Notifications</strong> of any kind will be sent to anybody"
           c_html: "Make sure they use fb-CRUSH and be patient; they may be choosing you any day"
-          d_html: "When the intention is mutual — and only then — both of you will see it &lt;!3"
+          d_html: "When the choice is mutual — and only then — both of you — and only you — will see it next time you check &lt;!3"
       special:
         title_html: "Valentine's week special: -no-limits- mode:"
         point:
-          a_html: "First, let's make it a week, one day is just not enough for your special ones."
-          b_html: "Then, usually, only 6 friends may be chosen at the same time, for precisely 6 days each, but now..."
-          c_html: "Love and share your love without limits this week!"
+          a_html: "Let's make it a week, one day is just not enough for <strong>everyone</strong>."
+          b_html: "Next week, choose only <strong>6</strong> friends for exactly <strong>6</strong> days each!"
+          c_html: "Love and share your love without limits <strong>this week</strong>!"
   layouts:
     application:
       title: "fb-CRUSH -nolimits- Valentine's special"
