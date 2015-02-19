@@ -4,12 +4,12 @@
     %meta{:name => 'viewport', :content => 'width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no'}
     %title= content_for?(:title) ? yield(:title) : t('.title')
     %meta{:name => 'description', :content => content_for?(:description) ? yield(:description) : t('.description')}
-    %link{rel: 'image_src', href: image_url('crush-image_src.jpg')}
+    %link{rel: 'image_src', href: image_url('crush-image_src-250x125.jpg')}
     = stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track' => true
     = javascript_include_tag 'application', 'data-turbolinks-track' => true
     - if defined? PusherFake
       = javascript_tag File.read Dir.glob(File.expand_path 'features/support/application/public/javascripts/vendor/pusher-2.*.js', Bundler.load.specs.find{|s| s.name == 'pusher-fake' }.full_gem_path).last
-    - else  # NOTE Since Pusher is not really useful with no internet connection... let's CDN it
+    - else  # NOTE Since Pusher is not really useful with no connection... let's CDN it
       %script{:src => "http://js.pusher.com/2.0/pusher.min.js", :defer => true}
     = csrf_meta_tags
   %body
