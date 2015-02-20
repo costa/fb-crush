@@ -58,7 +58,7 @@ class EventsLayer extends ScrollableAppearableLayer
 
 class StoryLayer extends ScrollableAppearableLayer
   topOffset: 2000
-  appearTop: 2050
+  appearTop: 2075
 
 class SnapLayer extends ScrollableAppearableLayer
   topOffset: 150

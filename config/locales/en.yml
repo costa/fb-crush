@@ -23,7 +23,7 @@ en:
       title_html:
         zero: "fb-CRUSH: loading friends..."
         one: "fb-CRUSH: your only friend?"
-        other: "fb-CRUSH: your %{count} friends"
+        other: "fb-CRUSH: all your friends"
     friend:
       friends_html: "Just friends"
       lovers_html: "Crush!"

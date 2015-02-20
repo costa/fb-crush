@@ -6,7 +6,7 @@ threads threads_count, threads_count
 
 preload_app!
 
-rackup      DefaultRackup  # XXX Heroku: This line may not be needed on newer versions of Puma.
+rackup      DefaultRackup  # NOTE Heroku: This line may not be needed on newer versions of Puma.
 port        ENV['PORT']     || 3000
 environment ENV['RACK_ENV'] || 'development'
 
