@@ -39,21 +39,38 @@ describe Friend do
   describe "notifications", :type => :concern, :notifications => :test do
 
     it "should send on CRUD in real time" do
-      stub1 = stub_pusher pusher_body('created', [subject.ego.pusher_channel], subject.as_json.merge(id: 235738))  # XXX (id: //))
-      stub2 = stub_pusher pusher_body('created', [subject.user.pusher_channel], symmetrical.as_json.merge(id: 235738))  # XXX (id: //))
+      stub1 = stub_pusher pusher_body('created', [subject.ego.pusher_channel], subject.as_json.merge(
+        id: ANY_NUMERIC_VALUE,
+        updated_at: ANY_VALUE
+      ))
+      stub2 = stub_pusher pusher_body('created', [subject.user.pusher_channel], symmetrical.as_json.merge(
+        id: ANY_NUMERIC_VALUE,
+        updated_at: ANY_VALUE
+      ))
+
       subject.save!
       expect(stub1).to have_been_requested.once
       expect(stub2).to have_been_requested.once
       remove_request_stub stub1
       remove_request_stub stub2
 
-      stub3 = stub_pusher pusher_body('updated', [subject.ego.pusher_channel], subject.as_json.merge(intention: 'love'))
+      stub3 = stub_pusher pusher_body('updated', [subject.ego.pusher_channel], subject.as_json.merge(
+        intention: 'love',
+        updated_at: ANY_VALUE
+      ))
       subject.update! intention: 'love'
       expect(stub3).to have_been_requested.once
       remove_request_stub stub3
 
-      stub5 = stub_pusher pusher_body('updated', [subject.ego.pusher_channel], subject.as_json.merge(is_mutual_intention: true))
-      stub6 = stub_pusher pusher_body('updated', [subject.user.pusher_channel], symmetrical.as_json.merge(intention: 'love', is_mutual_intention: true))
+      stub5 = stub_pusher pusher_body('updated', [subject.ego.pusher_channel], subject.as_json.merge(
+        is_mutual_intention: true,
+        updated_at: ANY_VALUE
+      ))
+      stub6 = stub_pusher pusher_body('updated', [subject.user.pusher_channel], symmetrical.as_json.merge(
+      is_mutual_intention: true,
+        intention: 'love',
+        updated_at: ANY_VALUE
+      ))
       symmetrical.update! intention: 'love'
       expect(stub5).to have_been_requested.once
       expect(stub6).to have_been_requested.once

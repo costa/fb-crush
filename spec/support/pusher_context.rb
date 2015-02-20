@@ -1,3 +1,5 @@
+ANY_NUMERIC_VALUE = 235738452
+ANY_VALUE = '_ANY_VALUE_'
 
 shared_context "pusher server client" do
 
@@ -27,7 +29,7 @@ shared_context "pusher server client" do
     stub = stub.
       with(
         # XXX https://github.com/bblimke/webmock/issues/432
-        body: Regexp.new(Regexp.escape(body.to_json).sub('235738', '\\d+')),
+        body: Regexp.new(Regexp.escape(body.to_json).sub(ANY_VALUE, '.+').sub(ANY_NUMERIC_VALUE.to_s, '\\d+')),
         headers: {
           'Accept'=>'*/*',
           'Content-Type'=>'application/json',
