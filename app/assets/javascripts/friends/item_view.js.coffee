@@ -3,7 +3,7 @@
 class FriendsApp::ItemView extends Backbone.View
 
   className:
-    'friend visibility-none'
+    'friend'
 
   events:
     'click .intention': '_onIntent'
@@ -50,16 +50,7 @@ class FriendsApp::ItemView extends Backbone.View
     @listenTo @model, 'change:is_mutual_intention', ->  # XXX doesn't really work without real-time data channel updates
       if @model.isMutualIntention()
         flash_notice I18n.t @model.intention(), name: @model.get('user_name'), scope: 'friends.flash.update.notice.mutual'
-
     @
-
-
-  _updateVisibility: (top, bottom, resizing)->
-    visibility_was = @__visibility
-    @__visibility = @_visibilityIn top, bottom, resizing
-    if visibility_was != @__visibility
-      @$el.removeClass 'visibility-' + visibility_was
-      @$el.addClass 'visibility-' + @__visibility
 
   _disableControls: ->
     @$("[data-intention]").prop 'disabled', true
@@ -80,8 +71,15 @@ class FriendsApp::ItemView extends Backbone.View
     intentness_was = @__intentness
     @__intentness = @_intentness()
     if intentness_was != @__intentness
-      @$el.removeClass 'intentness-' + intentness_was
+      @$el.removeClass 'intentness-' + intentness_was  if intentness_was
       @$el.addClass 'intentness-' + @__intentness
+
+  _updateVisibility: (top, bottom, resizing)->
+    visibility_was = @__visibility
+    @__visibility = @_visibilityIn top, bottom, resizing
+    if visibility_was != @__visibility
+      @$el.removeClass 'visibility-' + visibility_was  if visibility_was
+      @$el.addClass 'visibility-' + @__visibility
 
   _onIntent: (e)->
     @model.intent $(e.target).data('intention')
