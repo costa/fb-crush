@@ -1,5 +1,12 @@
+@import 'animation';
+
 #flash {
   position: fixed;
   top: 99px;
   left: 27px;
+  .alert-dismissable {
+    .close {
+      @include animation(pulsate 2s infinite ease-out);
+    }
+  }
 }

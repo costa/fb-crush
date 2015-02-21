@@ -3,20 +3,6 @@
 .initially-hidden {
   display: none;
 }
-.text-middle {
-  vertical-align: middle;
-}
-@include keyframes(pulsate) {
-  0% {
-    opacity: 1;
-  }
-  50% {
-    opacity: 0.3;
-  }
-  100% {
-    opacity: 1;
-  }
-}
 main {
   .scene {
     position: relative;

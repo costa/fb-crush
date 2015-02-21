@@ -7,7 +7,7 @@ window.flash_alert = (message_html)->
 
 
 flash = (flash_type, message_html)->
-  $('#flash').prepend JST['flash']
+  $el = $(JST['flash']
     alert_class:
       switch flash_type
         when 'success'
@@ -19,3 +19,7 @@ flash = (flash_type, message_html)->
         when 'notice'
           'alert-info' # Blue
     message_html: message_html
+  ).prependTo '#flash'
+  _(->
+    $el.remove()
+  ).delay 6000

@@ -1,6 +1,4 @@
--# Rails flash messages styled for Bootstrap 3.0  https://gist.github.com/roberto/3344628#comment-1006530
 - flash.each do |type, message|
   - Array(message).each do |message|
-    %div{:class => "alert #{bootstrap_alert_class_for type} alert-dismissable fade in"}
-      %button.close{'aria-hidden' => 'true', 'data-dismiss' => 'alert', :type => 'button'} &times;
-      = message
+    :coffeescript
+      flash_#{type} #{message.to_json}
