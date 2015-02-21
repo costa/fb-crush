@@ -88,7 +88,7 @@ class FriendsApp::ItemView extends Backbone.View
       @_el_top = @$el.offset().top
       @_el_bottom = @_el_top + @$el.height()
 
-    if @_el_top > top && @_el_bottom < bottom
+    if @_el_bottom > top && @_el_top < bottom
       if Math.abs((@_el_top - top) - (bottom - @_el_bottom)) < @_el_bottom - @_el_top
         'full'
       else
