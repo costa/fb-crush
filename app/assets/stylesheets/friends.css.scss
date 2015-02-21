@@ -87,6 +87,7 @@
   .friend {
     display: inline-block;
     width: 180px;
+    margin-left: 9px;
     margin-top: 18px;
     transition: all 0.2s ease;
 
@@ -123,7 +124,13 @@
     }
 
     &.visibility-none {
-      @include user-picture-dim(70%);
+      .user {
+        .picture {
+          img {
+            display: none;
+          }
+        }
+      }
     }
     &.visibility-some {
       @include user-picture-dim(80%);
