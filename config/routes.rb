@@ -4,7 +4,6 @@ FbCrush::Application.routes.draw do
   root :to => 'friends#app', :as => :rroot, :constraints => UserAuthenticatedConstraint.new
   root :to => 'home#index'
   resources :friends, :only => [:index, :update]
-  get '/friends/app' => redirect('/')  # NOTE the order is apparently important
 
   get '/auth/:provider/callback' => 'sessions#create'
   get '/signin' => 'sessions#new', :as => :signin
