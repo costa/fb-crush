@@ -5,7 +5,7 @@ class FriendsApp::ListView extends Backbone.View
   initialize: ->
     super
     @_throttled_bound_onScroll = _(=> @_triggerScroll()).throttle 150, leading: false
-    @_throttled_bound_onResize = _(=> @_triggerScroll true).throttle 150, leading: false
+    @_throttled_bound_onResize = _(=> @_triggerScroll true).throttle 900, leading: false
 
   render: ->
 

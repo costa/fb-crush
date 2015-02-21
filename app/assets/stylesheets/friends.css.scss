@@ -87,6 +87,7 @@
   .friend {
     display: inline-block;
     width: 180px;
+    height: 160px;
     margin-left: 9px;
     margin-top: 18px;
     transition: opacity 0.45s ease-out;
@@ -125,8 +126,6 @@
       }
     }
 
-    &.visibility-none {
-    }
     &.visibility-some {
       @include user-picture-dim(75%);
     }
@@ -139,8 +138,6 @@
       opacity: 0.1;
     }
 
-    &.intentness-none {
-    }
     &.intentness-half {
       @include user-picture-heart-background(image-url('icons-584x433.png'), 18% 72%);
     }

@@ -14,30 +14,10 @@ class FriendsApp::ItemView extends Backbone.View
 
   render: ->
 
-    # layout
-    @$el.html JST['friends/friend']
-      friend_button_to: (intention, body_gen)=>
-        "<button type=\"button\" class=\"intention btn btn-sm btn-#{@_intention_class intention}\" data-intention=\"#{intention}\">" +
-          body_gen() +
-          "</button>"
-      friend_user_badge:
-        JST['users/user_badge']
-          user_name: @model.get 'user_name'
-          user_pic_url: @model.get 'user_pic_url'
-
-    # react
-
     @listenTo @dad, 'scroll', @_updateVisibility
     # NOTE the parent have to trigger scroll after render
 
-    @listenTo @model, 'change:intention change:is_mutual_intention', @_updateIntentness
-    @_updateIntentness()
-
     @on 'remove', @_removeAsync
-
-    @listenTo @model, 'request', @_disableControls
-    @listenTo @model, 'sync error change:intention', @_enableControls
-    @_enableControls()
 
     # server (flash) notifications
     # XXX binding here because the error handling UX must be local (and nicer)
@@ -50,6 +30,27 @@ class FriendsApp::ItemView extends Backbone.View
       if @model.isMutualIntention()
         flash_notice I18n.t @model.intention(), name: @model.get('user_name'), scope: 'friends.flash.update.notice.mutual'
     @
+
+  _renderTemplateOnce: ->
+    return  if @_templateOnceRendered
+    @_templateOnceRendered = true
+
+    @$el.html JST['friends/friend']
+      friend_button_to: (intention, body_gen)=>
+        "<button type=\"button\" class=\"intention btn btn-sm btn-#{@_intention_class intention}\" data-intention=\"#{intention}\">" +
+          body_gen() +
+          "</button>"
+      friend_user_badge:
+        JST['users/user_badge']
+          user_name: @model.get 'user_name'
+          user_pic_url: @model.get 'user_pic_url'
+
+    @listenTo @model, 'change:intention change:is_mutual_intention', @_updateIntentness
+    @_updateIntentness()
+
+    @listenTo @model, 'request', @_disableControls
+    @listenTo @model, 'sync error change:intention', @_enableControls
+    @_enableControls()
 
   _disableControls: ->
     @$("[data-intention]").prop 'disabled', true
@@ -77,8 +78,11 @@ class FriendsApp::ItemView extends Backbone.View
     visibility_was = @__visibility
     @__visibility = @_visibilityIn top, bottom, resizing
     if visibility_was != @__visibility
-      @$el.removeClass 'visibility-' + visibility_was  if visibility_was
-      @$el.addClass 'visibility-' + @__visibility
+      if visibility_was
+        @$el.removeClass 'visibility-' + visibility_was
+      if @__visibility
+        @_renderTemplateOnce()
+        @$el.addClass 'visibility-' + @__visibility
 
   _onIntent: (e)->
     @model.intent $(e.target).data('intention')
@@ -93,8 +97,6 @@ class FriendsApp::ItemView extends Backbone.View
         'full'
       else
         'some'
-    else
-      'none'
 
   _intentness: ->
     if @model.get 'intention'
@@ -102,8 +104,6 @@ class FriendsApp::ItemView extends Backbone.View
         'full'
       else
         'half'
-    else
-      'none'
 
   _intention_class: (intention)->
     if intention == 'love' then 'danger' else 'default'
