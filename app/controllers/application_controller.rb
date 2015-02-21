@@ -4,4 +4,8 @@ class ApplicationController < ActionController::Base
 
   protect_from_forgery
 
+  def default_url_options
+    super.merge :protocol => ENV['SSL_ENABLED'].present?? :https: :http
+  end
+
 end
