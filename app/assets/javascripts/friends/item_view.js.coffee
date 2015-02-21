@@ -7,7 +7,6 @@ class FriendsApp::ItemView extends Backbone.View
 
   events:
     'click .intention': '_onIntent'
-    'mouseover': '_onHover'
 
   initialize: (options)->
     @dad = options.dad
@@ -83,14 +82,6 @@ class FriendsApp::ItemView extends Backbone.View
 
   _onIntent: (e)->
     @model.intent $(e.target).data('intention')
-
-  _onHover: ->
-    @$el.addClass 'hover'
-    @__on_hover_timer ||= _(
-      =>
-        @$el.removeClass 'hover'
-        delete @__on_hover_timer
-      ).delay 5000
 
   _visibilityIn: (top, bottom, resizing)->
     if resizing || !@_el_top? || !@_el_bottom?

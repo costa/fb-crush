@@ -70,10 +70,8 @@
   }
 }
 
-@include keyframes-swing-horizontal(100%, hover);
-@include keyframes-swing-horizontal(90%, full);
-@include keyframes-swing-horizontal(80%, some);
-@include keyframes-swing-horizontal(70%, none);
+@include keyframes-swing-horizontal(100%, full);
+@include keyframes-swing-horizontal(85%, some);
 
 @mixin transform($transforms) {
   -moz-transform: $transforms;
@@ -91,7 +89,7 @@
     width: 180px;
     margin-left: 9px;
     margin-top: 18px;
-    transition: all 0.2s ease;
+    transition: opacity 0.45s ease-out;
 
     .user {
       .picture {
@@ -105,7 +103,7 @@
           width: 100%;
           height: 100%;
           border-style: solid;
-          transition: all 0.2s ease;
+          transition: width, height 0.45s ease-out;
           @include transform(translate(-50%, -50%));
           display: none;
         }
@@ -130,7 +128,7 @@
     &.visibility-none {
     }
     &.visibility-some {
-      @include user-picture-dim(80%);
+      @include user-picture-dim(75%);
     }
     &.visibility-full {
       @include user-picture-dim(90%);
@@ -150,18 +148,13 @@
       @include user-picture-heart-background(image-url('icons-584x433.png'), 86% 72%);
     }
 
-    &.hover.visibility-none {
-      @include user-picture-fx('swing-horizontal-none 2s infinite linear');
-    }
-    &.hover.visibility-some {
+    &.visibility-some:hover {
+      @include user-picture-dim(85%);
       @include user-picture-fx('swing-horizontal-some 2s infinite linear');
-    }
-    &.hover.visibility-full {
-      @include user-picture-fx('swing-horizontal-full 2s infinite linear');
     }
     &.visibility-full:hover {
       @include user-picture-dim(100%);
-      @include user-picture-fx('swing-horizontal-hover 2s infinite linear');
+      @include user-picture-fx('swing-horizontal-full 2s infinite linear');
     }
   }
 }
