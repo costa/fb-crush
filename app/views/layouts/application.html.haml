@@ -10,7 +10,7 @@
     - if defined? PusherFake
       = javascript_tag File.read Dir.glob(File.expand_path 'spec/support/application/public/javascripts/vendor/pusher-2.*.js', Bundler.load.specs.find{|s| s.name == 'pusher-fake' }.full_gem_path).last
     - else  # NOTE Since Pusher is not really useful with no connection... let's CDN it
-      %script{:src => "http://js.pusher.com/2.0/pusher.min.js", :defer => true}
+      %script{:src => "//js.pusher.com/2.0/pusher.min.js", :defer => true}
     = csrf_meta_tags
   %body
     %header
