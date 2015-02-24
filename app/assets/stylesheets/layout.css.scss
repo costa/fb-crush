@@ -23,3 +23,14 @@ footer {
   left: 0;
   bottom: 0;
 }
+nav {
+  form.search {
+    .clear-btn {
+      cursor: pointer;
+      transition: opacity 0.15s;
+      &.disabled {
+        opacity: 0.3;
+      }
+    }
+  }
+}

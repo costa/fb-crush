@@ -54,6 +54,7 @@ en:
       version: "made in heaven %{version}"
     navigation:
       brand_html: "fb-CRUSH <small><strike>limits</strike></small> <span class='text-danger'>Valentine's special</span>"
+      search: "Search"
       toggle_nav: "Toggle navigation"
       login: "Login with facebook"
       logged_in: "Logged in"

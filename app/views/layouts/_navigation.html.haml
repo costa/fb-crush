@@ -1,4 +1,4 @@
-%nav.navbar.navbar-inverse.navbar-fixed-top
+%nav.navbar.navbar-inverse.navbar-fixed-top#nav
   .container
     .navbar-header
       %button.navbar-toggle{type: 'button', data: {toggle: 'collapse', target: '#header-navbar-collapse'}}
@@ -6,9 +6,9 @@
         %span.icon-bar
         %span.icon-bar
         %span.icon-bar
-      = link_to t('.brand_html'), '#', :onclick => 'location.reload()', :class => 'navbar-brand', :id => 'window-title'
-    .collapse.navbar-collapse#header-navbar-collapse
-      %ul.nav.navbar-nav.navbar-right
+      = link_to t('.brand_html'), '#', :onclick => 'location.reload()', :class => 'navbar-brand'
+    .collapse.navbar-collapse.navbar-right#header-navbar-collapse
+      %ul.nav.navbar-nav
         - if user_signed_in?
           %li.dropdown
             %a.dropdown-toggle{href: '#', data: {toggle: 'dropdown'}}
@@ -18,3 +18,8 @@
               %li= link_to t('.logout'), signout_path
         - else
           %li= link_to t('.login'), signin_path
+    - if user_signed_in?
+      %form.navbar-form.navbar-right.search{role: 'search'}
+        .form-group.has-feedback
+          %input.form-control{type: 'search', placeholder: t('.search')}
+          %span.glyphicon.glyphicon-remove.form-control-feedback.clear-btn

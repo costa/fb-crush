@@ -85,6 +85,8 @@ class FriendsApp::ItemView extends Backbone.View
     @model.intent $(e.target).data('intention')
 
   _visibilityIn: (top, bottom, resizing)->
+    return  unless @$el.is(':visible')
+
     if resizing || !@_el_top? || !@_el_bottom?
       @_el_top = @$el.offset().top
       @_el_bottom = @_el_top + @$el.height()

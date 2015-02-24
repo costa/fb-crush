@@ -1,5 +1,6 @@
 // import the CSS framework
-@import "bootstrap";
+@import 'bootstrap-sprockets';
+@import 'bootstrap';
 
 h1,
 h2,
@@ -48,7 +49,7 @@ img {
 // apply styles to HTML elements
 // to make views framework-neutral
 main {
-  margin-top: 51px; // accommodate the navbar
+  margin-top: 105px; // accommodate the navbar... twice
 }
 section {
   @extend .row;

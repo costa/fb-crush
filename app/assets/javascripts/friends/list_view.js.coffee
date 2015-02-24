@@ -6,6 +6,7 @@ class FriendsApp::ListView extends Backbone.View
     @_throttled_bound_onScroll = _(=> @_triggerScroll()).throttle 150, leading: false
     @_throttled_bound_onResize = _(=> @_triggerScroll true).throttle 900, leading: false
     @_throttled_bound_onCollectionChange = _(=> @_addItUp()).throttle 30, leading: false
+    @_throttled_bound_onFilter = _(=> @_dofilter()).throttle 150, leading: false
     @_changed_items = []
 
   render: ->
@@ -15,6 +16,7 @@ class FriendsApp::ListView extends Backbone.View
     @listenTo @collection, 'add change:prev_crush_friend_id change:next_crush_friend_id', @_addItem
     @collection.each @_addItem
     @listenTo @collection, 'remove', @_removeItem
+    @on 'filter', (str)=> @_onFilter str
 
     @_bindGlobal()
 
@@ -40,8 +42,9 @@ class FriendsApp::ListView extends Backbone.View
       if @_insertInPlace(model, view)
         @_addItem model.prev_crush()
         @_addItem model.next_crush()
-        @_throttled_bound_onResize()
+        @_throttled_bound_onFilter()
         @_scrollTo view()  if view() == @_cached_first
+        @trigger 'insert'
         break
 
   _isOrderValid: ->  # NOTE kinda order changes atomicity shim
@@ -90,6 +93,15 @@ class FriendsApp::ListView extends Backbone.View
       @_throttled_bound_onResize()
       delete @kids[model.id]
     @kids[model.id].trigger 'remove'
+
+  _onFilter: (str)->
+    @_filter_str = str
+    @_throttled_bound_onFilter()
+
+  _dofilter: ->
+    _(@kids).each (child)=>
+      child.$el.toggle !@_filter_str || child.model.match(@_filter_str)
+    @_throttled_bound_onResize()
 
   _bindGlobal: ->
     $(document).on 'scroll', @_throttled_bound_onScroll
