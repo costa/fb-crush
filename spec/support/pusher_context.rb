@@ -29,7 +29,7 @@ shared_context "pusher server client" do
     stub = stub.
       with(
         # XXX https://github.com/bblimke/webmock/issues/432
-        body: Regexp.new(Regexp.escape(body.to_json).sub(ANY_VALUE, '.+').sub(ANY_NUMERIC_VALUE.to_s, '\\d+')),
+        body: Regexp.new(Regexp.escape(body.to_json).gsub(ANY_VALUE, '.+').gsub(ANY_NUMERIC_VALUE.to_s, '\\d+')),
         headers: {
           'Accept'=>'*/*',
           'Content-Type'=>'application/json',

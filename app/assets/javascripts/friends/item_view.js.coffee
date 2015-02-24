@@ -16,19 +16,14 @@ class FriendsApp::ItemView extends Backbone.View
 
     @listenTo @dad, 'scroll', @_updateVisibility
     # NOTE the parent have to trigger scroll after render
+    @listenTo @model, 'change:intention change:is_mutual_intention', _(=> @_updateIntentness()).throttle 300, leading: false
+    @_updateIntentness true
 
     @on 'remove', @_removeAsync
 
-    # server (flash) notifications
-    # XXX binding here because the error handling UX must be local (and nicer)
     @listenTo @model, 'error', (_, jqXHR)->
       errors = JSON.stringify jqXHR.responseJSON?.errors || 'Xc:)'  # XXX tmp - other errors
       flash_error I18n.t 'alert', errors: errors, scope: 'friends.flash.update'
-    @listenTo @model, 'change:intention', ->
-      flash_notice I18n.t @model.intention(), name: @model.get('user_name'), scope: 'friends.flash.update.notice'
-    @listenTo @model, 'change:is_mutual_intention', ->  # XXX doesn't really work without real-time data channel updates
-      if @model.isMutualIntention()
-        flash_notice I18n.t @model.intention(), name: @model.get('user_name'), scope: 'friends.flash.update.notice.mutual'
     @
 
   _renderTemplateOnce: ->
@@ -44,9 +39,6 @@ class FriendsApp::ItemView extends Backbone.View
         JST['users/user_badge']
           user_name: @model.get 'user_name'
           user_pic_url: @model.get 'user_pic_url'
-
-    @listenTo @model, 'change:intention change:is_mutual_intention', @_updateIntentness
-    @_updateIntentness()
 
     @listenTo @model, 'request', @_disableControls
     @listenTo @model, 'sync error change:intention', @_enableControls
@@ -67,12 +59,17 @@ class FriendsApp::ItemView extends Backbone.View
         delete @__remove_async
       ).delay 300
 
-  _updateIntentness: ->
+  _updateIntentness: (skip_fx)->
     intentness_was = @__intentness
     @__intentness = @_intentness()
     if intentness_was != @__intentness
+      unless skip_fx
+        if @__intentness == 'full'
+          flash_notice I18n.t @model.intention(), name: @model.get('user_name'), scope: 'friends.flash.update.notice.mutual'
+        else
+          flash_notice I18n.t @model.intention(), name: @model.get('user_name'), scope: 'friends.flash.update.notice'
       @$el.removeClass 'intentness-' + intentness_was  if intentness_was
-      @$el.addClass 'intentness-' + @__intentness
+      @$el.addClass 'intentness-' + @__intentness  if @__intentness
 
   _updateVisibility: (top, bottom, resizing)->
     visibility_was = @__visibility

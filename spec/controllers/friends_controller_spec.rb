@@ -41,7 +41,7 @@ describe FriendsController do
       it "returns the friends list json" do
         xhr :get, 'index'
         expect(response).to be_success
-        expect(response.body).to eq [@another_friend, @friend].to_json  # XXX check out the order
+        expect(response.body).to eq [@friend.reload, @another_friend.reload].to_json
       end
 
     end

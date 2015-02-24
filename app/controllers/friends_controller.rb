@@ -8,7 +8,7 @@ class FriendsController < ApplicationController
   end
 
   def index
-    respond_with scope
+    respond_with scope.for_index
   end
 
   def update
@@ -23,8 +23,7 @@ class FriendsController < ApplicationController
   end
 
   def friend_params
-    # params.require(:friend).permit(:intention)
-    params.permit(:intention)  # XXX mystery! the above should work due to a mysterious addition of "friend"=>{"intention"=>...} to the params. Alas!
+    params.except(:id).permit(:intention)
   end
 
 end

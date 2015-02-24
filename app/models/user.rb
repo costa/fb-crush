@@ -3,7 +3,9 @@ class User < ActiveRecord::Base
 
   AUTH_INFO_ATTRS = %i[name email]
 
-  has_many :friends, ->{includes :user}, :foreign_key => 'ego_id', :inverse_of => :ego, :dependent => :destroy
+  has_many :friends, :foreign_key => 'ego_id', :inverse_of => :ego, :dependent => :destroy
+
+  attr_accessor :cache_crush_friend  # XXX for batch init operations
 
   strip_attributes
 

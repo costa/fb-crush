@@ -20,8 +20,13 @@ module Notification
 
   private
 
+  def notify?
+    true
+  end
+
+  # XXX must batch/throttle
   def notify(event)
-    self.class.notify_async pusher_channel, event, as_json  if pusher_channel
+    self.class.notify_async pusher_channel, event, as_json  if notify? && pusher_channel
   end
 
 end

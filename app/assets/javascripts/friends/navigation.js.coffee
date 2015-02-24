@@ -1,7 +1,5 @@
 class FriendsApp::Navigation extends Backbone.View
 
-  el: '#window-title'
-
   initialize: ->
     @_throttled_onAll = _(@_updateStats).throttle 150, leading: false
     super

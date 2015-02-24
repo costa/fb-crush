@@ -8,5 +8,5 @@ class @FriendsApp
       @_friendsBackpusher = new Backpusher pusher.subscribe(channel), @friends
 
     # views
-    new FriendsApp::ListView(collection: @friends).render()
-    new FriendsApp::Navigation(collection: @friends).render()
+    new FriendsApp::ListView(collection: @friends, el: '#friends').render()
+    new FriendsApp::Navigation(collection: @friends, el: '#window-title').render()
