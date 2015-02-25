@@ -51,10 +51,7 @@ module User::FacebookConcern
         if friend.user.changed?
           friend.user.save!
         end
-        if force
-          def friend.notify?; false; end
-          friend.save!
-        end
+        friend.save! if force
       else
         friends.create! do |friend|
           friend.user = User.find_or_create_with_facebook(fb_friend)
@@ -74,7 +71,9 @@ module User::FacebookConcern
   end
 
   def fetch_facebook_friends_async(force=false)
-    fetch_facebook_friends force  if should_fetch_facebook_friends?
+    Friend.disable_notifications force do
+      fetch_facebook_friends force  if should_fetch_facebook_friends?
+    end
   end
   handle_asynchronously :fetch_facebook_friends_async, :priority => EXTERNAL_BATCH_PRIORITY
 

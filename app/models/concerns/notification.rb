@@ -14,6 +14,17 @@ module Notification
       end
       handle_asynchronously :notify_async, :priority => REALTIME_NOTIFICATIONS_PRIORITY
 
+      def notifications_disabled?
+        !!@_notifications_disabled
+      end
+
+      def disable_notifications(disable=true)  # NOTE NOT thread safe
+        were = @_notifications_disabled
+        @_notifications_disabled = disable
+        yield  if block_given?
+        @_notifications_disabled = were
+      end
+
     end
 
   end
@@ -21,7 +32,7 @@ module Notification
   private
 
   def notify?
-    true
+    !self.class.notifications_disabled?
   end
 
   # XXX must batch/throttle
