@@ -8,12 +8,15 @@ class FriendsApp::Navigation extends Backbone.View
     @$search_clr = @$search_form.find('.clear-btn')
     @$title = @$el.find('.navbar-brand')
     @_throttled_onAdd = _(@_updateStats).throttle 1500, leading: false
+    @_throttled_updateHeat = _(@_updateHeat).throttle 1500, leading: false
     @_bound_triggerFilter = => @_triggerFilter()
     @_bound_clearFilter = => @_clearFilter()
     @_clearFilter()
 
   render: ->
     super
+    @listenTo @list_view.collection, 'add change:is_mutual_intention', @_throttled_updateHeat
+    @_throttled_updateHeat()
     @listenTo @list_view, 'insert', @_throttled_onAdd  # NOTE the event callback params are ignored
     @_throttled_onAdd()
     @$search_inp.on 'input', @_bound_triggerFilter
@@ -41,3 +44,6 @@ class FriendsApp::Navigation extends Backbone.View
   _clearFilter: ->
     @$search_inp.val ''
     @_triggerFilter()
+
+  _updateHeat: ->
+    @$title.toggleClass 'text-danger', !!@list_view.collection.findWhere(is_mutual_intention: true)

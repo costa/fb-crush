@@ -23,7 +23,11 @@ footer {
   left: 0;
   bottom: 0;
 }
-nav {
+nav.navbar {
+  .navbar-brand.text-danger {
+    color: #F2524D;
+    text-shadow: 0 0 1px #D2322D, 0 0 1px #B2120D;
+  }
   form.search {
     .clear-btn {
       cursor: pointer;

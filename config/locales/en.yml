@@ -2,23 +2,23 @@ en:
   flash:
     application:
       authenticate_user:
-        alert: "You need to sign in for access to this page."
+        alert: "You need to log in for access to this page."
     sessions:
       create:
-        notice: "Signed in!"
+        notice: "Logged in!"
       destroy:
-        notice: "Signed out!"
+        notice: "Logged out!"
       failure:
-        alert: "Authentication error: %{error}"
+        alert: "Authentication error: %{error}..."
   friends:
     flash:
       update:
-        alert: "The server isn't happy %{errors}... Reload and — if this doesn't help — report please!"
+        alert: "The server isn't happy (%{errors})... Reload and — if didn't help — report please!"
         notice:
           love: "Your feelings towards %{name} have been noted. Good luck!"
           none: "You're no longer interested in %{name}, okay."
           mutual:
-            love: "Yess! Your feelings towards %{name} are mutual. Congrats <!3"
+            love: "Yess! You've found a mutual attraction with %{name}. Congrats &lt;!3"
     navigation:
       title_html:
         zero: "fb-CRUSH: loading friends..."
@@ -33,20 +33,21 @@ en:
   home:
     index:
       view_story: "...view the full story"
-      tagline_html: "Escape awkwardness, know for certain!<br/> This is fb-CRUSH &lt;!3"
+      tagline_html: "Ever wondered if your facebook friends were"
       intro:
-        title_html: "Find mutual attractions, avoid awkward moves, be discrete:"
+        title_html: "Find mutualities, conquer awkwardness.<br/><small>fb-CRUSH</small> is a fun easy way to play the crush game:"
         point:
-          a_html: "Login with facebook; see all your friends"
-          b_html: "Choose ones that make your heart throb; <strong>No Notifications</strong> of any kind will be sent to anybody"
-          c_html: "Make sure they use fb-CRUSH and be patient; they may be choosing you any day"
-          d_html: "When the choice is mutual — and only then — both of you — and only you — will see it next time you check &lt;!3"
+          a_html: "Login with facebook;<br/>see all your facebook friends."
+          b_html: "Find one that makes your heart throb, choose <span class='text-danger'>Crush!</span><br/><strong>No Notifications</strong> of any kind will be sent to anyone!"
+          c_html: "But make sure your crush uses <small>fb-CRUSH</small> as well — ask a friend of the friend to promote it <span class='text-danger'>&lt;?3</span> — and be patient;<br/>they may be choosing you any day..."
+          d_html: "When the choice is mutual — and only then — both of you — and only you — will see it instantly — only at <small>fb-CRUSH</small>.com <span class='text-danger'>&lt;!3</span>"
+        summary_html: "The awkward bit is gone, enjoy your crush!"
       special:
-        title_html: "Valentine's week special: -no-limits- mode:"
+        title_html: "Coming soon:"
         point:
-          a_html: "Let's make it a week, one day is just not enough for <strong>everyone</strong>."
-          b_html: "Next week, choose only <strong>6</strong> friends for exactly <strong>6</strong> days each!"
-          c_html: "Love and share your love without limits <strong>this week</strong>!"
+          a_html: "Choose only <strong>6</strong> friends for exactly <strong>6</strong> days each!"
+          b_html: "More FX &lt;!3"
+          c_html: "Even more discreteness, stealth mode for full confidentiality."
   layouts:
     application:
       title: "fb-CRUSH -nolimits- Valentine's special"

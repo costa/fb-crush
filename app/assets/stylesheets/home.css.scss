@@ -60,16 +60,21 @@ main {
           }
           .tagline {
             text-align: center;
-            font-size: 175%;
+            font-size: 200%;
             text-shadow: 0 0 2px #FFF, 0 0 2px #FFF;
           }
           .description {
             font-size: 150%;
-            text-shadow: 0 0 1px #FFF, 0 0 1px #FFF;
-            .head {
-              font-size: 125%;
+            text-shadow: 0 0 2px #FFF, 0 0 2px #FFF;
+            .head, .foot {
+              &:first-line {
+                font-size: 125%;
+              }
             }
-            .special {
+            li {
+              margin-top: 3px;
+            }
+            .special, .text-danger {
               color: #F2524D;
               text-shadow: 0 0 2px #D2322D, 0 0 2px #B2120D;
             }
