@@ -21,9 +21,9 @@ module User::FacebookConcern
 
   def validate_facebook_user_data(fb_user)
     self.provider = 'facebook'
-    self.uid = fb_user.identifier
-    self.name = fb_user.name
-    self.email = fb_user.email
+    self.uid = fb_user.identifier.presence || uid
+    self.name = fb_user.name.presence || name
+    self.email = fb_user.email.presence || email
     valid?  # XXX before_validation callbacks and all around nice return value
   end
 
