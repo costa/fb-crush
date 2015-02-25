@@ -20,9 +20,12 @@ module Concerns::Authentication
   end
 
   def authenticate_user!
-    unless user_signed_in?
+    if !user_signed_in? || current_user.should_sign_in?
       reset_session
-      redirect_to root_path, :alert => t('flash.application.authenticate_user.alert')
+      respond_to do |format|
+        format.json{ render :json => {errors: 'Authentication Error'}, :status => :unathenticated }
+        format.html { redirect_to root_path, :alert => t('flash.application.authenticate_user.alert') }
+      end
     end
   end
 

@@ -22,7 +22,7 @@ class FriendsApp::ItemView extends Backbone.View
     @on 'remove', @_removeAsync
 
     @listenTo @model, 'error', (_, jqXHR)->
-      errors = JSON.stringify jqXHR.responseJSON?.errors || 'Xc:)'  # XXX tmp - other errors
+      errors = JSON.stringify jqXHR.responseJSON?.errors || 'X('
       flash_error I18n.t 'alert', errors: errors, scope: 'friends.flash.update'
     @
 

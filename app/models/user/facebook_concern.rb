@@ -27,8 +27,11 @@ module User::FacebookConcern
     valid?  # XXX before_validation callbacks and all around nice return value
   end
 
-  private
+  def should_sign_in?
+    !facebook_accessible?
+  end
 
+  private
 
   def facebook_accessible?
     provider == 'facebook' && access_token.present?
@@ -72,7 +75,12 @@ module User::FacebookConcern
 
   def fetch_facebook_friends_async(force=false)
     Friend.disable_notifications force do
-      fetch_facebook_friends force  if should_fetch_facebook_friends?
+      begin
+        fetch_facebook_friends force  if should_fetch_facebook_friends?
+      rescue FbGraph::InvalidToken => e
+        logger.info "#{e.backtrace}\n- #{e.message} (#{e.class})"
+        update! access_token: nil
+      end
     end
   end
   handle_asynchronously :fetch_facebook_friends_async, :priority => EXTERNAL_BATCH_PRIORITY
