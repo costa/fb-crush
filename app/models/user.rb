@@ -5,8 +5,6 @@ class User < ActiveRecord::Base
 
   has_many :friends, :foreign_key => 'ego_id', :inverse_of => :ego, :dependent => :destroy
 
-  attr_accessor :cache_crush_friend  # XXX for batch init operations
-
   strip_attributes
 
   validates_presence_of :name

@@ -92,27 +92,17 @@ class Friend < ActiveRecord::Base
     end
   end
   def set_crush_first!(first=nil)
-    if (first ||= ego.friends.first_crush) && first != self
+    if (first ||= ego.friends.first_crush || ego.friends.first) && first != self
       remove_crush!
       self.prev_crush_friend_id, self.next_crush_friend_id = nil, first.id
       @_update_next_with_id = first
-    elsif friend = ego.cache_crush_friend
-      ego.cache_crush_friend = nil
-      set_crush_first! friend
-    else
-      ego.cache_crush_friend = self
     end
   end
   def set_crush_last!(last=nil)
-    if (last ||= ego.friends.last_crush) && last != self
+    if (last ||= ego.friends.last_crush || ego.friends.last) && last != self
       remove_crush!
       self.prev_crush_friend_id, self.next_crush_friend_id = last.id, nil
       @_update_prev_with_id = last
-    elsif friend = ego.cache_crush_friend
-      ego.cache_crush_friend = nil
-      set_crush_last! friend
-    else
-      ego.cache_crush_friend = self
     end
   end
   def set_crush_after_crush!
