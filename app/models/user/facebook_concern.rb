@@ -11,7 +11,7 @@ module User::FacebookConcern
   end
 
   def fetch_friends_async(force=false)
-    fetch_facebook_friends_async force  if facebook_accessible? && (force || should_fetch_facebook_friends?)
+    fetch_facebook_friends_async force  if should_fetch_facebook_friends?(force)
   end
 
   def facebook_me
@@ -37,8 +37,10 @@ module User::FacebookConcern
     provider == 'facebook' && access_token.present?
   end
 
-  def should_fetch_facebook_friends?
-    !friends_fetched_at || friends_fetched_at < facebook_polling_interval.ago
+  def should_fetch_facebook_friends?(force=false)
+    facebook_accessible? && (force ||
+      !friends_fetched_at || friends_fetched_at < facebook_polling_interval.ago
+    )
   end
 
   def facebook_polling_interval
@@ -76,7 +78,7 @@ module User::FacebookConcern
   def fetch_facebook_friends_async(force=false)
     Friend.disable_notifications force do
       begin
-        fetch_facebook_friends force  if should_fetch_facebook_friends?
+        fetch_facebook_friends force  if should_fetch_facebook_friends?(force)
       rescue FbGraph::InvalidToken => e
         logger.info "#{e.backtrace}\n- #{e.message} (#{e.class})"
         update! access_token: nil
