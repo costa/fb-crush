@@ -14,7 +14,13 @@ describe User do
 
     it "should create new friends"
 
+    it "should update old friends"
+
+    it "should not blank out missing data"
+
     it "should destroy no-longer friends"
+
+    it "should blank out access token on appropriate exception"
 
   end
 
