@@ -148,7 +148,7 @@ class Scene extends Backbone.View
     ).render()
     @_throttled_bound_zoom()
     @_bindGlobal()
-    @_contract()
+    @_contract true
     @
   remove: ->
     @_unbindGlobal()
@@ -169,8 +169,8 @@ class Scene extends Backbone.View
     @_hideLayers 'snap'
     @_showLayers 'story', 'events'
 
-  _contract: ->
-    return  unless @_expanded
+  _contract: (force)->
+    return  unless force || @_expanded
     @_expanded = false
     $animateScrollDocumentTo 0
     @$el.animate(opacity: 0, 2000).queue((next)=>
