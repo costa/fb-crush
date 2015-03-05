@@ -1,39 +1,33 @@
-#intro.scene
-  .layers
-    #bg-layer.layer
-    #events-layer.layer.initially-hidden
-    #story-layer.layer.initially-hidden
-    #snap-layer.layer
-    #func-layer.layer
-      .text-block-holder
-        .text-block.tagline.bg
-        .text-block.tagline= t('.tagline_html')
-      .login-blk
-        .chevron.btn.btn-lg.btn-link
-          .down
-            = t('.view_story')
-            %i.glyphicon.glyphicon-chevron-down
-            %i.glyphicon.glyphicon-chevron-down
-          .up
-            %i.glyphicon.glyphicon-chevron-up
-            %i.glyphicon.glyphicon-chevron-up
-
-        = link_to t('layouts.navigation.login'), signin_path, class: "btn btn-primary btn-lg btn-danger"
-      .text-block-holder
-        .text-block.description.bg
-        .text-block.description
-          .intro
-            .head= t('.intro.title_html')
-            %ul
-              - t('.intro.point').each_key do |k|
-                %li= t(".intro.point.#{k}")
-            .foot= t('.intro.summary_html')
-          .heart-holder
-            .heart
-          .special
-            .head= t('.special.title_html')
-            %ul
-              - t('.special.point').each_key do |k|
-                %li= t(".special.point.#{k}")
+.bg-layers.fixed-width
+.content
+  .text-blk.tagline
+    .text-center= t('.tagline_html')
+  .text-blk.intro= t('.intro.title_html')
+  - t('.intro.point').each_key do |k|
+    .text-blk.intro-point{class: "intro-point-#{k.to_s.split('_')[0]}"}= t(".intro.point.#{k}")
+  .text-blk
+    .text-center
+      .heart.text-danger
+        %i.glyphicon.glyphicon-heart
+  .text-blk.summary
+    .text-center
+      = t('.intro.summary_html')
+  .login-blk.fixed-width
+    .bg
+    .chevron.btn.btn-lg.btn-link
+      .down
+        = t('.view_story')
+        %i.glyphicon.glyphicon-chevron-down
+        %i.glyphicon.glyphicon-chevron-down
+      .up
+        %i.glyphicon.glyphicon-chevron-up
+        %i.glyphicon.glyphicon-chevron-up
+    = link_to t('layouts.navigation.login'), signin_path, class: "btn btn-primary btn-lg btn-danger"
+    .sub-titles
+    .special.text-danger
+      = t('.special.title_html')
+    - t('.special.point').each_key do |k|
+      .special-point.text-danger{class: "special-point-#{k.to_s.split('_')[0]}"}
+        = t(".special.point.#{k}")
 :coffeescript
-  $ crushLand()
+  $ crushLand

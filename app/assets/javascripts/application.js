@@ -19,5 +19,7 @@
 //= require backbone-rails
 //= require backpusher
 //= require i18n/translations
+//= require _ext
+//= require yaani_layer
 //= require_tree .
 //= require uservoice

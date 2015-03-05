@@ -116,5 +116,4 @@ class FriendsApp::ListView extends Backbone.View
     @trigger 'scroll', top, top + $(window).height(), resizing
 
   _scrollTo: (child)->
-    $('html, body').
-      animate({scrollTop: child.$el.position().top}, 900)
+    $animateScrollDocumentTo child.$el.position().top

@@ -1,199 +1,249 @@
 SCENE_WIDTH = 750
 SCENE_HEIGHT = 7600
+SHORT_SCENE_HEIGHT = 2700
+LONG_SCENE_HEIGHT = 5000  # don't ask
 
-zoomPx = (l, zoom)-> "#{Math.round zoom * l}px"
 
-
-class Layer
-  topOffset: 0
-  constructor: (el)->
-    @$el = $("##{el}").addClass(el)
-  resize: (zoom)->
-    @zoom = zoom
-    @$el.css(
-      'background-position': "0 #{@zoomPx @topOffset}"
-    )
-    @realTop = @$el.position().top / @zoom
+class ContentControl extends Backbone.View
+  inert: true
+  initialize: (options)->
+    super
+    @parent = options.parent
+    @_throttled_bound_fixTextBlocks = _(=> @_fixTextBlocks()).throttle 150
   render: ->
+    @$('.text-blk').addClass 'front'
+    @listenTo @parent, 'zoom scroll', @_throttled_bound_fixTextBlocks
+    @
+  _removeElement: ->  # NOTE do NOT remove @$el
+  _fixTextBlocks: ->
+    @_$login ||= @$('.login-blk')
+    login_top = @_$login.offset().top
+    $back_up_cont = @$('.sub-titles')
+    changed = false
+    @$('.text-blk').reverse().each ->  # XXX yeah, it was quick and dirty
+      $blk = $(@)
+      bottom = $blk.offset().top + $blk.height()
+      if bottom < login_top
+        if back_up_id = $blk.data('back_up_id')
+          $blk.data 'back_up_id', null
+          $("##{back_up_id}").slideUp(-> $(@).remove())
+          $blk.addClass 'front'
+          changed = true
+          return false
+      else
+        unless $blk.data('back_up_id')
+          $blk.removeClass 'front'
+          $("<div id='#{next_back_up_id}'>").hide().html($blk.html()).prependTo $back_up_cont
+          $blk.data 'back_up_id', next_back_up_id
+          $("##{next_back_up_id}").slideDown()
+          next_back_up_id += 1
+          changed = true
+          return false
+    @_$login.toggleClass 'at-bottom', $back_up_cont.is(':empty')
+    @_throttled_bound_fixTextBlocks()  if changed
+  next_back_up_id = 1111
+
+class LayeredBackground extends Backbone.View
+  MIN_LAYER_SCROLL = 2
+  MAX_SCROLL_PX_MS = 1
+  SCROLL_THROTTLE = 13
+  MAX_LAYER_SCROLL = MAX_SCROLL_PX_MS * SCROLL_THROTTLE
+
+  initialize: (options)->
+    super
+    @_throttled_bound_smoothScroll = _(=> @_smoothScroll()).throttle SCROLL_THROTTLE
+    _(@).extend _(options).pick 'parent', 'layers'
+  render: ->
+    @listenTo @parent, 'zoom', @_zoom
+    @listenTo @parent, 'scroll', @_scroll
+    @_prop_values = {}
+    @_renderLayers()
+  _removeElement: ->  # NOTE do NOT remove @$el
+  _renderLayers: ->
+    bgs = _(@layers).chain().map((layer)->  layer.background).compact().value().reverse()
+    _(YaaniLayer::ScrollableAppearable::background_props).each (prop)=>
+      new_prop_value = _(bgs).map((bg)-> bg[prop]).join(',')
+      if @_prop_values[prop] != new_prop_value
+        @$el.css(
+          "background-#{prop}": new_prop_value
+        )
+        @_prop_values[prop] = new_prop_value
+  _zoom: ->
+    _(@layers).each (layer)=>
+      layer.zoomWith @parent
+    @_renderLayers()
+  _scroll: (top)->
+    @_next_top = top
+    @_inertia_top = null
+    @_throttled_bound_smoothScroll()
+  _smoothScroll: ->
+    @_actual_top ||= 0
+    diff =
+      if @_inertia_top
+        @_inertia_top - @_actual_top
+      else
+        @_next_top - @_actual_top
+    abs_diff = Math.abs(diff)
+    @_actual_top +=
+      if abs_diff < MIN_LAYER_SCROLL
+        if @_inertia_top
+          _(@_throttled_bound_smoothScroll).defer()
+          if Math.abs(@_inertia_top - @_next_top) < MIN_LAYER_SCROLL
+            @_inertia_top = null
+          else
+            @_inertia_top = @_next_top - (@_next_top - @_inertia_top)/2
+        diff
+      else
+        _(@_throttled_bound_smoothScroll).defer()
+        if abs_diff > MAX_LAYER_SCROLL
+          parseInt (diff/abs_diff)*MAX_LAYER_SCROLL
+        else
+          if @_inertia_top
+            parseInt diff/2
+          else
+            @_inertia_top = @_next_top + diff/2  if @inert
+            diff
+    _(@layers).each (layer)=>
+      layer.scroll @_actual_top
+    @_renderLayers()
+
+class BackgroundLayer extends YaaniLayer::Scrollable
+  scroll_ratio: 0.5
+
+class EventsLayer extends YaaniLayer::ScrollableAppearable
+  scroll_ratio: 2
+  setToShow: ->
+    @appear_top = 1500
+    @disappear_top = 5400
+
+class StoryLayer extends YaaniLayer::ScrollableAppearable
+
+class SnapLayer extends YaaniLayer::ScrollableAppearable
+
+class Scene extends Backbone.View
+  events:
+    'click .chevron .down': '_expand'
+    'click .chevron .up': '_contract'
+  initialize: ->
+    super
+    @_throttled_bound_zoom = _(=> @_zoom()).throttle 900
+    @_throttled_bound_scroll = _(=> @_scroll()).throttle 150
+    @game = 'crush'
+    @_layers =
+      bg: new BackgroundLayer @_theme 'bg-layer'
+      events: new EventsLayer @_theme 'events-layer'
+      story: new StoryLayer @_theme 'story-layer'
+      snap: new SnapLayer @_theme 'snap-layer'
+  render: ->
+    $('body').addClass(@game)
+    @_init_story()
+    @_bg_view ||= new LayeredBackground(
+      el: @$('.bg-layers')
+      parent: @
+      layers: _pickValues(@_layers, 'bg', 'events', 'story', 'snap')
+    ).render()
+    @_cont_view ||= new ContentControl(
+      el: @$('.content')
+      parent: @
+    ).render()
+    @_throttled_bound_zoom()
+    @_bindGlobal()
+    @_contract()
+    @
+  remove: ->
+    @_unbindGlobal()
+    @_cont_view.remove()
+    @_cont_view = null
+    @_bg_view.remove()
+    @_bg_view = null
+    $('body').removeClass(@game)
+    @
+
   zoomPx: (l)->
-    zoomPx l, @zoom
+    "#{Math.round @zoom * l}px"
 
-class ScrollableLayer extends Layer
-  scrollRatio: 1
-  scroll: (top)->
-    @targetTop = top / @zoom
-  render: ->
-    super
-    diff = @scrollRatio * @targetTop - @realTop
-    if Math.abs(diff) > 1
-      @realTop += diff/2
-      @$el.css top: @zoomPx -@realTop
+  _init_story: ->
+    @_hideLayers 'story', 'events'
+    @_showLayers 'snap'
+  _full_story: ->
+    @_hideLayers 'snap'
+    @_showLayers 'story', 'events'
 
-class ScrollableAppearableLayer extends ScrollableLayer
-  appearTop: -999
-  disappearTop: 999999
-  constructor: ->
-    super
-    @realOpacity = if @$el.is(':visible') then 1 else 0
-  render: ->
-    super
-    targetOpacity =
-      if @realTop >= @appearTop && @realTop < @disappearTop then 1 else 0
-    diff = targetOpacity - @realOpacity
-    if Math.abs(diff) > 0.01
-      @realOpacity += diff/2
-      @$el.css(
-        opacity: @realOpacity
-        display: if @realOpacity < 0.05 then 'none' else 'block'
-      )
-
-class BackgroundLayer extends ScrollableLayer
-  scrollRatio: 0.5
-
-class EventsLayer extends ScrollableAppearableLayer
-  topOffset: 150
-  scrollRatio: 2
-  appearTop: 2*2100
-  disappearTop: 2*5300
-
-class StoryLayer extends ScrollableAppearableLayer
-  topOffset: 2000
-  appearTop: 2075
-
-class SnapLayer extends ScrollableAppearableLayer
-  topOffset: 150
-  disappearTop: 1700
-
-class FuncLayer extends ScrollableLayer
-
-  EXPAND_DURATION = 1000
-
-  constructor: (el, parent)->
-    super
-    @parent = parent
-    @$el.find('.chevron .down').on 'click', =>
-      $('html, body').animate {scrollTop: parseInt @zoomPx 2100}, 2 * EXPAND_DURATION
-      @_expand()
-    @$el.find('.chevron .up').on 'click', =>
-      $(window).scrollTop parseInt @zoomPx 1200
-      @_contract()
-    @_renderLogin true
-  resize: ->
-    super
-    @$el.find('.tagline').css(
-      height: @zoomPx 120
-      padding: @zoomPx 18
-    )
-    @$el.find('.description').css(
-      height: @zoomPx 1050
-      'margin-top': @zoomPx 18
-      padding: @zoomPx 18
-    )
-    @_renderLogin()
-  scroll: ->
-    super
-    if @realTop < 500
-      @_contract()
   _contract: ->
     return  unless @_expanded
     @_expanded = false
-    @_mustContract = false
-    @_renderLogin()
+    $animateScrollDocumentTo 0
+    @$el.animate(opacity: 0, 2000).queue((next)=>
+      $('body').height @zoomPx SHORT_SCENE_HEIGHT
+      @$el.removeClass 'full-story'
+      @_cont_view.inert = true
+      @_init_story()
+      next()
+    ).animate(opacity: 1, 2000)
   _expand: ->
     return  if @_expanded
     @_expanded = true
+    $animateScrollDocumentTo 0
+    @$el.animate(opacity: 0, 2000).queue((next)=>
+      $('body').height @zoomPx LONG_SCENE_HEIGHT
+      @$el.addClass 'full-story'
+      @_cont_view.inert = false
+      @_full_story()
+      next()
+    ).animate(opacity: 1, 2000)
     roll = =>
-      $(window).scrollTop $(window).scrollTop() + 1
-      _(roll).delay 50  if @_expanded
+      if @_just_scrolled
+        @_just_scrolled = false
+        @_auto_scroll_disabled = true
+        clearTimeout @_just_scrolled_timer
+        @_just_scrolled_timer = setTimeout(
+          => @_auto_scroll_disabled = false
+        , 2000)
+      unless @_auto_scroll_disabled
+        @_just_auto_scrolled = true
+        $(document).scrollTop $(document).scrollTop() + 1
+      _(roll).delay 14  if @_expanded
     _(roll).delay 2000
-    @_renderLogin()
-  _renderLogin: (do_not_animate)->
-    $loginBlk = @$el.find '.login-blk'
-    spacer_height =
-      if @_expanded
-        $loginBlk.addClass 'after-story'
-        6500
-      else
-        $loginBlk.removeClass 'after-story'
-        1700
-    css = 'margin-top': @zoomPx spacer_height
-    parent_css = height: @zoomPx SCENE_HEIGHT - 6500 + spacer_height
-    unless do_not_animate
-      $loginBlk.animate css, EXPAND_DURATION
-      @parent.$el.animate parent_css, EXPAND_DURATION
-    else
-      $loginBlk.css css
-      @parent.$el.css parent_css
 
+  _hideLayers: (layers...)->
+    _(_pickValues(@_layers, layers...)).each (layer)-> layer.setToHide()
+  _showLayers: (layers...)->
+    _(_pickValues(@_layers, layers...)).each (layer)-> layer.setToShow()
 
-class Scene
+  _theme: (asset)->
+    "#{@game}-#{asset}-#{SCENE_WIDTH}x#{SCENE_HEIGHT}"
 
-  constructor: ->
-    @layers = []
-    @$el = $('#intro')
+  _bindGlobal: ->
+    @_unbindGlobal()
+    $(window).on 'resize', @_throttled_bound_zoom
+    $(document).on 'scroll', @_throttled_bound_scroll
 
-  updateLayout: ->
+  _unbindGlobal: ->
+    $(window).off 'resize', @_throttled_bound_zoom
+    $(document).off 'scroll', @_throttled_bound_scroll
+
+  _zoom: ->
     width = $(window).width()
-    scene =
+    @zoom =
       if width > SCENE_WIDTH
-        width: SCENE_WIDTH
-        left: (width - SCENE_WIDTH)/2
+        1
       else
-        width: width
-        left: 0
+        width / SCENE_WIDTH
 
-    zoom = scene.width / SCENE_WIDTH
+    # XXX CSS this
+    @$('.fixed-width').andSelf().css width: @zoomPx SCENE_WIDTH
+    @$el.height @zoomPx SCENE_HEIGHT
+    @$el.css 'font-size': @zoomPx(18)
 
-    @$el.css 'font-size': zoomPx(18, zoom)
+    @trigger 'zoom'
 
-    @$el.find('.layers').css scene
+  _scroll: ->
+    if @_just_auto_scrolled
+      @_just_auto_scrolled = false
+    else
+      @_just_scrolled = true
+    @trigger 'scroll', $(document).scrollTop() / @zoom
 
-    _(@layers).each (layer)->
-      layer.resize zoom
-
-  goAnimate: ->
-
-    @$el.addClass 'animated'
-
-    @layers = {
-      bg: new BackgroundLayer 'bg-layer'
-      events: new EventsLayer 'events-layer'
-      story: new StoryLayer 'story-layer'
-      snap: new SnapLayer 'snap-layer'
-      func: new FuncLayer 'func-layer', @
-    }
-
-    updateScene = =>
-      _(@layers).each (layer)->
-        realTop = $(window).scrollTop()
-        layer.scroll realTop
-
-    updateBoth = =>
-      @updateLayout()
-      updateScene()
-
-    updateBoth()
-
-    renderLayers = =>
-      _(@layers).each (layer)-> layer.render()
-      _(renderLayers).delay 64
-    renderLayers()
-
-    $(window).on 'resize', _(updateBoth).throttle 198
-    $(window).on 'scroll', _(updateScene).throttle 32
-
-
-  goStatic: ->
-
-    @layers = [
-      new BackgroundLayer 'bg-layer'
-      new StoryLayer 'story-layer'
-      new SnapLayer 'snap-layer'
-      new FuncLayer 'func-layer', @
-    ]
-
-    $(window).on 'resize', _(updateLayout).throttle 198
 
 window.crushLand = ->
-  scene = new Scene
-  scene.goAnimate()
+  new Scene(el: $('main').addClass('scene')).render()

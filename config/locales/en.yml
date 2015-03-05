@@ -35,26 +35,26 @@ en:
       view_story: "...view the full story"
       tagline_html: "Ever wondered if your facebook friends were"
       intro:
-        title_html: "Find mutualities, conquer awkwardness.<br/><small>fb-CRUSH</small> is a fun easy way to play the crush game:"
+        title_html: "Having a secret crush on someone? Wondering if they might ever feel the same?<br/>It's the new fun way to play the crush game:"
         point:
           a_html: "Login with facebook;<br/>see all your facebook friends."
-          b_html: "Find one that makes your heart throb, choose <span class='text-danger'>Crush!</span><br/><strong>No Notifications</strong> of any kind will be sent to anyone!"
-          c_html: "But make sure your crush uses <small>fb-CRUSH</small> as well — ask a friend of the friend to promote it <span class='text-danger'>&lt;?3</span> — and be patient;<br/>they may be choosing you any day..."
-          d_html: "When the choice is mutual — and only then — both of you — and only you — will see it instantly — only at <small>fb-CRUSH</small>.com <span class='text-danger'>&lt;!3</span>"
+          b_html: "Find that sweetheart of yours, choose <span class='text-danger'>Crush!</span><br/><strong>No Notifications</strong> of any kind will be sent to anyone!"
+          c_html: "Make sure they use <small>fb&#8209;CRUSH</small> as well — ask friends to promote it <span class='text-danger'>&lt;?3</span> — and be persistent;<br/>they may be choosing you any day..."
+          d_html: "When the choice is mutual — and only then — both of you — and only you — will see it at <small>fb&#8209;CRUSH</small>.com <span class='text-danger'>&lt;!3</span>"
         summary_html: "The awkward bit is gone, enjoy your crush!"
       special:
         title_html: "Coming soon:"
         point:
           a_html: "Choose only <strong>6</strong> friends for exactly <strong>6</strong> days each!"
-          b_html: "More FX &lt;!3"
-          c_html: "Even more discreteness, stealth mode for full confidentiality."
+          b_html: "More gameplay &amp; FX &lt;!3"
+          c_html: "Stealth mode for full confidentiality."
   layouts:
     application:
-      title: "fb-CRUSH -nolimits- Valentine's special"
-      description: "Escape awkwardness, know for certain! This is fb-CRUSH <!3"
+      title: "fb-CRUSH -nolimits-"
+      description: "Having a secret crush on someone? Wondering if they might ever feel the same? It's the new fun way to play the crush game!"
       version: "made in heaven %{version}"
     navigation:
-      brand_html: "fb-CRUSH <small><strike>limits</strike></small> <span class='text-danger'>Valentine's special</span>"
+      brand_html: "fb-CRUSH <small><strike>limits</strike></small>"
       search: "Search"
       toggle_nav: "Toggle navigation"
       login: "Login with facebook"

@@ -18,7 +18,7 @@
     %main.container-fluid
       = yield
     %footer
-      %span.copyright= t('.version', version: APP_VERSION)
+      %small.copyright= t('.version', version: APP_VERSION)
     #flash= render 'layouts/messages'
 
     :coffeescript

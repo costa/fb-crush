@@ -3,139 +3,190 @@
 .initially-hidden {
   display: none;
 }
-main {
-  .scene {
+main.scene {
+  padding-left: 0;
+  padding-right: 0;
+  .content {
     position: relative;
-    background: #333 fixed image-url('crush-bg-bg-250x249.png');
-    .layers {
-      .layer {
-        &.snap-layer {
-          background-image: image-url('crush-snap-750x3501.png');
+    color: #FFF;
+    .login-blk {
+      position: fixed;
+      top: 75%;
+      text-align: center;
+      &.at-bottom {
+        height: auto;
+        top: auto;
+        bottom: 0;
+        padding-bottom: 3em;  // NOTE for the footer
+      }
+      .bg {
+        position: absolute;
+        z-index: -1;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        background: #000;
+        box-shadow: 0 0 2px #000, 0 0 4px #000, 0 0 12px #000, 0 0 24px #000;
+        opacity: 0.8;
+      }
+      .btn-primary {
+        margin-top: -1.5em;
+        box-shadow: 0 0 12px #000, 0 0 24px #000;
+      }
+      .chevron {
+        position: absolute;
+        right: 1%;
+        margin-top: -4em;
+        color: #F2524D;
+        font-weight: bold;
+        text-shadow: 0 0 1px #D2322D, 0 0 2px #B2120D, 0 0 12px #000, 0 0 12px #000, 0 0 24px #000, 0 0 24px #000, 0 0 24px #000;
+        cursor: pointer;
+        &:hover {
+          text-shadow: 0 0 1px #D2322D, 0 0 2px #B2120D, 0 0 4px #D2322D, 0 0 8px #B2120D, 0 0 12px #000, 0 0 12px #000, 0 0 24px #000, 0 0 24px #000, 0 0 24px #000;
+          text-decoration: none;
         }
-        &.func-layer {
-          color: #FFF;
-          .login-blk {
-            position: relative;
-            text-align: center;
-            margin-top: 9999px;
-            transition: font-size .15s;
-            .chevron {
-              position: absolute;
-              right: 18px;
-              top: -45px;
-              color: #F2524D;
-              font-weight: bold;
-              text-shadow: 0 0 3px #FFF, 0 0 3px #FFF;
-              cursor: pointer;
-              &:hover {
-                text-shadow: 0 0 6px #FFF, 0 0 6px #FFF, 0 0 6px #FFF;
-                text-decoration: none;
-              }
-              .down {
-                position: relative;
-                display: block;
-                @include animation(pulsate 2s infinite ease-out);
-              }
-              .up {
-                position: relative;
-                display: none;
-              }
-              .glyphicon:last-child {
-                position: absolute;
-                display: block;
-                right: 0;
-                top: .69em;
-              }
-            }
-            &.after-story {
-              .chevron {
-                .down {
-                  display: none;
-                }
-                .up {
-                  display: block;
-                }
-              }
-            }
-          }
-          .tagline {
-            text-align: center;
-            font-size: 200%;
-            text-shadow: 0 0 2px #FFF, 0 0 2px #FFF;
-          }
-          .description {
-            font-size: 150%;
-            text-shadow: 0 0 2px #FFF, 0 0 2px #FFF;
-            .head, .foot {
-              &:first-line {
-                font-size: 125%;
-              }
-            }
-            li {
-              margin-top: 3px;
-            }
-            .special, .text-danger {
-              color: #F2524D;
-              text-shadow: 0 0 2px #D2322D, 0 0 2px #B2120D;
-            }
-          }
-          .text-block-holder {
-            position: relative;
-            .text-block {
-              position: absolute;
-              left: 0;
-              top: 0;
-              width: 100%;
-              opacity: 1;
-              &.bg {
-                opacity: 0.5;
-                background-color: #000;
-              }
-              .heart-holder {
-                width: 100%;
-                height: 12%;  // XXX depends on height set on resize :(
-                margin-bottom: 1%;
-                text-align: center;
-                .heart {
-                  display: inline-block;
-                  width: 17%;
-                  height: 100%;
-                  background: image-url('icons-584x433.png') 86.5% 76%;
-                  background-size: 450%;
-                }
-              }
-            }
-          }
+        .down, .up {
+          position: relative;
+          display: block;
+          @include animation(pulsate 2s infinite ease-out);
+        }
+        .up {
+          display: none;
+        }
+        .glyphicon:last-child {
+          position: absolute;
+          display: block;
+          right: 0;
+          top: .69em;
         }
       }
     }
-    &.animated {
-      .layers {
-        position: fixed;
-        width: 100%;
-        height: 100%;
-        background-color: #afb27a;
-        .layer {
-          position: absolute;
-          left: 0;
-          top: 0;
-          width: 100%;
-          height: 99999px;
-          background-size: 100%;
-          background-repeat: no-repeat;
-          &.bg-layer {
-            background-image: image-url('crush-bg-750x5090.jpg');
-            opacity: 0.5;
+    .text-blk {
+      position: relative;
+      z-index: -1;
+      margin-top: 3%;
+      margin-left: 3%;
+      margin-right: 3%;
+      font-size: 125%;
+      &:first-line {
+        font-size: 125%;
+      }
+      &.front {
+        z-index: auto;
+        text-shadow: 0 0 1px #FFF, 0 0 2px #FFF, 0 0 12px #000, 0 0 12px #000, 0 0 24px #000, 0 0 24px #000;
+        .text-danger {
+          color: #F2524D;
+          text-shadow: 0 0 1px #D2322D, 0 0 2px #B2120D, 0 0 12px #000, 0 0 12px #000, 0 0 24px #000, 0 0 24px #000, 0 0 24px #000;
+        }
+      }
+      .heart {
+        display: inline-block;
+        width: 7em;
+        height: 7em;
+        overflow: hidden;
+        text-indent: 100%;
+        background: image-url('icons-584x433.png') 51% 75%;
+        background-size: 500%;
+      }
+    }
+    .tagline {
+      font-size: 200%;
+      &:first-line {
+        font-size: 100%;
+      }
+    }
+    .intro {
+      margin-top: 42%;
+      font-size: 150%;
+    }
+    .intro-point-a {
+      margin-top: 12%;
+    }
+    .intro-point-b {
+      margin-top: 40%;
+      padding-left: 38%;
+    }
+    .intro-point-c {
+      margin-top: 13%;
+      padding-left: 22%;
+      padding-right: 26%;
+    }
+    .intro-point-d {
+      margin-top: 20%;
+      padding-right: 10%;
+    }
+    .summary {
+      margin-top: 6%;
+      font-size: 200%;
+      &:first-line {
+        font-size: 100%;
+      }
+    }
+    .sub-titles {
+      > * {
+        margin: 2%;
+      }
+    }
+    .sub-titles, .special, .special-point {
+      margin: 2%;
+      text-align: left;
+      font-size: 150%;
+      text-shadow: 0 0 1px #FFF, 0 0 2px #FFF;
+      &.text-danger, .text-danger {
+        color: #F2524D;
+        text-shadow: 0 0 1px #D2322D, 0 0 2px #B2120D;
+      }
+    }
+  }
+  .bg-layers {
+    position: fixed;
+    height: 100%;
+    background-size: 100%;
+  }
+  &.full-story {
+    .content {
+      .text-blk {
+        display: none;
+      }
+      .login-blk {
+        height: auto;
+        top: auto;
+        bottom: 0;
+        padding-bottom: 3em;  // NOTE for the footer
+        .chevron {
+          .down {
+            display: none;
           }
-          &.events-layer {
-            background-image: image-url('crush-events-750x2645.png');
-            background-repeat: no-repeat repeat;
+          .up {
+            display: block;
           }
-          &.story-layer {
-            background-image: image-url('crush-story-750x4484.png');
-          }
+        }
+        .sub-titles, .special, .special-point {
+          display: none;
         }
       }
     }
   }
+}
+
+.crush-bg-layer-750x7600 {
+  background-image: image-url('crush-bg-750x5090.jpg');
+  background-position: 0 0;
+  background-repeat: no-repeat;
+}
+.crush-events-layer-750x7600 {
+  background-image: image-url('crush-events-750x2645.png');
+  background-position: 0 150px;
+  background-repeat: repeat-y;
+}
+.crush-snap-layer-750x7600  {
+  background-image: image-url('crush-snap-750x3501.png');
+  background-position: 0 130px;
+  background-repeat: no-repeat;
+}
+.crush-story-layer-750x7600  {
+  background-image: image-url('crush-story-750x4484.png');
+  background-position: 0 130px;
+  background-repeat: no-repeat;
 }
