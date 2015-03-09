@@ -63,3 +63,4 @@ group :test do
   gem 'fb_graph-mock'
   gem 'pusher-fake'  # XXX near future
 end
+gem 'newrelic_rpm'
