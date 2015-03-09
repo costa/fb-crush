@@ -135,6 +135,7 @@ class Scene extends Backbone.View
       story: new StoryLayer @_theme 'story-layer'
       snap: new SnapLayer @_theme 'snap-layer'
   render: ->
+    $('body').addClass @game
     @_init_story()
     @_bg_view ||= new LayeredBackground(
       el: @$('.bg-layers')
@@ -154,20 +155,20 @@ class Scene extends Backbone.View
     @_cont_view = null
     @_bg_view.remove()
     @_bg_view = null
-    $('body').removeClass(@game)
+    $('body').removeClass(@game).css height: ''
     @
 
   zoomPx: (l)->
     "#{Math.round @zoom * l}px"
 
   _init_story: ->
-    $('body').addClass(@game).height @zoomPx SHORT_SCENE_HEIGHT
+    @nominal_height = SHORT_SCENE_HEIGHT
     @$el.removeClass 'full-story'
     @_hideLayers 'story', 'events'
     @_showLayers 'snap'
     @_cont_view.inert = true  if @_cont_view
   _full_story: ->
-    $('body').height @zoomPx LONG_SCENE_HEIGHT
+    @nominal_height = LONG_SCENE_HEIGHT
     @$el.addClass 'full-story'
     @_hideLayers 'snap'
     @_showLayers 'story', 'events'
@@ -179,6 +180,7 @@ class Scene extends Backbone.View
     $animateScrollDocumentTo 0
     @$el.animate(opacity: 0, 2000).queue((next)=>
       @_init_story()
+      @_throttled_bound_zoom()
       next()
     ).animate(opacity: 1, 2000)
   _expand: ->
@@ -187,6 +189,7 @@ class Scene extends Backbone.View
     $animateScrollDocumentTo 0
     @$el.animate(opacity: 0, 2000).queue((next)=>
       @_full_story()
+      @_throttled_bound_zoom()
       next()
     ).animate(opacity: 1, 2000)
     roll = =>
@@ -229,6 +232,7 @@ class Scene extends Backbone.View
         width / SCENE_WIDTH
 
     # XXX CSS this
+    $('body').css height: @zoomPx @nominal_height
     @$('.fixed-width').andSelf().css width: @zoomPx SCENE_WIDTH
     @$el.height @zoomPx SCENE_HEIGHT
     @$el.css 'font-size': @zoomPx(18)
