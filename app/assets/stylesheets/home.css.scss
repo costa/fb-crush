@@ -6,11 +6,13 @@
 main.scene {
   padding-left: 0;
   padding-right: 0;
+  box-shadow:0 0 2px #bbbe87, 0 0 4px #bbbe87;
   .content {
     position: relative;
     color: #FFF;
     .login-blk {
       position: fixed;
+      z-index: 1;
       top: 75%;
       text-align: center;
       &.at-bottom {
@@ -40,10 +42,10 @@ main.scene {
         margin-top: -4em;
         color: #F2524D;
         font-weight: bold;
-        text-shadow: 0 0 1px #D2322D, 0 0 2px #B2120D, 0 0 12px #000, 0 0 12px #000, 0 0 24px #000, 0 0 24px #000, 0 0 24px #000;
+        text-shadow: 0 0 1px #D2322D, 0 0 2px #B2120D, 0 0 24px rgba(0,0,0,0.8), 0 0 24px rgba(0,0,0,0.8), 0 0 24px rgba(0,0,0,0.8), 0 0 24px rgba(0,0,0,0.8), 0 0 24px rgba(0,0,0,0.8), 0 0 24px rgba(0,0,0,0.8), 0 0 24px rgba(0,0,0,0.8), 0 0 24px rgba(0,0,0,0.8), 0 0 24px rgba(0,0,0,0.8);
         cursor: pointer;
         &:hover {
-          text-shadow: 0 0 1px #D2322D, 0 0 2px #B2120D, 0 0 4px #D2322D, 0 0 8px #B2120D, 0 0 12px #000, 0 0 12px #000, 0 0 24px #000, 0 0 24px #000, 0 0 24px #000;
+          text-shadow: 0 0 1px #D2322D, 0 0 2px #B2120D, 0 0 4px #D2322D, 0 0 8px #B2120D, 0 0 24px rgba(0,0,0,0.8), 0 0 24px rgba(0,0,0,0.8), 0 0 24px rgba(0,0,0,0.8), 0 0 24px rgba(0,0,0,0.8), 0 0 24px rgba(0,0,0,0.8), 0 0 24px rgba(0,0,0,0.8), 0 0 24px rgba(0,0,0,0.8), 0 0 24px rgba(0,0,0,0.8), 0 0 24px rgba(0,0,0,0.8);
           text-decoration: none;
         }
         .down, .up {
@@ -74,10 +76,10 @@ main.scene {
       }
       &.front {
         z-index: auto;
-        text-shadow: 0 0 1px #FFF, 0 0 2px #FFF, 0 0 12px #000, 0 0 12px #000, 0 0 24px #000, 0 0 24px #000;
+        text-shadow: 0 0 1px #FFF, 0 0 2px #FFF, 0 0 24px rgba(0,0,0,0.8), 0 0 24px rgba(0,0,0,0.8), 0 0 24px rgba(0,0,0,0.8), 0 0 24px rgba(0,0,0,0.8), 0 0 24px rgba(0,0,0,0.8), 0 0 24px rgba(0,0,0,0.8), 0 0 24px rgba(0,0,0,0.8), 0 0 24px rgba(0,0,0,0.8), 0 0 24px rgba(0,0,0,0.8);
         .text-danger {
           color: #F2524D;
-          text-shadow: 0 0 1px #D2322D, 0 0 2px #B2120D, 0 0 12px #000, 0 0 12px #000, 0 0 24px #000, 0 0 24px #000, 0 0 24px #000;
+          text-shadow: 0 0 1px #D2322D, 0 0 2px #B2120D, 0 0 24px rgba(0,0,0,0.8), 0 0 24px rgba(0,0,0,0.8), 0 0 24px rgba(0,0,0,0.8), 0 0 24px rgba(0,0,0,0.8), 0 0 24px rgba(0,0,0,0.8), 0 0 24px rgba(0,0,0,0.8), 0 0 24px rgba(0,0,0,0.8), 0 0 24px rgba(0,0,0,0.8), 0 0 24px rgba(0,0,0,0.8);
         }
       }
       .heart {
@@ -171,7 +173,7 @@ main.scene {
 }
 
 .crush-bg-layer-750x7600 {
-  background-image: image-url('crush-bg-750x5090.jpg');
+  background-image: image-url('crush-bg-750x5089.jpg');
   background-position: 0 0;
   background-repeat: no-repeat;
 }
