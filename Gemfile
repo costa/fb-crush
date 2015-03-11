@@ -3,7 +3,6 @@ source 'https://rubygems.org'
 ruby '2.1.5'
 
 gem 'rack-canonical-host'
-gem 'rack-timeout'
 gem 'rails', '~>4.1.6'
 gem 'pg'
 gem 'delayed_job_active_record'
@@ -62,5 +61,6 @@ group :test do
   gem 'forgery'
   gem 'fb_graph-mock'
   gem 'pusher-fake'  # XXX near future
+  gem 'rack-timeout'
 end
 gem 'newrelic_rpm'
