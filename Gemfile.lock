@@ -228,8 +228,6 @@ GEM
     pry-stack_explorer (0.4.9.2)
       binding_of_caller (>= 0.7)
       pry (>= 0.9.11)
-    puma (2.11.1)
-      rack (>= 1.1, < 2.0)
     pusher (0.14.4)
       httpclient (~> 2.5)
       multi_json (~> 1.0)
@@ -393,7 +391,6 @@ DEPENDENCIES
   pry-byebug
   pry-rails
   pry-stack_explorer
-  puma
   pusher
   pusher-fake
   quiet_assets
