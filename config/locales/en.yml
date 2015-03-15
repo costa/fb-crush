@@ -35,7 +35,8 @@ en:
       view_story: "...view the full story"
       tagline_html: "Ever wondered if your facebook friends were"
       intro:
-        title_html: "Having a secret crush on someone? Wondering if they might ever feel the same?<br/>It's the new fun way to play the crush game:"
+        title_html: "Having a secret crush on someone? Wondering if they might ever feel the same?"
+        subtitle_html: "It's the fun new way to play the crush game:"
         point:
           a_html: "Login with facebook;<br/>see all your facebook friends."
           b_html: "Find that sweetheart of yours, choose <span class='text-danger'>Crush!</span><br/><strong>No Notifications</strong> of any kind will be sent to anyone!"

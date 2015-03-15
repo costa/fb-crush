@@ -1,33 +1,50 @@
 .bg-layers.fixed-width
 .content
-  .text-blk.tagline
-    .text-center= t('.tagline_html')
-  .text-blk.intro= t('.intro.title_html')
+  .tagline.text-blk
+    .bg
+    .fg
+      .text-center= t('.tagline_html')
+  .intro.text-blk
+    .bg
+    .fg
+      = t('.intro.title_html')
+  .intro-sub.text-blk
+    .bg
+    .fg
+      = t('.intro.subtitle_html')
   - t('.intro.point').each_key do |k|
-    .text-blk.intro-point{class: "intro-point-#{k.to_s.split('_')[0]}"}= t(".intro.point.#{k}")
-  .text-blk
-    .text-center
-      .heart.text-danger
-        %i.glyphicon.glyphicon-heart
-  .text-blk.summary
-    .text-center
-      = t('.intro.summary_html')
+    .intro-point.text-blk{class: "intro-point-#{k.to_s.split('_')[0]}"}
+      .bg
+      .fg
+        = t(".intro.point.#{k}")
+  .summary.text-blk
+    .bg
+    .fg
+      .text-center
+        .heart.text-danger
+          %i.glyphicon.glyphicon-heart
+        %br
+        = t('.intro.summary_html')
   .login-blk.fixed-width
     .bg
-    .chevron.btn.btn-lg.btn-link
-      .down
-        = t('.view_story')
-        %i.glyphicon.glyphicon-chevron-down
-        %i.glyphicon.glyphicon-chevron-down
-      .up
-        %i.glyphicon.glyphicon-chevron-up
-        %i.glyphicon.glyphicon-chevron-up
-    = link_to t('layouts.navigation.login'), signin_path, class: "btn btn-primary btn-lg btn-danger"
-    .sub-titles
-    .special.text-danger
-      = t('.special.title_html')
-    - t('.special.point').each_key do |k|
-      .special-point.text-danger{class: "special-point-#{k.to_s.split('_')[0]}"}
-        = t(".special.point.#{k}")
+    .fg
+      .chevron.btn.btn-lg.btn-link
+        .down
+          = t('.view_story')
+          %i.glyphicon.glyphicon-chevron-down
+          %i.glyphicon.glyphicon-chevron-down
+        .up
+          %i.glyphicon.glyphicon-chevron-up
+          %i.glyphicon.glyphicon-chevron-up
+      = link_to t('layouts.navigation.login'), signin_path, class: "btn btn-primary btn-lg btn-danger"
+      .sub-titles
+      .special.text-danger
+        = t('.special.title_html')
+      - t('.special.point').each_key do |k|
+        .special-point.text-danger{class: "special-point-#{k.to_s.split('_')[0]}"}
+          = t(".special.point.#{k}")
+      .text-center
+        .heart.text-danger
+          %i.glyphicon.glyphicon-heart
 :coffeescript
   $ crushLand

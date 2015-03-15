@@ -1,6 +1,6 @@
 SCENE_WIDTH = 750
 SCENE_HEIGHT = 7600
-SHORT_SCENE_HEIGHT = 2700
+SHORT_SCENE_HEIGHT = 2600
 LONG_SCENE_HEIGHT = 5000  # don't ask
 
 
@@ -20,27 +20,30 @@ class ContentControl extends Backbone.View
     login_top = @_$login.offset().top
     $back_up_cont = @$('.sub-titles')
     changed = false
-    @$('.text-blk').reverse().each ->  # XXX yeah, it was quick and dirty
-      $blk = $(@)
+    @$('.text-blk').reverse().each (i, el)=>  # XXX yeah, it was quick and dirty
+      $blk = $(el)
       bottom = $blk.offset().top + $blk.height()
       if bottom < login_top
         if back_up_id = $blk.data('back_up_id')
           $blk.data 'back_up_id', null
-          $("##{back_up_id}").slideUp(-> $(@).remove())
+          $("##{back_up_id}").
+            slideUp
+              complete: @_throttled_bound_fixTextBlocks
+              done: -> $(@).remove()
           $blk.addClass 'front'
-          changed = true
           return false
       else
         unless $blk.data('back_up_id')
           $blk.removeClass 'front'
-          $("<div id='#{next_back_up_id}'>").hide().html($blk.html()).prependTo $back_up_cont
+          $("<div id='#{next_back_up_id}'>").hide().
+            html($blk.html()).
+            prependTo($back_up_cont).
+            slideDown()
           $blk.data 'back_up_id', next_back_up_id
-          $("##{next_back_up_id}").slideDown()
           next_back_up_id += 1
-          changed = true
+          @_throttled_bound_fixTextBlocks()
           return false
     @_$login.toggleClass 'at-bottom', $back_up_cont.is(':empty')
-    @_throttled_bound_fixTextBlocks()  if changed
   next_back_up_id = 1111
 
 class LayeredBackground extends Backbone.View
