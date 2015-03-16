@@ -28,7 +28,8 @@
   .login-blk.fixed-width
     .bg
     .fg
-      .chevron.btn.btn-lg.btn-link
+      -# XXX must be first due to the iOS touch-hover issue workaround in the view
+      %button.chevron.btn.btn-lg.btn-link
         .down
           = t('.view_story')
           %i.glyphicon.glyphicon-chevron-down

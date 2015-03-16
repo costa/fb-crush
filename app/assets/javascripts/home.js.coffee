@@ -169,19 +169,20 @@ class Scene extends Backbone.View
     @$el.removeClass 'full-story'
     @_hideLayers 'story', 'events'
     @_showLayers 'snap'
-    @_cont_view.inert = true  if @_cont_view
+    # XXX research @_cont_view.inert = true  if @_cont_view
   _full_story: ->
     @nominal_height = LONG_SCENE_HEIGHT
     @$el.addClass 'full-story'
     @_hideLayers 'snap'
     @_showLayers 'story', 'events'
-    @_cont_view.inert = false  if @_cont_view
+    # XXX investigate @_cont_view.inert = false  if @_cont_view
 
-  _contract: (force)->
-    return  unless force || @_expanded
+  _contract: ->
+    return  unless @_expanded
     @_expanded = false
     $animateScrollDocumentTo 0
     @$el.animate(opacity: 0, 2000).queue((next)=>
+      @_fixTouchHover()
       @_init_story()
       @_throttled_bound_zoom()
       next()
@@ -191,6 +192,7 @@ class Scene extends Backbone.View
     @_expanded = true
     $animateScrollDocumentTo 0
     @$el.animate(opacity: 0, 2000).queue((next)=>
+      @_fixTouchHover()
       @_full_story()
       @_throttled_bound_zoom()
       next()
@@ -248,6 +250,9 @@ class Scene extends Backbone.View
     else
       @_just_scrolled = true
     @trigger 'scroll', $(document).scrollTop() / @zoom
+
+  _fixTouchHover: ->
+    @$('.login-blk .chevron').prependTo @$('.login-blk .fg')
 
 
 window.crushLand = ->

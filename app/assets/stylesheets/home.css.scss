@@ -15,15 +15,6 @@ main.scene {
       z-index: 1;
       top: 75%;
       text-align: center;
-      &.at-bottom {
-        height: auto;
-        top: auto;
-        bottom: 0;
-        padding-bottom: 3em;  // NOTE for the footer
-        .chevron {
-          opacity: 1;
-        }
-      }
       .bg {
         position: absolute;
         z-index: -1;
@@ -45,15 +36,15 @@ main.scene {
         position: absolute;
         right: 1%;
         margin-top: -4em;
-        opacity: 0.2;
+        opacity: 0.3;
         font-weight: bold;
         color: #F2524D;
         text-shadow: 0 0 12px #000, 0 0 12px #000, 0 0 12px #000, 0 0 12px #000;
         cursor: pointer;
+        @include animation(pulsate 2s infinite ease-out);
         .down, .up {
           position: relative;
-          display: block;
-          @include animation(pulsate 2s infinite ease-out);
+          opacity: 0.3;
         }
         .up {
           display: none;
@@ -63,6 +54,25 @@ main.scene {
           display: block;
           right: 0;
           top: .69em;
+        }
+        &:hover {
+          opacity: 1 !important;
+          text-decoration: none;
+          text-shadow: 0 0 12px #F2524D, 0 0 12px #F2524D, 0 0 12px #F2524D, 0 0 12px #F2524D, 0 0 24px #000, 0 0 24px #000, 0 0 24px #000, 0 0 24px #000;
+          .down, .up {
+            opacity: 1;
+          }
+        }
+      }
+      &.at-bottom {
+        height: auto;
+        top: auto;
+        bottom: 0;
+        padding-bottom: 3em;  // NOTE for the footer
+        .chevron {
+          .down, .up {
+            opacity: 1;
+          }
         }
       }
     }
@@ -86,9 +96,6 @@ main.scene {
         border-radius: 1em;
         box-shadow: 0 0 2px #000, 0 0 4px #000;
       }
-      &.front {
-        z-index: auto;
-      }
       .text-danger {
         color: #F2524D;
       }
@@ -100,6 +107,9 @@ main.scene {
         text-indent: 100%;
         background: image-url('icons-584x433.png') 51% 75%;
         background-size: 500%;
+      }
+      &.front {
+        z-index: auto;
       }
     }
     .tagline {
@@ -175,6 +185,9 @@ main.scene {
           }
           .up {
             display: block;
+          }
+          .down, .up {
+            opacity: 1;
           }
         }
         .sub-titles, .special, .special-point {
