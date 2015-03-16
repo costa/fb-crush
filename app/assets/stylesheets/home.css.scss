@@ -56,9 +56,10 @@ main.scene {
           top: .69em;
         }
         &:hover {
-          opacity: 1 !important;
+          opacity: 1;
           text-decoration: none;
           text-shadow: 0 0 12px #F2524D, 0 0 12px #F2524D, 0 0 12px #F2524D, 0 0 12px #F2524D, 0 0 24px #000, 0 0 24px #000, 0 0 24px #000, 0 0 24px #000;
+          @include animation;
           .down, .up {
             opacity: 1;
           }
