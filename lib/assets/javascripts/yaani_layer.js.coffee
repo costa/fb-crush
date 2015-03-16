@@ -1,37 +1,27 @@
-class Layer
-  background_props: ['image', 'position', 'repeat']
-
-  constructor: (layer_class)->
-    # NOTE copy props from CSS
-    $sample = $('<div>').appendTo($('body')).addClass(layer_class)
-    @_background = {}
-    _(@background_props).each (prop)=>
-      @_background[prop] = $sample.css("background-#{prop}")
-    $sample.remove()
-    @_top_offset = parseInt(@_background.position.split(' ')[1])
+class Layer extends Backbone.View
   zoomWith: (zoomer)->
     @_zoomer = zoomer
-    @_render()
-  _render: ->
-    @background = _(@_background).clone()
-    @background.position = "0 #{@_zoomer.zoomPx(@_topOffset())}"
+    @render()
+  render: ->
+    @$el.css top: @_zoomer.zoomPx @_topOffset()
+    @
   _topOffset: ->
-    @_top_offset
+    @_top_offset ||= _(parseInt(@$el.css('background-position').split(' ')[1])).tap =>
+      @$el.css 'background-position', '0 0'
 
 class ScrollableLayer extends Layer
-  scroll_ratio: 1
-
-  constructor: ->
+  initialize: (options)->
     super
+    @scrollRatio = options.scrollRatio || 1
     @_top = 0
   _topOffset: ->
     super - @_top
   scroll: (top)->
-    @_top = @scroll_ratio * top
-    @_render()
+    @_top = @scrollRatio * top
+    @render()
 
 class ScrollableAppearableLayer extends ScrollableLayer
-  constructor: ->
+  initialize: ->
     super
     @setToShow()
 
@@ -44,11 +34,13 @@ class ScrollableAppearableLayer extends ScrollableLayer
       appear_top: 0
       disappear_top: 0
 
-  _render: ->
+  render: ->
     if @_top > @appear_top && @_top < @disappear_top
       super
+      @$el.show()
     else
-      @background = null
+      @$el.hide()
+    @
 
 class @YaaniLayer
   Scrollable: ScrollableLayer

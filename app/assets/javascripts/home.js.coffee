@@ -5,7 +5,6 @@ LONG_SCENE_HEIGHT = 5000  # don't ask
 
 
 class ContentControl extends Backbone.View
-  inert: true
   initialize: (options)->
     super
     @parent = options.parent
@@ -47,35 +46,30 @@ class ContentControl extends Backbone.View
   next_back_up_id = 1111
 
 class LayeredBackground extends Backbone.View
+  SCROLL_THROTTLE = 13
   MIN_LAYER_SCROLL = 2
   MAX_SCROLL_PX_MS = 1
-  SCROLL_THROTTLE = 13
   MAX_LAYER_SCROLL = MAX_SCROLL_PX_MS * SCROLL_THROTTLE
 
   initialize: (options)->
     super
-    @_throttled_bound_smoothScroll = _(=> @_smoothScroll()).throttle SCROLL_THROTTLE
+    @_throttled_bound_smoothScroll = _(=> @_smoothScroll()).throttle SCROLL_THROTTLE, leading: false
     _(@).extend _(options).pick 'parent', 'layers'
   render: ->
     @listenTo @parent, 'zoom', @_zoom
     @listenTo @parent, 'scroll', @_scroll
     @_prop_values = {}
     @_renderLayers()
+    @
   _removeElement: ->  # NOTE do NOT remove @$el
   _renderLayers: ->
-    bgs = _(@layers).chain().map((layer)->  layer.background).compact().value().reverse()
-    _(YaaniLayer::ScrollableAppearable::background_props).each (prop)=>
-      new_prop_value = _(bgs).map((bg)-> bg[prop]).join(',')
-      if @_prop_values[prop] != new_prop_value
-        @$el.css(
-          "background-#{prop}": new_prop_value
-        )
-        @_prop_values[prop] = new_prop_value
+    _(@layers).each (layer)=>
+      @$el.append layer.$el
   _zoom: ->
     _(@layers).each (layer)=>
       layer.zoomWith @parent
-    @_renderLayers()
   _scroll: (top)->
+    console.log top
     @_next_top = top
     @_inertia_top = null
     @_throttled_bound_smoothScroll()
@@ -108,20 +102,11 @@ class LayeredBackground extends Backbone.View
             diff
     _(@layers).each (layer)=>
       layer.scroll @_actual_top
-    @_renderLayers()
-
-class BackgroundLayer extends YaaniLayer::Scrollable
-  scroll_ratio: 0.5
 
 class EventsLayer extends YaaniLayer::ScrollableAppearable
-  scroll_ratio: 2
   setToShow: ->
     @appear_top = 1500
     @disappear_top = 5400
-
-class StoryLayer extends YaaniLayer::ScrollableAppearable
-
-class SnapLayer extends YaaniLayer::ScrollableAppearable
 
 class Scene extends Backbone.View
   events:
@@ -130,16 +115,16 @@ class Scene extends Backbone.View
   initialize: ->
     super
     @_throttled_bound_zoom = _(=> @_zoom()).throttle 900
-    @_throttled_bound_scroll = _(=> @_scroll()).throttle 150
+    @_bound_disableAutoScroll = => @_disableAutoScroll()
+    @_throttled_bound_triggerScroll = _(=> @_triggerScroll()).throttle 150
     @game = 'crush'
     @_layers =
-      bg: new BackgroundLayer @_theme 'bg-layer'
-      events: new EventsLayer @_theme 'events-layer'
-      story: new StoryLayer @_theme 'story-layer'
-      snap: new SnapLayer @_theme 'snap-layer'
+      bg: new YaaniLayer::Scrollable className: @_theme('bg-layer'), scrollRatio: 0.5
+      events: new EventsLayer className: @_theme('events-layer'), scrollRatio: 2
+      story: new YaaniLayer::ScrollableAppearable className:  @_theme 'story-layer'
+      snap: new YaaniLayer::ScrollableAppearable className: @_theme 'snap-layer'
   render: ->
     $('body').addClass @game
-    @_init_story()
     @_bg_view ||= new LayeredBackground(
       el: @$('.bg-layers')
       parent: @
@@ -149,6 +134,7 @@ class Scene extends Backbone.View
       el: @$('.content')
       parent: @
     ).render()
+    @_initStory()
     @_throttled_bound_zoom()
     @_bindGlobal()
     @
@@ -164,18 +150,18 @@ class Scene extends Backbone.View
   zoomPx: (l)->
     "#{Math.round @zoom * l}px"
 
-  _init_story: ->
+  _initStory: ->
     @nominal_height = SHORT_SCENE_HEIGHT
     @$el.removeClass 'full-story'
     @_hideLayers 'story', 'events'
     @_showLayers 'snap'
-    # XXX research @_cont_view.inert = true  if @_cont_view
-  _full_story: ->
+    @_bg_view.inert = true
+  _fullStory: ->
     @nominal_height = LONG_SCENE_HEIGHT
     @$el.addClass 'full-story'
     @_hideLayers 'snap'
     @_showLayers 'story', 'events'
-    # XXX investigate @_cont_view.inert = false  if @_cont_view
+    @_bg_view.inert = false
 
   _contract: ->
     return  unless @_expanded
@@ -183,7 +169,7 @@ class Scene extends Backbone.View
     $animateScrollDocumentTo 0
     @$el.animate(opacity: 0, 2000).queue((next)=>
       @_fixTouchHover()
-      @_init_story()
+      @_initStory()
       @_throttled_bound_zoom()
       next()
     ).animate(opacity: 1, 2000)
@@ -193,7 +179,7 @@ class Scene extends Backbone.View
     $animateScrollDocumentTo 0
     @$el.animate(opacity: 0, 2000).queue((next)=>
       @_fixTouchHover()
-      @_full_story()
+      @_fullStory()
       @_throttled_bound_zoom()
       next()
     ).animate(opacity: 1, 2000)
@@ -206,9 +192,8 @@ class Scene extends Backbone.View
           => @_auto_scroll_disabled = false
         , 2000)
       unless @_auto_scroll_disabled
-        @_just_auto_scrolled = true
-        $(document).scrollTop $(document).scrollTop() + 1
-      _(roll).delay 14  if @_expanded
+        $(document).scrollTop $(document).scrollTop() + 2
+      _(roll).delay 99  if @_expanded
     _(roll).delay 2000
 
   _hideLayers: (layers...)->
@@ -222,11 +207,13 @@ class Scene extends Backbone.View
   _bindGlobal: ->
     @_unbindGlobal()
     $(window).on 'resize', @_throttled_bound_zoom
-    $(document).on 'scroll', @_throttled_bound_scroll
+    $(window).on 'touchstart touchmove touchend wheel mousewheel', @_bound_disableAutoScroll
+    $(document).on 'scroll', @_throttled_bound_triggerScroll
 
   _unbindGlobal: ->
     $(window).off 'resize', @_throttled_bound_zoom
-    $(document).off 'scroll', @_throttled_bound_scroll
+    $(window).off 'touchstart touchmove touchend wheel mousewheel', @_bound_disableAutoScroll
+    $(document).off 'scroll', @_throttled_bound_triggerScroll
 
   _zoom: ->
     width = $(window).width()
@@ -244,11 +231,10 @@ class Scene extends Backbone.View
 
     @trigger 'zoom'
 
-  _scroll: ->
-    if @_just_auto_scrolled
-      @_just_auto_scrolled = false
-    else
-      @_just_scrolled = true
+  _disableAutoScroll: ->
+    @_just_scrolled = true
+
+  _triggerScroll: ->
     @trigger 'scroll', $(document).scrollTop() / @zoom
 
   _fixTouchHover: ->
