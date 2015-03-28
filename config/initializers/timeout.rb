@@ -1,1 +1,1 @@
-Rack::Timeout.timeout = 16  if defined? Rack::Timeout  # seconds
+Rack::Timeout.timeout = 24  if defined? Rack::Timeout  # seconds

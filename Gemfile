@@ -4,6 +4,7 @@ ruby '2.2.0'
 
 gem 'rack-canonical-host'
 gem 'rack-timeout'
+gem 'rack-cache'
 gem 'rails', '~>4.1.6'
 gem 'pg'
 gem 'delayed_job_active_record'
