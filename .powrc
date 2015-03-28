@@ -1,2 +1,4 @@
-. /usr/local/rvm/scripts/rvm
-. .rvmrc
+if [ -f "$rvm_path/scripts/rvm" ] && [ -f .rvmrc ]; then
+  . "$rvm_path/scripts/rvm"
+  . .rvmrc
+fi
