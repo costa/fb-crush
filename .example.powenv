@@ -1,3 +1,5 @@
+# This file (.powenv) exists because certain variables are conveniently set for local development process
+
 # export RAILS_ENV=development
 # export RUBY_DEBUG_PORT=
 # export FAKE_PUSHER=  # (no)
