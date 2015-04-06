@@ -1,3 +1,5 @@
+Delayed::Worker.raise_signal_exceptions = :term
+
 # FROM https://github.com/smartinez87/exception_notification/issues/195
 Delayed::Worker.class_eval do
 
