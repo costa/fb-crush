@@ -3,6 +3,7 @@ require 'user_authenticated_constraint'
 FbCrush::Application.routes.draw do
   root :to => 'friends#app', :as => :rroot, :constraints => UserAuthenticatedConstraint.new
   root :to => 'home#index'
+  get '/terms-und-policies', :to => 'home#terms', :as => :terms
   resources :friends, :only => [:index, :update]
 
   get '/auth/:provider/callback' => 'sessions#create'

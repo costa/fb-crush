@@ -6,7 +6,8 @@
         %span.icon-bar
         %span.icon-bar
         %span.icon-bar
-      = link_to t('.brand_html'), '#', :onclick => 'location.reload()', :class => 'navbar-brand'
+      = link_to root_path, :class => 'navbar-brand' do
+        = t('.brand_html')
     .collapse.navbar-collapse.navbar-right#header-navbar-collapse
       %ul.nav.navbar-nav
         - if user_signed_in?
@@ -15,9 +16,13 @@
               = t('.logged_in')
               %b.caret
             %ul.dropdown-menu
-              %li= link_to t('.logout'), signout_path
+              %li
+                = link_to signout_path do
+                  = t('.logout')
         - else
-          %li= link_to t('.login'), signin_path
+          %li
+            = link_to signin_path do
+              = t('.login')
     - if user_signed_in?
       %form.navbar-form.navbar-right.search{role: 'search'}
         .form-group.has-feedback

@@ -33,27 +33,39 @@ en:
   home:
     index:
       view_story: "...view the full story"
-      tagline_html: "Ever wondered if your facebook friends were"
+      tagline_html: "Are they really"
       intro:
-        title_html: "Having a secret crush on someone? Wondering if they might ever feel the same?"
-        subtitle_html: "It's the fun new way to play the crush game:"
+        title_html: "I wish I knew they're thinking what I'm thinking ;-)"
         point:
-          a_html: "Login with facebook;<br/>see all your facebook friends."
-          b_html: "Find that sweetheart of yours, choose <span class='text-danger'>Crush!</span><br/><strong>No Notifications</strong> of any kind will be sent to anyone!"
-          c_html: "Make sure they use <small>fb&#8209;CRUSH</small> as well — ask friends to promote it <span class='text-danger'>&lt;?3</span> — and be persistent;<br/>they may be choosing you any day..."
-          d_html: "When the choice is mutual — and only then — both of you — and only you — will see it at <small>fb&#8209;CRUSH</small>.com <span class='text-danger'>&lt;!3</span>"
-        summary_html: "The awkward bit is gone, enjoy your crush!"
+          login_html: "Easy!<br/>Login with facebook"
+          b_html: "Find that sweetheart, choose <span class='text-danger'>Crush!</span><br/>Good luck!"
+          c_html: "Be persistent!<br>If they use <small>fb&#8209;CRUSH</small>, they may be choosing you any day."
+        summary_html: "Identities will be revealed only when the choice is mutual<br/>%{heart}<br/>The awkward bit is gone, go play ;-)"
       special:
         title_html: "Coming soon:"
         point:
-          a_html: "Choose only <strong>6</strong> friends for exactly <strong>6</strong> days each!"
+          a_html: "More reach!"
           b_html: "More gameplay &amp; FX &lt;!3"
           c_html: "Stealth mode for full confidentiality."
+    terms:
+      title_html: "<small>fb-CRUSH.com</small>"
+      tos:
+        title_html: "Terms of Service"
+        point:
+          a_html: "We are trying to make this service as useful and fun as possible, but hey, no guarantees."
+          b_html: "All that this service does is visible and explained in its interface. Should you have any concerns, don't hesitate and contact us with the support widget in the lower right part of the window."
+      policy:
+        title_html: "User Data Policy"
+        point:
+          a_html: "We take the highest standard measures to protect your (and our) data."
+          b_html: "We don't let anyone and we don't access your data ourselves — other than upon specific permission from the data owner — or outside of what is required for the exposed service functionality."
+      back_html: "Back to the fun"
   layouts:
     application:
       title: "fb-CRUSH -nolimits-"
       description: "Having a secret crush on someone? Wondering if they might ever feel the same? It's the new fun way to play the crush game!"
       version: "made in heaven %{version}"
+      terms_link: "Terms & Policies"
     navigation:
       brand_html: "fb-CRUSH <small><strike>limits</strike></small>"
       search: "Search"

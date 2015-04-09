@@ -5,8 +5,8 @@
     %title= content_for?(:title) ? yield(:title) : t('.title')
     %meta{:name => 'description', :content => content_for?(:description) ? yield(:description) : t('.description')}
     %link{rel: 'image_src', href: image_url('crush-image_src-250x125.jpg')}
-    = stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track' => true
-    = javascript_include_tag 'application', 'data-turbolinks-track' => true
+    = stylesheet_link_tag 'application', media: 'all'
+    = javascript_include_tag 'application'
     - if defined? PusherFake
       = javascript_tag File.read Dir.glob(File.expand_path 'spec/support/application/public/javascripts/vendor/pusher-2.*.js', Bundler.load.specs.find{|s| s.name == 'pusher-fake' }.full_gem_path).last
     - else  # NOTE Since Pusher is not really useful with no connection... let's CDN it
@@ -19,6 +19,8 @@
       = yield
     %footer
       %small.copyright= t('.version', version: APP_VERSION)
+      |
+      = link_to_unless_current t('.terms_link'), terms_path  # NOTE stupid link_to_unless_current
     #flash= render 'layouts/messages'
 
     :coffeescript

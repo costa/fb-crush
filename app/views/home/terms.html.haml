@@ -1,0 +1,21 @@
+%h2
+  = t('.title_html')
+%h3
+  = t('.tos.title_html')
+%p
+  %ul
+  - t('.tos.point').each_key do |k|
+    %li
+      = t(".tos.point.#{k}")
+%h3
+  = t('.policy.title_html')
+%p
+  %ul
+  - t('.policy.point').each_key do |k|
+    %li
+      = t(".policy.point.#{k}")
+%br
+%hr
+= link_to root_path, class: 'btn btn-link' do
+  .text-danger
+    = t('.back_html')

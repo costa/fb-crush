@@ -69,7 +69,6 @@ class LayeredBackground extends Backbone.View
     _(@layers).each (layer)=>
       layer.zoomWith @parent
   _scroll: (top)->
-    console.log top
     @_next_top = top
     @_inertia_top = null
     @_throttled_bound_smoothScroll()
@@ -121,14 +120,12 @@ class Scene extends Backbone.View
     @_layers =
       bg: new YaaniLayer::Scrollable className: @_theme('bg-layer'), scrollRatio: 0.5
       events: new EventsLayer className: @_theme('events-layer'), scrollRatio: 2
-      story: new YaaniLayer::ScrollableAppearable className:  @_theme 'story-layer'
-      snap: new YaaniLayer::ScrollableAppearable className: @_theme 'snap-layer'
   render: ->
     $('body').addClass @game
     @_bg_view ||= new LayeredBackground(
       el: @$('.bg-layers')
       parent: @
-      layers: _pickValues(@_layers, 'bg', 'events', 'story', 'snap')
+      layers: _pickValues(@_layers, 'bg', 'events')
     ).render()
     @_cont_view ||= new ContentControl(
       el: @$('.content')
@@ -153,14 +150,12 @@ class Scene extends Backbone.View
   _initStory: ->
     @nominal_height = SHORT_SCENE_HEIGHT
     @$el.removeClass 'full-story'
-    @_hideLayers 'story', 'events'
-    @_showLayers 'snap'
+    @_hideLayers 'events'
     @_bg_view.inert = true
   _fullStory: ->
     @nominal_height = LONG_SCENE_HEIGHT
     @$el.addClass 'full-story'
-    @_hideLayers 'snap'
-    @_showLayers 'story', 'events'
+    @_showLayers 'events'
     @_bg_view.inert = false
 
   _contract: ->
@@ -168,7 +163,6 @@ class Scene extends Backbone.View
     @_expanded = false
     $animateScrollDocumentTo 0
     @$el.animate(opacity: 0, 2000).queue((next)=>
-      @_fixTouchHover()
       @_initStory()
       @_throttled_bound_zoom()
       next()
@@ -178,7 +172,6 @@ class Scene extends Backbone.View
     @_expanded = true
     $animateScrollDocumentTo 0
     @$el.animate(opacity: 0, 2000).queue((next)=>
-      @_fixTouchHover()
       @_fullStory()
       @_throttled_bound_zoom()
       next()
@@ -236,9 +229,6 @@ class Scene extends Backbone.View
 
   _triggerScroll: ->
     @trigger 'scroll', $(document).scrollTop() / @zoom
-
-  _fixTouchHover: ->
-    @$('.login-blk .chevron').prependTo @$('.login-blk .fg')
 
 
 window.crushLand = ->

@@ -8,11 +8,12 @@
     .bg
     .fg
       = t('.intro.title_html')
-  .intro-sub.text-blk
+  .intro-point.text-blk{class: "intro-point-login"}
     .bg
     .fg
-      = t('.intro.subtitle_html')
-  - t('.intro.point').each_key do |k|
+      = link_to signin_path do
+        = t('.intro.point.login_html')
+  - t('.intro.point').keys.reject{|k| k == :login_html}.each do |k|
     .intro-point.text-blk{class: "intro-point-#{k.to_s.split('_')[0]}"}
       .bg
       .fg
@@ -21,23 +22,23 @@
     .bg
     .fg
       .text-center
-        .heart.text-danger
-          %i.glyphicon.glyphicon-heart
-        %br
-        = t('.intro.summary_html')
+        - heart_html = capture do
+          .heart.text-danger
+            %i.glyphicon.glyphicon-heart
+        = t('.intro.summary_html', heart: heart_html)
   .login-blk.fixed-width
     .bg
     .fg
-      -# XXX must be first due to the iOS touch-hover issue workaround in the view
-      %button.chevron.btn.btn-lg.btn-link
-        .down
+      .chevron
+        %button.down.btn.btn-lg.btn-link
           = t('.view_story')
           %i.glyphicon.glyphicon-chevron-down
           %i.glyphicon.glyphicon-chevron-down
-        .up
+        %button.up.btn.btn-lg.btn-link
           %i.glyphicon.glyphicon-chevron-up
           %i.glyphicon.glyphicon-chevron-up
-      = link_to t('layouts.navigation.login'), signin_path, class: "btn btn-primary btn-lg btn-danger"
+      = link_to signin_path, class: "btn btn-primary btn-lg btn-danger" do
+        = t('layouts.navigation.login')
       .sub-titles
       .special.text-danger
         = t('.special.title_html')

@@ -2,13 +2,13 @@
 
 @include keyframes(pulsate) {
   0% {
-    opacity: 1;
+    opacity: 0.9;
   }
   50% {
-    opacity: 0.3;
+    opacity: 0.2;
   }
   100% {
-    opacity: 1;
+    opacity: 0.9;
   }
 }
 
@@ -23,11 +23,21 @@ body {
   }
   overflow: hidden;
 }
+main {
+  padding-bottom: 3em;
+}
 footer {
   position: absolute;
   z-index: 1;
   left: 0;
   bottom: 0;
+  padding: 0.25em;
+  background-color: #666;
+  color: #CCC;
+  a {
+    color: #FFF;
+    font-weight: bold;
+  }
 }
 nav.navbar {
   .navbar-brand.text-danger {
