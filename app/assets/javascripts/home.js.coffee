@@ -1,49 +1,7 @@
 SCENE_WIDTH = 750
 SCENE_HEIGHT = 7600
 SHORT_SCENE_HEIGHT = 2600
-LONG_SCENE_HEIGHT = 5000  # don't ask
-
-
-class ContentControl extends Backbone.View
-  initialize: (options)->
-    super
-    @parent = options.parent
-    @_throttled_bound_fixTextBlocks = _(=> @_fixTextBlocks()).throttle 150
-  render: ->
-    @$('.text-blk').addClass 'front'
-    @listenTo @parent, 'zoom scroll', @_throttled_bound_fixTextBlocks
-    @
-  _removeElement: ->  # NOTE do NOT remove @$el
-  _fixTextBlocks: ->
-    @_$login ||= @$('.login-blk')
-    login_top = @_$login.offset().top
-    $back_up_cont = @$('.sub-titles')
-    changed = false
-    @$('.text-blk').reverse().each (i, el)=>  # XXX yeah, it was quick and dirty
-      $blk = $(el)
-      bottom = $blk.offset().top + $blk.height()
-      if bottom < login_top
-        if back_up_id = $blk.data('back_up_id')
-          $blk.data 'back_up_id', null
-          $("##{back_up_id}").
-            slideUp
-              complete: @_throttled_bound_fixTextBlocks
-              done: -> $(@).remove()
-          $blk.addClass 'front'
-          return false
-      else
-        unless $blk.data('back_up_id')
-          $blk.removeClass 'front'
-          $("<div id='#{next_back_up_id}'>").hide().
-            html($blk.html()).
-            prependTo($back_up_cont).
-            slideDown()
-          $blk.data 'back_up_id', next_back_up_id
-          next_back_up_id += 1
-          @_throttled_bound_fixTextBlocks()
-          return false
-    @_$login.toggleClass 'at-bottom', $back_up_cont.is(':empty')
-  next_back_up_id = 1111
+LONG_SCENE_HEIGHT = 5100  # don't ask
 
 class LayeredBackground extends Backbone.View
   SCROLL_THROTTLE = 13
@@ -92,10 +50,10 @@ class LayeredBackground extends Backbone.View
       else
         _(@_throttled_bound_smoothScroll).defer()
         if abs_diff > MAX_LAYER_SCROLL
-          parseInt (diff/abs_diff)*MAX_LAYER_SCROLL
+          Math.round (diff/abs_diff)*MAX_LAYER_SCROLL
         else
           if @_inertia_top
-            parseInt diff/2
+            Math.round diff/2
           else
             @_inertia_top = @_next_top + diff/2  if @inert
             diff
@@ -115,7 +73,7 @@ class Scene extends Backbone.View
     super
     @_throttled_bound_zoom = _(=> @_zoom()).throttle 900
     @_bound_disableAutoScroll = => @_disableAutoScroll()
-    @_throttled_bound_triggerScroll = _(=> @_triggerScroll()).throttle 150
+    @_throttled_bound_onScroll = _(=> @_onScroll()).throttle 150
     @game = 'crush'
     @_layers =
       bg: new YaaniLayer::Scrollable className: @_theme('bg-layer'), scrollRatio: 0.5
@@ -126,10 +84,6 @@ class Scene extends Backbone.View
       el: @$('.bg-layers')
       parent: @
       layers: _pickValues(@_layers, 'bg', 'events')
-    ).render()
-    @_cont_view ||= new ContentControl(
-      el: @$('.content')
-      parent: @
     ).render()
     @_initStory()
     @_throttled_bound_zoom()
@@ -146,7 +100,7 @@ class Scene extends Backbone.View
     @
 
   zoomPx: (l)->
-    "#{Math.round @zoom * l}px"
+    "#{Math.floor @zoom * l}px"
 
   _initStory: ->
     @nominal_height = SHORT_SCENE_HEIGHT
@@ -202,12 +156,12 @@ class Scene extends Backbone.View
     @_unbindGlobal()
     $(window).on 'resize', @_throttled_bound_zoom
     $(window).on 'touchstart touchmove touchend wheel mousewheel', @_bound_disableAutoScroll
-    $(document).on 'scroll', @_throttled_bound_triggerScroll
+    $(document).on 'scroll', @_throttled_bound_onScroll
 
   _unbindGlobal: ->
     $(window).off 'resize', @_throttled_bound_zoom
     $(window).off 'touchstart touchmove touchend wheel mousewheel', @_bound_disableAutoScroll
-    $(document).off 'scroll', @_throttled_bound_triggerScroll
+    $(document).off 'scroll', @_throttled_bound_onScroll
 
   _zoom: ->
     width = $(window).width()
@@ -223,13 +177,21 @@ class Scene extends Backbone.View
     @$el.height @zoomPx SCENE_HEIGHT
     @$el.css 'font-size': @zoomPx(18)
 
+    @_login_scroll_top = $(document).height() - $(window).height() - @$('.login-blk').height()
+
     @trigger 'zoom'
 
   _disableAutoScroll: ->
     @_just_scrolled = true
 
-  _triggerScroll: ->
-    @trigger 'scroll', $(document).scrollTop() / @zoom
+  _onScroll: ->
+    scroll_top = $(document).scrollTop()
+    @_fixLoginBlk scroll_top
+    @trigger 'scroll', scroll_top / @zoom
+
+  _fixLoginBlk: (scroll_top)->
+    if (login_blk_state = (scroll_top > @_login_scroll_top)) != @_login_blk_state
+      @$('.login-blk').toggleClass 'at-bottom', (@_login_blk_state = login_blk_state)
 
 
 window.crushLand = ->

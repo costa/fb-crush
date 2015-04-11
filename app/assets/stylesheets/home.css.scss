@@ -5,24 +5,25 @@ main.scene {
   padding-right: 0;
   .content {
     position: relative;
+    height: 100%;
     overflow: hidden;
     color: #FFF;
     background-size: 100%;
     background-image: image-url('crush-snap-750x3501.png');
-    background-position: 0 -9%;
+    background-position: 0 3%;
     background-repeat: no-repeat;
     .login-blk {
       position: fixed;
       z-index: 1;
-      top: 75%;
+      top: 95%;
+      padding-bottom: 9em;  // NOTE for the footer etc
       text-align: center;
       .bg {
         position: absolute;
-        z-index: -1;
         left: 0;
         top: 0;
         width: 100%;
-        height: 100%;
+        height: 999px;  // NOTE to cover slight differences in actual content height
         background: #000;
         opacity: 0.69;
       }
@@ -62,10 +63,9 @@ main.scene {
         }
       }
       &.at-bottom {
-        height: auto;
+        position: relative;
         top: auto;
-        bottom: 0;
-        padding-bottom: 3em;  // NOTE for the footer
+        margin-top: 25%;
         .chevron {
           button {
             opacity: 1;
@@ -75,7 +75,6 @@ main.scene {
     }
     .text-blk {
       position: relative;
-      z-index: -1;
       margin-top: 3%;
       margin-left: 3%;
       margin-right: 3%;
@@ -91,7 +90,7 @@ main.scene {
         height: 100%;
         opacity: 0.69;
         border-radius: 0.5em;
-        background: radial-gradient(rgba(48, 0, 0, 1),rgba(48, 0, 0, 1), rgba(48, 0, 0, 0.25));
+        background: radial-gradient(rgba(48, 0, 0, 1),rgba(48, 0, 0, 1), rgba(48, 0, 0, 0.5));
       }
       .text-danger {
         color: #F2524D;
@@ -104,9 +103,6 @@ main.scene {
         text-indent: 100%;
         background: image-url('icons-584x433.png') 51% 75%;
         background-size: 500%;
-      }
-      &.front {
-        z-index: auto;
       }
     }
     .tagline {
@@ -140,7 +136,7 @@ main.scene {
       margin-right: 40%;
     }
     .summary {
-      margin-top: 15%;
+      margin-top: 13%;
       margin-left: 10%;
       margin-right: 10%;
       font-size: 150%;
@@ -178,18 +174,13 @@ main.scene {
   }
   &.full-story {
     .content {
-      height: 9999px;  // XXX oh well
       background-image: image-url('crush-story-750x4484.png');
-      background-position: 0 130px;
+      background-position: 0 3%;
       background-repeat: no-repeat;
       .text-blk {
         display: none;
       }
       .login-blk {
-        height: auto;
-        top: auto;
-        bottom: 0;
-        padding-bottom: 3em;  // NOTE for the footer
         .chevron {
           .down {
             display: none;
@@ -201,8 +192,8 @@ main.scene {
             opacity: 1;
           }
         }
-        .sub-titles, .special, .special-point {
-          display: none;
+        &.at-bottom {
+          margin-top: 623%;
         }
       }
     }

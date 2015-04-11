@@ -37,17 +37,16 @@
         %button.up.btn.btn-lg.btn-link
           %i.glyphicon.glyphicon-chevron-up
           %i.glyphicon.glyphicon-chevron-up
-      = link_to signin_path, class: "btn btn-primary btn-lg btn-danger" do
+      = link_to signin_path, class: "btn btn-primary btn-lg btn-facebook" do
         = t('layouts.navigation.login')
-      .sub-titles
+      .text-center
+        .heart.text-danger
+          %i.glyphicon.glyphicon-heart
       .special.text-danger
         = t('.special.title_html')
       - t('.special.point').each_key do |k|
         .special-point.text-danger{class: "special-point-#{k.to_s.split('_')[0]}"}
           = t(".special.point.#{k}")
-      .text-center
-        .heart.text-danger
-          %i.glyphicon.glyphicon-heart
 = render 'layouts/spinner'
 .loading-page
   .spinner
