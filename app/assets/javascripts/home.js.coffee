@@ -134,6 +134,7 @@ class Scene extends Backbone.View
     @_initStory()
     @_throttled_bound_zoom()
     @_bindGlobal()
+    @trigger 'ready'
     @
   remove: ->
     @_unbindGlobal()
@@ -232,4 +233,7 @@ class Scene extends Backbone.View
 
 
 window.crushLand = ->
-  new Scene(el: $('main').addClass('scene')).render()
+  scene = new Scene(el: $('main').addClass('scene'))
+  scene.on 'ready', ->
+    scene.$('.loading-page').fadeOut('slow')
+  scene.render()

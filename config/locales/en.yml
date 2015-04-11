@@ -40,7 +40,7 @@ en:
           login_html: "Easy!<br/>Login with facebook"
           b_html: "Find that sweetheart, choose <span class='text-danger'>Crush!</span><br/>Good luck!"
           c_html: "Be persistent!<br>If they use <small>fb&#8209;CRUSH</small>, they may be choosing you any day."
-        summary_html: "Identities will be revealed only when the choice is mutual<br/>%{heart}<br/>The awkward bit is gone, go play ;-)"
+        summary_html: "Identities will be revealed only when the choice is mutual.<br/>%{heart}<br/>The awkward bit is gone, go play ;-)"
       special:
         title_html: "Coming soon:"
         point:

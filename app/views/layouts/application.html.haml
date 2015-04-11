@@ -15,7 +15,7 @@
   %body
     %header
       = render 'layouts/navigation'
-    %main.container-fluid
+    %main.container-fluid.initially-hidden
       = yield
     %footer
       %small.copyright= t('.version', version: APP_VERSION)
