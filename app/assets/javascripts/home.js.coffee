@@ -177,9 +177,11 @@ class Scene extends Backbone.View
     @$el.height @zoomPx SCENE_HEIGHT
     @$el.css 'font-size': @zoomPx(18)
 
-    @_login_scroll_top = $(document).height() - $(window).height() - @$('.login-blk').height()
+    screw_you_firefox_height = $('body').height()  # XXX $(document).height()
+    @_login_scroll_top = screw_you_firefox_height - $(window).height() - @$('.login-blk').height()
 
     @trigger 'zoom'
+    @_onScroll()
 
   _disableAutoScroll: ->
     @_just_scrolled = true
@@ -187,6 +189,7 @@ class Scene extends Backbone.View
   _onScroll: ->
     scroll_top = $(document).scrollTop()
     @_fixLoginBlk scroll_top
+
     @trigger 'scroll', scroll_top / @zoom
 
   _fixLoginBlk: (scroll_top)->
